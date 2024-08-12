@@ -49,7 +49,7 @@ This line is different. The ":" is called colon. With this symbol you can genera
 8:-9
 ```
 
-Same as the previous line, here we generate a sequence of number 
+Same as the previous line, here we generate a sequence of number with negative and positive numbers.
 
 ```{r error}
 1,2
@@ -58,3 +58,18 @@ Same as the previous line, here we generate a sequence of number
 ```{r decimal}
 1.2
 ```
+
+R is demanding when it comes to the use of certain symbols, particularly decimal numbers. In french, we used to write the decimal with a comma like in this example. But in english, the decimal separator is a point not a comma.
+If you write it with a comma, an error will occured, R can't interpret what you wrote.
+
+```{r comment}
+# This is a comment
+```
+
+You can write entire lines of text. To do this, simply use the "#" symbol at the beginning of the line.
+This code line is called a comment, and it is used to indicate that the different lines of code we write do.
+
+
+## Work with variables
+
+
