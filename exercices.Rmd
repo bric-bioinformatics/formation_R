@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Discovering the R console
+# Discovering the R console
 
 R is an interpreted language. If you write a code line in the console and validate it, you will instant see the result of your code.
 
@@ -59,17 +59,108 @@ Same as the previous line, here we generate a sequence of number with negative a
 1.2
 ```
 
-R is demanding when it comes to the use of certain symbols, particularly decimal numbers. In french, we used to write the decimal with a comma like in this example. But in english, the decimal separator is a point not a comma.
-If you write it with a comma, an error will occured, R can't interpret what you wrote.
+R is demanding when it comes to the use of certain symbols, particularly decimal numbers. In french, we used to write the decimal with a comma like in this example. But in English, the decimal separator is a point not a comma. If you write it with a comma, an error will occurred, R can't interpret what you wrote.
 
 ```{r comment}
 # This is a comment
 ```
 
-You can write entire lines of text. To do this, simply use the "#" symbol at the beginning of the line.
-This code line is called a comment, and it is used to indicate that the different lines of code we write do.
+You can write entire lines of text. To do this, simply use the "\#" symbol at the beginning of the line. This code line is called a comment, and it is used to indicate that the different lines of code we write do.
+
+# Work with variables
+
+A variable is a storage space, like a box. In this box, you can store a value that can have different types : numeric, string, table...
+
+## Assign a value to a variable
+
+To assign a value in a variable you can use "\<-" or "=".
+
+```{r assign value}
+P240_nb_rep <- 3
+P240_nb_rep
+```
+
+Note that you can see in the Environment panel, that the variable now appears, with his name, his type and his value.
+
+## Name a variable
+
+The choice of name is important: it must be clear to identify the function of the variable and what it contains.
+In our example, we named our variable 'P240_nb_rep' that store the number of replicates (3) for patient 240.
+
+There are certain rules to follow when choosing a name :
+
+-   Cannot start with a number.
+-   Cannot contain special characters like **&,",',/,,\@,\$,(),[],{}**, and more generally all mathematical operators and punctuation.
+-   Case-sensitive : name $\neq$ Name.
+
+```{r naming rules1}
+240_nb_rep <- 30
+```
+
+```{r naming rules2}
+patients@samples <- 30
+```
+
+```{r naming rules3}
+sample <- "lung"
+Sample
+```
+
+Some names are best avoided. In R, there are variables and functions with predefined names. For example, the variable named "pi" is already implemented in R and return the value of pi. If you assign, for example, the value 10 to "pi", the variable "pi" will return 10 and not 3.14
+
+```{r pi example1}
+pi
+```
+
+```{r pi example2}
+pi <- 10
+pi
+```
 
 
-## Work with variables
 
+# Discovering of existing functions
+
+A function is a set of instructions that you can re-use. A function is composed with a name and arguments.
+There is built-in functions that alerady exists and you can use.
+
+We will take, as example, the built-in function to compute the square root
+
+Firstly, you can find some help to know how to use a function
+
+```{r sqrt help}
+?sqrt
+#or
+help(sqrt)
+```
+
+"sqrt" is the name of the function and the function take one argument (represented by x in the help window). Moreover, the help explains that the argument must be a numeric, a vector or an array.
+
+```{r sqrt example}
+sqrt(25)
+```
+So you can compute the square root of a numeric value (25)
+
+```{r}
+a <- 25
+sqrt(a)
+```
+
+Or you can store your numeric value in a variable and use it in the sqrt function.
+
+## Exercice with the logarithm
+
+```{r exercice log}
+# Search for help about the function log10
+?log10
+help(log10)
+
+# Using the function
+log10(50)
+
+# With a defined variable
+a <- 50
+log10(a)
+
+```
 
