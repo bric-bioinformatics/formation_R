@@ -5,87 +5,217 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+<style>
+details > summary {
+  padding: 4px;
+  width: 400px;
+  background-color: #eeeeee;
+  border: none;
+  box-shadow: 1px 1px 2px #bbbbbb;
+  cursor: pointer;
+}
+​
+details > p {
+  background-color: #E0F8EC;
+  padding: 4px;
+  margin: 0;
+  box-shadow: 1px 1px 2px #bbbbbb;
+}
+</style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
 # Discovering the R console
 
-R is an interpreted language. If you write a code line in the console and validate it, you will instant see the result of your code.
+R is an interpreted language. If you write a code line in the console and validate it, you will instant see the result of your code. This is the simpliest case in computer programming : I give an instruction, this instruction is interpreted and the result is displayed.
 
-R can do everything !
+Let's see some example of interpretation of simple instructions.
 
 ```{r simple code}
 42
 ```
+<details>
+  <summary>Result</summary>
 
-If you just type a number, R will interpret the simplest way : by returning the number you entered.
+```
+[1] 42
 
+If you just type a number, R will interpret the simplest way : by returning the number you entered. Here, it will be 42. The interpretation in this case is simple.
+```
+</details>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r addition}
 2+3
 ```
+<details>
+  <summary>Result</summary>
 
-Unlike the previous line, R will not return "2+3", but it interpret the "+" symbol as an addition.
+```
+[1] 5
 
+Unlike the previous line, R will not return "2+3", but it interpret the "+" symbol as an addition. R is able to interpret certain symbol especially for arithmetic operation for example.
+```
+</details> 
+  
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r multiplication}
 4*5
 ```
+<details>
+  <summary>Result</summary>
 
-You can do the same manipulation with a multiplication, the "\*" symbol is interpreted as a multiplication
+```
+[1] 20
 
+You can do the same manipulation with a multiplication, the "*" symbol is interpreted as a multiplication
+
+```
+</details> 
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r division}
 6/4
 ```
+<details>
+  <summary>Result</summary>
+
+```
+[1] 1.5
 
 Same phenomenon, but with the division, the "/" symbol is interpreted as a division
 
+```
+</details> 
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r sequence1}
 1:10
 ```
+<details>
+  <summary>Result</summary>
 
-This line is different. The ":" is called colon. With this symbol you can generate a sequence of number.
+```
+[1] 1  2  3  4  5  6  7  8  9 10
 
+This line is different. The ":" is called a colon. With this symbol you can generate a sequence of number.
+
+```
+</details> 
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r sequence2}
 8:-9
 ```
+<details>
+  <summary>Result</summary>
+
+```
+[1] 8  7  6  5  4  3  2  1  0 -1 -2 -3 -4 -5 -6 -7 -8 -9
 
 Same as the previous line, here we generate a sequence of number with negative and positive numbers.
 
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r error}
 1,2
 ```
+<details>
+  <summary>Result</summary>
+
+```
+Erreur : ',' inattendu(e) dans "1,"
+
+Oops, it seems we have a problem here. The interpreter obviously can't read the comma correctly...
+
+```
+</details> 
 
 ```{r decimal}
 1.2
 ```
+<details>
+  <summary>Result</summary>
+
+```
+[1] 1.2
 
 R is demanding when it comes to the use of certain symbols, particularly decimal numbers. In french, we used to write the decimal with a comma like in this example. But in English, the decimal separator is a point not a comma. If you write it with a comma, an error will occurred, R can't interpret what you wrote.
+```
+</details> 
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r comment}
 # This is a comment
 ```
+<details>
+  <summary>Result</summary>
 
-You can write entire lines of text. To do this, simply use the "\#" symbol at the beginning of the line. This code line is called a comment, and it is used to indicate that the different lines of code we write do.
+```
+> This is a comment
+
+You can write entire lines of text. To do this, simply use the "#" symbol at the beginning of the line. This code line is called a comment, and it is used to indicate that the different lines of code we write do.
+```
+</details> 
+
 
 # Work with variables
 
 A variable is a storage space, like a box. In this box, you can store a value that can have different types : numeric, string, table...
 
+Sounds great, but what's it really for?
+It's probably the question you've been asking yourself.
+
+You probably noticed when doing the previous exercise in the console, that what you entered was interpreted and returned as a result. However, it's impossible to retrieve this result unless you retype the instruction line.
+
+Here's what we're going to use the variables for. We can store simple structures like numbers or characters string, but we can also store more complex structures such as arrays or matrices. This is called the type of a variable.
+
+It's an important notion in programming, and even more in R, as the language is sometimes rather capricious with variable typing as we will see during the course.
+
+Here is a reminder of some existing types :
+
+| Type | Description | Examples | Notes |
+|----------|----------|----------|----------|
+| Numeric / Integer | float, integer, complex | 8, 1.8 | The point is used for decimal |
+| Character / String | character, character string | "char1",'char2' | Character strings are defined by simple or double quotes |
+| Logic / Boolean | logical used for comparison (==, !=, >, %in%, …) | TRUE, FALSE | Predefined variables |
+| Other types | NA, NULL | missing value, empty | Predefined variables, impact mathematical operation |
+| Functions | Embed instructions and return a result | max(arg1,arg2) substring(arg1,arg2,...) | Many functions are predefined, read the help |
+
 ## Assign a value to a variable
 
-To assign a value in a variable you can use "\<-" or "=".
+Now that you know what variables are for, we will see how to assign a value in a variable.
+To do this, you can use two different symbols
+The first symbol is "<-". Generally it is preferred when assigning values to variables. But you can also use "=" symbol to assign a value.
+The reason is the symbol "=" is also used for other things and it can creates confusion when writing code.
+
+Let's see an example :
 
 ```{r assign value}
 P240_nb_rep <- 3
 P240_nb_rep
 ```
+<details>
+  <summary>Result</summary>
 
-Note that you can see in the Environment panel, that the variable now appears, with his name, his type and his value.
+```
+[1] 3
+
+Here we created a variable named "P240_nb_rep" and we assigned the value 3 in the variable.
+So when we write "P240_nb_rep" in the console for example, the value 3 appears.
+
+```
+</details> 
+
+Remember ? We saw that RStudio offered several panels, including one called Environment.
+
+Normally, if you take a look, you'll see that your variable "P240_nb_rep" appeared. All the variables you create will appear in this panel.
 
 ## Name a variable
 
-The choice of name is important: it must be clear to identify the function of the variable and what it contains.
-In our example, we named our variable 'P240_nb_rep' that store the number of replicates (3) for patient 240.
+The choice of name is important: it must be clear to identify the function of the variable and what it contains. In our example, we named our variable 'P240_nb_rep' that store the number of replicates (3) for patient 240.
 
 There are certain rules to follow when choosing a name :
 
@@ -96,33 +226,76 @@ There are certain rules to follow when choosing a name :
 ```{r naming rules1}
 240_nb_rep <- 30
 ```
+<details>
+  <summary>Result</summary>
 
+```
+Erreur : entrée inattendue dans "240_"
+
+First rule broken ! R does not support variables whose name begins with a digit.
+```
+</details> 
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r naming rules2}
 patients@samples <- 30
 ```
+<details>
+  <summary>Result</summary>
 
+```
+Erreur : objet 'patients' introuvable
+
+It seems that R does not understand this syntax either. The "@" symbol is not accepted in the name.
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 ```{r naming rules3}
 sample <- "lung"
 Sample
 ```
+<details>
+  <summary>Result</summary>
+
+```
+Erreur : objet 'Sample' introuvable
+
+Here the definition of the variable is correct. The problem is the case, our variable is called "sample" not "Sample".
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Some names are best avoided. In R, there are variables and functions with predefined names. For example, the variable named "pi" is already implemented in R and return the value of pi. If you assign, for example, the value 10 to "pi", the variable "pi" will return 10 and not 3.14
 
 ```{r pi example1}
 pi
 ```
+<details>
+  <summary>Result</summary>
+
+```
+[1] 3.141593
+
+```
+</details> 
 
 ```{r pi example2}
 pi <- 10
 pi
 ```
+<details>
+  <summary>Result</summary>
 
+```
+[1] 10
 
+```
+</details> 
 
-# Discovering of existing functions
+# Discovering of functions
 
-A function is a set of instructions that you can re-use. A function is composed with a name and arguments.
-There is built-in functions that alerady exists and you can use.
+A function is a set of instructions that you can re-use. A function is composed with a name and arguments. There is built-in functions that already exists and that you can use.
 
 We will take, as example, the built-in function to compute the square root
 
@@ -139,6 +312,7 @@ help(sqrt)
 ```{r sqrt example}
 sqrt(25)
 ```
+
 So you can compute the square root of a numeric value (25)
 
 ```{r}
@@ -150,17 +324,10 @@ Or you can store your numeric value in a variable and use it in the sqrt functio
 
 ## Exercice with the logarithm
 
-```{r exercice log}
-# Search for help about the function log10
-?log10
-help(log10)
-
-# Using the function
-log10(50)
-
-# With a defined variable
-a <- 50
-log10(a)
-
+```{r exercice log 1}
+# Search for help about the function log
+?log
+help(log)
 ```
 
+The first thing to do is to search for help about the function. In this case, this is pretty simple because to calculate the log we use the function called "log". But we need to know what are the needed arguments.
