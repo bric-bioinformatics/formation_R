@@ -295,39 +295,140 @@ pi
 
 # Discovering of functions
 
-A function is a set of instructions that you can re-use. A function is composed with a name and arguments. There is built-in functions that already exists and that you can use.
+A function is a set of instructions that you can re-use. A function is composed with a name and arguments.
+So, it is possible to build your own functions to do whatever you want.
 
-We will take, as example, the built-in function to compute the square root
+But before build functions on your own, you can use built-in functions in R. Those functions are ready-to-use.
+Some of them are directly in the base of R, however, for the majority, you will have to download packages (we will see later how to download and install packages).
 
-Firstly, you can find some help to know how to use a function
+We will take, as example, the built-in function to compute the square root.
+
+Firstly, you can find some help to know how to use a function.
 
 ```{r sqrt help}
 ?sqrt
 #or
 help(sqrt)
 ```
+<details>
+  <summary>Result</summary>
 
+```
 "sqrt" is the name of the function and the function take one argument (represented by x in the help window). Moreover, the help explains that the argument must be a numeric, a vector or an array.
+
+Don't forget to use internet request to have more information.
+
+```
+</details> 
 
 ```{r sqrt example}
 sqrt(25)
 ```
 
-So you can compute the square root of a numeric value (25)
+<details>
+  <summary>Result</summary>
+
+```
+[1] 5
+
+The function simply return the result of the square root for 25.
+
+```
+</details> 
+
+As you probably notice, this function is pretty simple. The function takes just one argument called 'x". This 'x' must be a number.
+We saw earlier in this course the notion of variables. Let's combine variable with function.
 
 ```{r}
-a <- 25
-sqrt(a)
+our_value <- 25
+sqrt(our_value)
 ```
 
-Or you can store your numeric value in a variable and use it in the sqrt function.
+<details>
+  <summary>Result</summary>
+
+```
+The first thing we do is to define our variable. We called it "our_value" and we assign 25.
+And we calculate the sqrt.
+
+[1] 5
+
+We have the expected result : 5. The function has taken into account the variable and its contents in order to return the expected result.
+
+```
+</details> 
 
 ## Exercice with the logarithm
 
-```{r exercice log 1}
-# Search for help about the function log
+Now it's your turn! 
+We ask you to use a function already present in R, in order to calculate logarithms
+The function works in a similar way to the previous one, but perhaps there are differences ?
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- What is the function to use ?
+
+
+<details>
+  <summary>Result</summary>
+
+```
+This is the first step, if you don't know the function you want to use : use help panel or search on the internet.
+If you start writing log in the console, you'll see that there are indeed several functions beginning with log. But the one we're most interested in is the first one, called “log”.
+
 ?log
 help(log)
-```
 
-The first thing to do is to search for help about the function. In this case, this is pretty simple because to calculate the log we use the function called "log". But we need to know what are the needed arguments.
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- How many arguments does it takes ?
+
+
+<details>
+  <summary>Result</summary>
+
+```
+The function log takes 2 arguments : 
+- x : this is basically a number for example
+- base : this argument allows to specify which base you want to use
+
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- What type of variable does it accepts ?
+
+
+<details>
+  <summary>Result</summary>
+
+```
+The first argument x must be a numeric or a vector.
+The base argument must be a positive number. 
+
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- What type of variable does it returns ?
+
+
+<details>
+  <summary>Result</summary>
+
+```
+The function returns the result in numeric type.
+
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- What are default parameters ?
+
+

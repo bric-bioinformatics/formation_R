@@ -11,7 +11,7 @@
 
 <meta name="author" content="Elodie Darbo / Cyril Dourthe" />
 
-<meta name="date" content="2024-08-20" />
+<meta name="date" content="2024-08-28" />
 
 <title>R formation</title>
 
@@ -358,7 +358,7 @@ pre code {
 
 <h1 class="title toc-ignore">R formation</h1>
 <h4 class="author">Elodie Darbo / Cyril Dourthe</h4>
-<h4 class="date">2024-08-20</h4>
+<h4 class="date">2024-08-28</h4>
 
 </div>
 
@@ -643,35 +643,90 @@ Result
 </details>
 </div>
 </div>
-<div id="discovering-of-existing-functions" class="section level1">
-<h1>Discovering of existing functions</h1>
+<div id="discovering-of-functions" class="section level1">
+<h1>Discovering of functions</h1>
 <p>A function is a set of instructions that you can re-use. A function
-is composed with a name and arguments. There is built-in functions that
-already exists and that you can use.</p>
+is composed with a name and arguments. So, it is possible to build your
+own functions to do whatever you want.</p>
+<p>But before build functions on your own, you can use built-in
+functions in R. Those functions are ready-to-use. Some of them are
+directly in the base of R, however, for the majority, you will have to
+download packages (we will see later how to download and install
+packages).</p>
 <p>We will take, as example, the built-in function to compute the square
-root</p>
-<p>Firstly, you can find some help to know how to use a function</p>
+root.</p>
+<p>Firstly, you can find some help to know how to use a function.</p>
 <pre class="r"><code>?sqrt
 #or
 help(sqrt)</code></pre>
-<p>“sqrt” is the name of the function and the function take one argument
-(represented by x in the help window). Moreover, the help explains that
-the argument must be a numeric, a vector or an array.</p>
+<details>
+<summary>
+Result
+</summary>
+<pre><code>&quot;sqrt&quot; is the name of the function and the function take one argument (represented by x in the help window). Moreover, the help explains that the argument must be a numeric, a vector or an array.
+
+Don&#39;t forget to use internet request to have more information.
+</code></pre>
+</details>
 <pre class="r"><code>sqrt(25)</code></pre>
-<p>So you can compute the square root of a numeric value (25)</p>
-<pre class="r"><code>a &lt;- 25
-sqrt(a)</code></pre>
-<p>Or you can store your numeric value in a variable and use it in the
-sqrt function.</p>
+<details>
+<summary>
+Result
+</summary>
+<pre><code>[1] 5
+
+The function simply return the result of the square root for 25.
+</code></pre>
+</details>
+<p>As you probably notice, this function is pretty simple. The function
+takes just one argument called ‘x”. This ’x’ must be a number. We saw
+earlier in this course the notion of variables. Let’s combine variable
+with function.</p>
+<pre class="r"><code>our_value &lt;- 25
+sqrt(our_value)</code></pre>
+<details>
+<summary>
+Result
+</summary>
+<pre><code>The first thing we do is to define our variable. We called it &quot;our_value&quot; and we assign 25.
+And we calculate the sqrt.
+
+[1] 5
+
+We have the expected result : 5. The function has taken into account the variable and its contents in order to return the expected result.
+</code></pre>
+</details>
 <div id="exercice-with-the-logarithm" class="section level2">
 <h2>Exercice with the logarithm</h2>
-<pre class="r"><code># Search for help about the function log
+<p>Now it’s your turn! We ask you to use a function already present in
+R, in order to calculate logarithms The function works in a similar way
+to the previous one, but perhaps there are differences ?</p>
+<hr />
+<ul>
+<li>What is the function to use ?</li>
+</ul>
+<details>
+<summary>
+Result
+</summary>
+<pre><code>This is the first step, if you don&#39;t know the function you want to use : use help panel or search on the internet.
+If you start writing log in the console, you&#39;ll see that there are indeed several functions beginning with log. But the one we&#39;re most interested in is the first one, called “log”.
+
 ?log
-help(log)</code></pre>
-<p>The first thing to do is to search for help about the function. In
-this case, this is pretty simple because to calculate the log we use the
-function called “log”. But we need to know what are the needed
-arguments.</p>
+help(log)
+</code></pre>
+</details>
+<hr />
+<ul>
+<li>How many arguments does it takes ?</li>
+</ul>
+<details>
+<summary>
+Result
+</summary>
+<pre><code>
+</code></pre>
+</details>
 </div>
 </div>
 
