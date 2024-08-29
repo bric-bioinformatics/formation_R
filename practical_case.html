@@ -9,11 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Elodie Darbo / Cyril Dourthe" />
+<meta name="author" content="Cyril Dourthe" />
 
 <meta name="date" content="2024-08-29" />
 
-<title>Using R/RStudio for the first time</title>
+<title>Practical case : manipulation of data</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -356,8 +356,8 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Using R/RStudio for the first time</h1>
-<h4 class="author">Elodie Darbo / Cyril Dourthe</h4>
+<h1 class="title toc-ignore">Practical case : manipulation of data</h1>
+<h4 class="author">Cyril Dourthe</h4>
 <h4 class="date">2024-08-29</h4>
 
 </div>
@@ -380,414 +380,59 @@ details > p {
   box-shadow: 1px 1px 2px #bbbbbb;
 }
 </style>
-<div id="discovering-the-r-console" class="section level1">
-<h1>Discovering the R console</h1>
-<p>R is an interpreted language. If you write a code line in the console
-and validate it, you will instant see the result of your code. This is
-the simpliest case in computer programming : I give an instruction, this
-instruction is interpreted and the result is displayed.</p>
-<p>Let’s see some example of interpretation of simple instructions.</p>
-<pre class="r"><code>42</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 42
-
-If you just type a number, R will interpret the simplest way : by returning the number you entered. Here, it will be 42. The interpretation in this case is simple.</code></pre>
-</details>
-<hr />
-<pre class="r"><code>2+3</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 5
-
-Unlike the previous line, R will not return &quot;2+3&quot;, but it interpret the &quot;+&quot; symbol as an addition. R is able to interpret certain symbol especially for arithmetic operation for example.</code></pre>
-</details>
-<hr />
-<pre class="r"><code>4*5</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 20
-
-You can do the same manipulation with a multiplication, the &quot;*&quot; symbol is interpreted as a multiplication
-</code></pre>
-</details>
-<hr />
-<pre class="r"><code>6/4</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 1.5
-
-Same phenomenon, but with the division, the &quot;/&quot; symbol is interpreted as a division
-</code></pre>
-</details>
-<hr />
-<pre class="r"><code>1:10</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 1  2  3  4  5  6  7  8  9 10
-
-This line is different. The &quot;:&quot; is called a colon. With this symbol you can generate a sequence of number.
-</code></pre>
-</details>
-<hr />
-<pre class="r"><code>8:-9</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 8  7  6  5  4  3  2  1  0 -1 -2 -3 -4 -5 -6 -7 -8 -9
-
-Same as the previous line, here we generate a sequence of number with negative and positive numbers.
-</code></pre>
-</details>
-<hr />
-<pre class="r"><code>1,2</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>Erreur : &#39;,&#39; inattendu(e) dans &quot;1,&quot;
-
-Oops, it seems we have a problem here. The interpreter obviously can&#39;t read the comma correctly...
-</code></pre>
-</details>
-<pre class="r"><code>1.2</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 1.2
-
-R is demanding when it comes to the use of certain symbols, particularly decimal numbers. In french, we used to write the decimal with a comma like in this example. But in English, the decimal separator is a point not a comma. If you write it with a comma, an error will occurred, R can&#39;t interpret what you wrote.</code></pre>
-</details>
-<hr />
-<pre class="r"><code># This is a comment</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>&gt; This is a comment
-
-You can write entire lines of text. To do this, simply use the &quot;#&quot; symbol at the beginning of the line. This code line is called a comment, and it is used to indicate that the different lines of code we write do.</code></pre>
-</details>
+<p>In this section, you will learn how to manipulate data in the form of
+tables. When we manipulate data, we use variables and functions. As you
+saw earlier, a variable can have several types and can contain different
+types of data, even an entire table with several columns and rows.
+Various functions can be used to dissect the table in order to retain
+only certain data, for example.</p>
+<p>But before diving into complex data exploration. We need to define a
+workspace where we will then write our variables, functions… in other
+words, the code.</p>
+<div id="set-the-working-directory" class="section level1">
+<h1>Set the working directory</h1>
+<p>A working directory contains all the data that will be useful to us
+(tables, images, graphics, etc.).</p>
+<ul>
+<li>Create a new folder that you can called intro_R</li>
+<li>In the “Session” menu, select “Choose Directory”…</li>
+<li>Navigate to your intro_R folder</li>
+<li>Double-click it to open</li>
+<li>Click Choose</li>
+<li>Observe the console and save the command in your script</li>
+</ul>
 </div>
-<div id="work-with-variables" class="section level1">
-<h1>Work with variables</h1>
-<p>A variable is a storage space, like a box. In this box, you can store
-a value that can have different types : numeric, string, table…</p>
-<p>Sounds great, but what’s it really for? It’s probably the question
-you’ve been asking yourself.</p>
-<p>You probably noticed when doing the previous exercise in the console,
-that what you entered was interpreted and returned as a result. However,
-it’s impossible to retrieve this result unless you retype the
-instruction line.</p>
-<p>Here’s what we’re going to use the variables for. We can store simple
-structures like numbers or characters string, but we can also store more
-complex structures such as arrays or matrices. This is called the type
-of a variable.</p>
-<p>It’s an important notion in programming, and even more in R, as the
-language is sometimes rather capricious with variable typing as we will
-see during the course.</p>
-<p>Here is a reminder of some existing types :</p>
-<table>
-<colgroup>
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-<th>Examples</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Numeric / Integer</td>
-<td>float, integer, complex</td>
-<td>8, 1.8</td>
-<td>The point is used for decimal</td>
-</tr>
-<tr class="even">
-<td>Character / String</td>
-<td>character, character string</td>
-<td>“char1”,‘char2’</td>
-<td>Character strings are defined by simple or double quotes</td>
-</tr>
-<tr class="odd">
-<td>Logic / Boolean</td>
-<td>logical used for comparison (==, !=, &gt;, %in%, …)</td>
-<td>TRUE, FALSE</td>
-<td>Predefined variables</td>
-</tr>
-<tr class="even">
-<td>Other types</td>
-<td>NA, NULL</td>
-<td>missing value, empty</td>
-<td>Predefined variables, impact mathematical operation</td>
-</tr>
-<tr class="odd">
-<td>Functions</td>
-<td>Embed instructions and return a result</td>
-<td>max(arg1,arg2) substring(arg1,arg2,…)</td>
-<td>Many functions are predefined, read the help</td>
-</tr>
-</tbody>
-</table>
-<div id="assign-a-value-to-a-variable" class="section level2">
-<h2>Assign a value to a variable</h2>
-<p>Now that you know what variables are for, we will see how to assign a
-value in a variable. To do this, you can use two different symbols The
-first symbol is “&lt;-”. Generally it is preferred when assigning values
-to variables. But you can also use “=” symbol to assign a value. The
-reason is the symbol “=” is also used for other things and it can
-creates confusion when writing code.</p>
-<p>Let’s see an example :</p>
-<pre class="r"><code>P240_nb_rep &lt;- 3
-P240_nb_rep</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 3
-
-Here we created a variable named &quot;P240_nb_rep&quot; and we assigned the value 3 in the variable.
-So when we write &quot;P240_nb_rep&quot; in the console for example, the value 3 appears.
-</code></pre>
-</details>
-<p>Remember ? We saw that RStudio offered several panels, including one
-called Environment.</p>
-<p>Normally, if you take a look, you’ll see that your variable
-“P240_nb_rep” appeared. All the variables you create will appear in this
-panel.</p>
+<div id="create-a-script" class="section level1">
+<h1>Create a script</h1>
+<p>The working directory will also contain the code we’ll be writing as
+we go along, in the form of a text file called script. The advantage of
+a script is that you can save your code, keep it and reuse it.</p>
+<ul>
+<li>In the RStudio window click the “create file” button</li>
+<li>Choose the R script format</li>
+<li>Save your file in your intro_R folder</li>
+<li>Save your script regularly</li>
+</ul>
 </div>
-<div id="name-a-variable" class="section level2">
-<h2>Name a variable</h2>
-<p>The choice of name is important: it must be clear to identify the
-function of the variable and what it contains. In our example, we named
-our variable ‘P240_nb_rep’ that store the number of replicates (3) for
-patient 240.</p>
-<p>There are certain rules to follow when choosing a name :</p>
+<div id="load-the-data-in-r" class="section level1">
+<h1>Load the data in R</h1>
+<p>We need to load the data to be able to work. Use the directory you
+have created to store your data in it, this will make it easier to find
+the data file.</p>
 <ul>
-<li>Cannot start with a number.</li>
-<li>Cannot contain special characters like
-<strong>&amp;,“,’,/,,@,$,(),[],{}</strong>, and more generally all
-mathematical operators and punctuation.</li>
-<li>Case-sensitive : name <span class="math inline">\(\neq\)</span>
-Name.</li>
+<li>In the “Environment” panel, select “Import Dataset”</li>
+<li>Select “From Text (base)…”</li>
+<li>Navigate to your intro_R folder</li>
+<li>Choose TCGA_LUAD_subset.tsv</li>
+<li>Double-click it to open</li>
+<li>Change the name of the variable</li>
+<li>Specify that the first line contains the names of the columns</li>
+<li>Specify that the first row contains the names of the rows</li>
 </ul>
-<pre class="r"><code>240_nb_rep &lt;- 30</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>Erreur : entrée inattendue dans &quot;240_&quot;
-
-First rule broken ! R does not support variables whose name begins with a digit.</code></pre>
-</details>
+<p>After this last step, you can see that a variable has been created
+and is displayed in the “Environment” panel. This variable is called
+TCGA_LUAD (or whatever you called it) containing the data.</p>
 <hr />
-<pre class="r"><code>patients@samples &lt;- 30</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>Erreur : objet &#39;patients&#39; introuvable
-
-It seems that R does not understand this syntax either. The &quot;@&quot; symbol is not accepted in the name.</code></pre>
-</details>
-<hr />
-<pre class="r"><code>sample &lt;- &quot;lung&quot;
-Sample</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>Erreur : objet &#39;Sample&#39; introuvable
-
-Here the definition of the variable is correct. The problem is the case, our variable is called &quot;sample&quot; not &quot;Sample&quot;.</code></pre>
-</details>
-<hr />
-<p>Some names are best avoided. In R, there are variables and functions
-with predefined names. For example, the variable named “pi” is already
-implemented in R and return the value of pi. If you assign, for example,
-the value 10 to “pi”, the variable “pi” will return 10 and not 3.14</p>
-<pre class="r"><code>pi</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 3.141593
-</code></pre>
-</details>
-<pre class="r"><code>pi &lt;- 10
-pi</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 10
-</code></pre>
-</details>
-</div>
-</div>
-<div id="discovering-of-functions" class="section level1">
-<h1>Discovering of functions</h1>
-<p>A function is a set of instructions that you can re-use. A function
-is composed with a name and arguments. So, it is possible to build your
-own functions to do whatever you want.</p>
-<p>But before build functions on your own, you can use built-in
-functions in R. Those functions are ready-to-use. Some of them are
-directly in the base of R, however, for the majority, you will have to
-download packages (we will see later how to download and install
-packages).</p>
-<p>We will take, as example, the built-in function to compute the square
-root.</p>
-<p>Firstly, you can find some help to know how to use a function.</p>
-<pre class="r"><code>?sqrt
-#or
-help(sqrt)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>&quot;sqrt&quot; is the name of the function and the function take one argument (represented by x in the help window). Moreover, the help explains that the argument must be a numeric, a vector or an array.
-
-Don&#39;t forget to use internet request to have more information.
-</code></pre>
-</details>
-<pre class="r"><code>sqrt(25)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 5
-
-The function simply return the result of the square root for 25.
-</code></pre>
-</details>
-<p>As you probably notice, this function is pretty simple. The function
-takes just one argument called ‘x”. This ’x’ must be a number. We saw
-earlier in this course the notion of variables. Let’s combine variable
-with function.</p>
-<pre class="r"><code>our_value &lt;- 25
-sqrt(our_value)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>The first thing we do is to define our variable. We called it &quot;our_value&quot; and we assign 25.
-And we calculate the sqrt.
-
-[1] 5
-
-We have the expected result : 5. The function has taken into account the variable and its contents in order to return the expected result.
-</code></pre>
-</details>
-<div id="exercice-with-the-logarithm" class="section level2">
-<h2>Exercice with the logarithm</h2>
-<p>Now it’s your turn! We ask you to use a function already present in
-R, in order to calculate logarithms The function works in a similar way
-to the previous one, but perhaps there are differences ?</p>
-<hr />
-<ul>
-<li>What is the function to use ?</li>
-</ul>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>This is the first step, if you don&#39;t know the function you want to use : use help panel or search on the internet.
-If you start writing log in the console, you&#39;ll see that there are indeed several functions beginning with log. But the one we&#39;re most interested in is the first one, called “log”.
-
-?log
-help(log)
-</code></pre>
-</details>
-<hr />
-<ul>
-<li>How many arguments does it takes ?</li>
-</ul>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>The function log takes 2 arguments : 
-- x : this is basically a number for example
-- base : this argument allows to specify which base you want to use
-</code></pre>
-</details>
-<hr />
-<ul>
-<li>What type of variable does it accepts ?</li>
-</ul>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>The first argument x must be a numeric or a vector.
-The base argument must be a positive number. 
-</code></pre>
-</details>
-<hr />
-<ul>
-<li>What type of variable does it returns ?</li>
-</ul>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>The function returns the result in numeric type.
-</code></pre>
-</details>
-<hr />
-<ul>
-<li>What are default parameters ?</li>
-</ul>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>We saw that we have 2 arguments in this function. Only one of them have a default paramter and this is base argument. It takes e=exp(1) by default.
-</code></pre>
-</details>
-<hr />
-<p>So you’ve discovered the log function and how to use it.</p>
-<p>With the same function, compute the logarithm base 2 of 1000.</p>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>&gt; log(10, base=2)
-[1] 3.321928
-
-We took in example the log base 2 of 1000 for 10.
-The argument x is 10 and the base argument is equal to 2.
-
-NB : You may have noticed when looking for help for the log function, that there is a function called log2.
-This function is the same as log, simply with the base set to 2.
-That&#39;s why there&#39;s only one argument here: x
-Here&#39;s how it would look :
-
-&gt; log2(10)
-[1] 3.321928
-
-The result is the same!
-</code></pre>
-</details>
-</div>
 </div>
 
 

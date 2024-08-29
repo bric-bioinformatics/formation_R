@@ -1,0 +1,76 @@
+---
+title: "Practical case : manipulation of data"
+author: "Cyril Dourthe"
+date: "`r Sys.Date()`"
+output: html_document
+---
+<style>
+details > summary {
+  padding: 4px;
+  width: 400px;
+  background-color: #eeeeee;
+  border: none;
+  box-shadow: 1px 1px 2px #bbbbbb;
+  cursor: pointer;
+}
+​
+details > p {
+  background-color: #E0F8EC;
+  padding: 4px;
+  margin: 0;
+  box-shadow: 1px 1px 2px #bbbbbb;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this section, you will learn how to manipulate data in the form of tables. 
+When we manipulate data, we use variables and functions. As you saw earlier, a variable can have several types and can contain different types of data, even an entire table with several columns and rows. Various functions can be used to dissect the table in order to retain only certain data, for example.
+
+But before diving into complex data exploration. We need to define a workspace where we will then write our variables, functions... in other words, the code.
+
+# Set the working directory
+
+A working directory contains all the data that will be useful to us (tables, images, graphics, etc.).
+
+
+* Create a new folder that you can called intro_R
+* In the "Session" menu, select "Choose Directory"...
+* Navigate to your intro_R folder
+* Double-click it to open
+* Click Choose
+* Observe the console and save the command in your script
+
+# Create a script
+
+The working directory will also contain the code we'll be writing as we go along, in the form of a text file called script.
+The advantage of a script is that you can save your code, keep it and reuse it.
+
+
+* In the RStudio window click the "create file" button
+* Choose the R script format
+* Save your file in your intro_R folder
+* Save your script regularly
+
+# Load the data in R
+
+We need to load the data to be able to work. Use the directory you have created to store your data in it, this will make it easier to find the data file.
+
+
+* In the "Environment" panel, select "Import Dataset"
+* Select "From Text (base)..."
+* Navigate to your intro_R folder
+* Choose TCGA_LUAD_subset.tsv
+* Double-click it to open
+* Change the name of the variable
+* Specify that the first line contains the names of the columns 
+* Specify that the first row contains the names of the rows
+
+
+After this last step, you can see that a variable has been created and is displayed in the “Environment” panel. This variable is called TCGA_LUAD (or whatever you called it) containing the data.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+With R, it is also possible to load data using the command line. For this purpose, there are functions available for loading data.

@@ -1,5 +1,5 @@
 ---
-title: "R formation"
+title: "Using R/RStudio for the first time"
 author: "Elodie Darbo / Cyril Dourthe"
 date: "`r Sys.Date()`"
 output: html_document
@@ -37,7 +37,7 @@ Let's see some example of interpretation of simple instructions.
 42
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 42
@@ -51,7 +51,7 @@ If you just type a number, R will interpret the simplest way : by returning the 
 2+3
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 5
@@ -65,7 +65,7 @@ Unlike the previous line, R will not return "2+3", but it interpret the "+" symb
 4*5
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 20
@@ -79,7 +79,7 @@ You can do the same manipulation with a multiplication, the "*" symbol is interp
 6/4
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 1.5
@@ -93,7 +93,7 @@ Same phenomenon, but with the division, the "/" symbol is interpreted as a divis
 1:10
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 1  2  3  4  5  6  7  8  9 10
@@ -107,7 +107,7 @@ This line is different. The ":" is called a colon. With this symbol you can gene
 8:-9
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 8  7  6  5  4  3  2  1  0 -1 -2 -3 -4 -5 -6 -7 -8 -9
@@ -122,7 +122,7 @@ Same as the previous line, here we generate a sequence of number with negative a
 1,2
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 Erreur : ',' inattendu(e) dans "1,"
@@ -136,7 +136,7 @@ Oops, it seems we have a problem here. The interpreter obviously can't read the 
 1.2
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 1.2
@@ -151,7 +151,7 @@ R is demanding when it comes to the use of certain symbols, particularly decimal
 # This is a comment
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 > This is a comment
@@ -198,7 +198,7 @@ P240_nb_rep <- 3
 P240_nb_rep
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 3
@@ -227,7 +227,7 @@ There are certain rules to follow when choosing a name :
 240_nb_rep <- 30
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 Erreur : entrée inattendue dans "240_"
@@ -240,7 +240,7 @@ First rule broken ! R does not support variables whose name begins with a digit.
 patients@samples <- 30
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 Erreur : objet 'patients' introuvable
@@ -255,7 +255,7 @@ sample <- "lung"
 Sample
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 Erreur : objet 'Sample' introuvable
@@ -272,7 +272,7 @@ Some names are best avoided. In R, there are variables and functions with predef
 pi
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 3.141593
@@ -285,7 +285,7 @@ pi <- 10
 pi
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 10
@@ -311,7 +311,7 @@ Firstly, you can find some help to know how to use a function.
 help(sqrt)
 ```
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 "sqrt" is the name of the function and the function take one argument (represented by x in the help window). Moreover, the help explains that the argument must be a numeric, a vector or an array.
@@ -326,7 +326,7 @@ sqrt(25)
 ```
 
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 [1] 5
@@ -345,7 +345,7 @@ sqrt(our_value)
 ```
 
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 The first thing we do is to define our variable. We called it "our_value" and we assign 25.
@@ -370,7 +370,7 @@ The function works in a similar way to the previous one, but perhaps there are d
 
 
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 This is the first step, if you don't know the function you want to use : use help panel or search on the internet.
@@ -388,7 +388,7 @@ help(log)
 
 
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 The function log takes 2 arguments : 
@@ -404,7 +404,7 @@ The function log takes 2 arguments :
 
 
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 The first argument x must be a numeric or a vector.
@@ -419,7 +419,7 @@ The base argument must be a positive number.
 
 
 <details>
-  <summary>Result</summary>
+  <summary>Solution</summary>
 
 ```
 The function returns the result in numeric type.
@@ -430,5 +430,45 @@ The function returns the result in numeric type.
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 - What are default parameters ?
+
+
+<details>
+  <summary>Solution</summary>
+
+```
+We saw that we have 2 arguments in this function. Only one of them have a default paramter and this is base argument. It takes e=exp(1) by default.
+
+```
+</details> 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+So you've discovered the log function and how to use it.
+
+With the same function, compute the logarithm base 2 of 1000.
+
+<details>
+  <summary>Solution</summary>
+
+```
+> log(10, base=2)
+[1] 3.321928
+
+We took in example the log base 2 of 1000 for 10.
+The argument x is 10 and the base argument is equal to 2.
+
+NB : You may have noticed when looking for help for the log function, that there is a function called log2.
+This function is the same as log, simply with the base set to 2.
+That's why there's only one argument here: x
+Here's how it would look :
+
+> log2(10)
+[1] 3.321928
+
+The result is the same!
+
+```
+</details> 
+
 
 
