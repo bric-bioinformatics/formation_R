@@ -23,7 +23,7 @@ details > p {
 </style>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
 In this section, you will learn how to manipulate data in the form of tables. 
@@ -74,3 +74,62 @@ After this last step, you can see that a variable has been created and is displa
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 With R, it is also possible to load data using the command line. For this purpose, there are functions available for loading data.
+
+Those functions generally begin with "read".
+In our case the function is "read_delim".
+
+```{r load data}
+TCGA_LUAD <- read.delim("~/Documents/intro_R/TCGA_LUAD_subset.tsv", row.names = 1)
+```
+
+This function is built to load a .tsv files (tabulation-separated values). 
+If you search in the help section, you will see that this function can have many arguments. But here we used one. 
+
+# Display the data
+
+To see your dataset, you can click on the variable in the environment to display it. You can see in the console that, after the click, a command line appears with a function called "View".
+
+"View" is a function that takes only two arguments : the object to display and the possibility to give a title to the viewer window.
+But let's see how data can be displayed differently
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Print all the values
+
+```{r print}
+print(TCGA_LUAD)
+```
+
+Like the "View" function, "print" returns all the data, with one difference. Data is not displayed in a new window, but directly in the console.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Display the first rows
+
+```{r head}
+head(TCGA_LUAD)
+```
+
+The “head” function displays only the first few lines of the table.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Display a few more rows
+
+```{r head2}
+head(TCGA_LUAD, n=20)
+```
+
+And yes! The “head” function doesn't just have one argument, it also has one that sets the number of lines to be displayed (you can verify it in Help section of RStudio).
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Display the last rows
+
+```{r head}
+tail(TCGA_LUAD)
+```
+
+It is also possible to view the last lines of our data set, using the tail function. 
+Like the “head” function, “tail” has several arguments.
+

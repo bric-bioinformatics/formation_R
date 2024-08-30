@@ -11,7 +11,7 @@
 
 <meta name="author" content="Cyril Dourthe" />
 
-<meta name="date" content="2024-08-29" />
+<meta name="date" content="2024-08-30" />
 
 <title>Practical case : manipulation of data</title>
 
@@ -358,7 +358,7 @@ pre code {
 
 <h1 class="title toc-ignore">Practical case : manipulation of data</h1>
 <h4 class="author">Cyril Dourthe</h4>
-<h4 class="date">2024-08-29</h4>
+<h4 class="date">2024-08-30</h4>
 
 </div>
 
@@ -433,6 +433,43 @@ the data file.</p>
 and is displayed in the “Environment” panel. This variable is called
 TCGA_LUAD (or whatever you called it) containing the data.</p>
 <hr />
+<p>With R, it is also possible to load data using the command line. For
+this purpose, there are functions available for loading data.</p>
+<p>Those functions generally begin with “read”. In our case the function
+is “read_delim”.</p>
+<pre class="r"><code>TCGA_LUAD &lt;- read.delim(&quot;~/Documents/intro_R/TCGA_LUAD_subset.tsv&quot;, row.names = 1)</code></pre>
+<p>This function is built to load a .tsv files (tabulation-separated
+values). If you search in the help section, you will see that this
+function can have many arguments. But here we used one.</p>
+</div>
+<div id="display-the-data" class="section level1">
+<h1>Display the data</h1>
+<p>To see your dataset, you can click on the variable in the environment
+to display it. You can see in the console that, after the click, a
+command line appears with a function called “View”.</p>
+<p>“View” is a function that takes only two arguments : the object to
+display and the possibility to give a title to the viewer window. But
+let’s see how data can be displayed differently</p>
+<hr />
+<ul>
+<li>Print all the values</li>
+</ul>
+<pre class="r"><code>print(TCGA_LUAD)</code></pre>
+<p>Like the “View” function, “print” returns all the data, with one
+difference. Data is not displayed in a new window, but directly in the
+console.</p>
+<hr />
+<ul>
+<li>Display the first rows</li>
+</ul>
+<pre class="r"><code>head(TCGA_LUAD)</code></pre>
+<p>The “head” function displays only the first few lines of the
+table.</p>
+<hr />
+<ul>
+<li>Display a few more rows</li>
+</ul>
+<pre class="r"><code>head(TCGA_LUAD, n=20)</code></pre>
 </div>
 
 
