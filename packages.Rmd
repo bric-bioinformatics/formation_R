@@ -1,0 +1,42 @@
+---
+title: "Packages"
+author: "Elodie Darbo / Cyril Dourthe"
+date: "`r Sys.Date()`"
+output: html_document
+---
+<style>
+details > summary {
+  padding: 4px;
+  width: 400px;
+  background-color: #eeeeee;
+  border: none;
+  box-shadow: 1px 1px 2px #bbbbbb;
+  cursor: pointer;
+}
+​
+details > p {
+  background-color: #E0F8EC;
+  padding: 4px;
+  margin: 0;
+  box-shadow: 1px 1px 2px #bbbbbb;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+# What is a package ?
+
+In R, packages are collections of functions, data sets, and documentation that extend the functionality of base R. They are like add-ons or plugins that provide additional tools for performing specific tasks (data analysis, visualization, machine learning...).
+Think of them as libraries or modules that you can install to get extra tools for your work. Some packages come pre-installed with R, while others can be installed from repositories.
+
+# What is a repository ?
+
+In the context of R, a repository is a centralized location where software, code, data, or packages are stored, managed, and distributed.
+A repository is essentially a storage space (either local or online) where software packages, source code, or project files are organized, tracked, and shared. It helps developers and users access the software they need, often with version control and documentation included.
+It exists several repositories.
+
+* CRAN (Comprehensive R Archive Network)
+
+CRAN is the primary repository for R packages. It is a collection of thousands of R packages that are contributed by developers around the world. Packages stored on CRAN go through a review process to ensure quality and compatibility.
