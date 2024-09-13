@@ -578,24 +578,54 @@ Key words to write on your favorite browser
 </section>
 <section id="create-a-density-plot" class="level2">
 <h2 class="anchored" data-anchor-id="create-a-density-plot">Create a density plot</h2>
-<p>Your goal is to produce the following plot showing the density distributions of the MAPK signature in function of the known oncogenes.</p>
+<p>Your goal is to produce the following plot showing the <strong>density distributions</strong> of the MAPK signature in function of the known oncogenes (use <code>palette.known.onco</code>). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 3 times longer than the y-axis which we call the <strong>aspect ratio</strong>. Thanks to it, you can force to have squared plots for instance.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ol type="1">
-<li><p>Identify what contain the axis.</p></li>
-<li><p>Make a list of the aesthetics you need to modify.</p></li>
-<li><p>Identify the appropriate geometric function.</p></li>
+<li>Identify what contain the axis.</li>
 </ol>
+<p>&lt;details&gt;</p>
+<summary>
+Answer
+</summary>
+<p>The x-axis contains the value of the column <code>signature_MAPK</code> and the y-axis indicates the density of the distribution, the y-axis do not need to be specified.</p>
+
+<ol start="2" type="1">
+<li>Make a list of the aesthetics you need to modify and layers that need to be added.</li>
+</ol>
+<p>&lt;details&gt;</p>
+<summary>
+Answer
+</summary>
+<ul>
+<li><p>layers: the geometric shape, label of the x-axis, theme background, theme aspect ratio, custom color palette</p></li>
+<li><p>aesthetics: x-axis , color of the lines</p></li>
+</ul>
+
+<ol start="3" type="1">
+<li>Write your code ! (Do not forget your best friend: the Web)</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="create-a-bar-plot" class="level2">
 <h2 class="anchored" data-anchor-id="create-a-bar-plot">Create a bar plot</h2>
 <p>Your goal is to produce the following plot showing the number of tumor harboring each known oncogene.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ol type="1">

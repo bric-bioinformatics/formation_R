@@ -363,21 +363,49 @@ ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
 
 ## Create a density plot
 
-Your goal is to produce the following plot showing the density distributions of the MAPK signature in function of the known oncogenes.
+Your goal is to produce the following plot showing the **density distributions** of the MAPK signature in function of the known oncogenes (use `palette.known.onco`). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 3 times longer than the y-axis which we call the **aspect ratio**. Thanks to it, you can force to have squared plots for instance.
 
 ```{r, echo=FALSE}
 ggplot(data = clinical, aes(x=signature_MAPK)) +
   geom_density(aes(color=known.oncogenes)) + 
   labs(x="MAPK activity signature") +
   theme_bw() +
-  scale_colour_manual(values=palette.known.onco) 
+  scale_colour_manual(values=palette.known.onco) +
+  theme(aspect.ratio = 1/3)
 ```
 
 1.  Identify what contain the axis.
 
-2.  Make a list of the aesthetics you need to modify.
+\<`details>`{=html}
 
-3.  Identify the appropriate geometric function.
+<summary>Answer</summary>
+
+The x-axis contains the value of the column `signature_MAPK` and the y-axis indicates the density of the distribution, the y-axis do not need to be specified.
+
+</details>
+
+2.  Make a list of the aesthetics you need to modify and layers that need to be added.
+
+\<`details>`{=html}
+
+<summary>Answer</summary>
+
+-   layers: the geometric shape, label of the x-axis, theme background, theme aspect ratio, custom color palette
+
+-   aesthetics: x-axis , color of the lines
+
+</details>
+
+3.  Write your code ! (Do not forget your best friend: the Web)
+
+```{r, eval=F}
+ggplot(data = clinical, aes(x=signature_MAPK)) +
+  geom_density(aes(color=known.oncogenes)) + 
+  labs(x="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  theme(aspect.ratio = 1/3)
+```
 
 ## Create a bar plot
 
