@@ -9,11 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Cyril Dourthe" />
+<meta name="author" content="Elodie Darbo / Cyril Dourthe" />
 
-<meta name="date" content="2024-09-10" />
+<meta name="date" content="2024-09-13" />
 
-<title>Practical case : manipulation of data</title>
+<title>Handle the information</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -356,9 +356,9 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Practical case : manipulation of data</h1>
-<h4 class="author">Cyril Dourthe</h4>
-<h4 class="date">2024-09-10</h4>
+<h1 class="title toc-ignore">Handle the information</h1>
+<h4 class="author">Elodie Darbo / Cyril Dourthe</h4>
+<h4 class="date">2024-09-13</h4>
 
 </div>
 
@@ -380,1128 +380,274 @@ details > p {
   box-shadow: 1px 1px 2px #bbbbbb;
 }
 </style>
-<p>In this section, you will learn how to manipulate data in the form of
-tables. When we manipulate data, we use variables and functions. As you
-saw earlier, a variable can have several types and can contain different
-types of data, even an entire table with several columns and rows.
-Various functions can be used to dissect the table in order to retain
-only certain data, for example.</p>
-<p>The most commonly used and powerful table structure is the data
-frame. A data frame is organized into rows and columns. The rows
-represent observations or individual records and columns represent
-variables or features of the data, and each column can hold different
-types of data (numeric, character, logical, etc.).</p>
-<p>But before diving into complex data exploration. We need to define a
-workspace where we will then write our variables, functions… in other
-words, the code.</p>
-<div id="set-the-working-directory" class="section level1">
-<h1>Set the working directory</h1>
-<p>A working directory contains all the data that will be useful to us
-(tables, images, graphics, etc.).</p>
+<p>In many cases, the information you want to exploit is not contained
+in a single, perfectly readable dataset. It’s important to be able to
+gather the information we have to optimize our operations. R offers a
+range of functions for carrying out operations within a single dataframe
+or between several dataframes.</p>
+<div id="merge-function" class="section level1">
+<h1><em>merge</em> function</h1>
+<p>The first function you can use is merge. This function is a standard
+feature of R and does not require you to download anything else.</p>
+<pre class="r"><code>help(merge)
+#or
+?merge</code></pre>
+<p>As always, if you’re not familiar with a function, or if you’re not
+sure how to use it, look it up with the help of R, or search directly on
+the Internet using the right keywords (and in English).</p>
+<p>You can see that <em>merge</em> has many arguments. For our example,
+we only need 3 arguments :</p>
 <ul>
-<li>Create a new folder that you can called intro_R</li>
-<li>In the “Session” menu, select “Choose Directory”…</li>
-<li>Navigate to your intro_R folder</li>
-<li>Double-click it to open</li>
-<li>Click Choose</li>
-<li>Observe the console and save the command in your script</li>
+<li>“x” : it will take the first dataframe</li>
+<li>“y” : it will take the second dataframe</li>
+<li>“by” : this argument is used to specify the column from which the
+dataframes are to be assembled.</li>
 </ul>
-</div>
-<div id="create-a-script" class="section level1">
-<h1>Create a script</h1>
-<p>The working directory will also contain the code we’ll be writing as
-we go along, in the form of a text file called script. The advantage of
-a script is that you can save your code, keep it and reuse it.</p>
-<ul>
-<li>In the RStudio window click the “create file” button</li>
-<li>Choose the R script format</li>
-<li>Save your file in your intro_R folder</li>
-<li>Save your script regularly</li>
-</ul>
-</div>
-<div id="load-the-data-in-r" class="section level1">
-<h1>Load the data in R</h1>
-<p>We need to load the data to be able to work. Use the directory you
-have created to store your data in it, this will make it easier to find
-the data file.</p>
-<ul>
-<li>In the “Environment” panel, select “Import Dataset”</li>
-<li>Select “From Text (base)…”</li>
-<li>Navigate to your intro_R folder</li>
-<li>Choose TCGA_LUAD_subset.tsv</li>
-<li>Double-click it to open</li>
-<li>Change the name of the variable</li>
-<li>Specify that the first line contains the names of the columns</li>
-<li>Specify that the first row contains the names of the rows</li>
-</ul>
-<p>After this last step, you can see that a variable has been created
-and is displayed in the “Environment” panel. This variable is called
-TCGA_LUAD (or whatever you called it) containing the data.</p>
-<hr />
-<p>With R, it is also possible to load data using the command line. For
-this purpose, there are functions available for loading data.</p>
-<p>Those functions generally begin with “read”. In our case the function
-is “read_delim”.</p>
-<pre class="r"><code>TCGA_LUAD &lt;- read.delim(&quot;~/Documents/intro_R/TCGA_LUAD_subset.tsv&quot;, row.names = 1)</code></pre>
-<p>This function is built to load a .tsv files (tabulation-separated
-values). If you search in the help section, you will see that this
-function can have many arguments. But here we used one.</p>
-</div>
-<div id="display-the-data" class="section level1">
-<h1>Display the data</h1>
-<p>To see your dataset, you can click on the variable in the environment
-to display it. You can see in the console that, after the click, a
-command line appears with a function called “View”.</p>
-<p>“View” is a function that takes only two arguments : the object to
-display and the possibility to give a title to the viewer window. But
-let’s see how data can be displayed differently</p>
+<p>This third argument is really important. This also means that to use
+the merge function on our two dataframes, there must be a column in
+common between the two. We can also have several columns in common.</p>
 <div id="section" class="section level2">
-<h2>————————————————————————————————————</h2>
+<h2>————————————————————————————————————————————————————</h2>
+<p><em>Example</em> :</p>
+<p>For our example, we will take two dataframes with the following
+structure:</p>
 <ul>
-<li>Print all the values</li>
+<li>df_1</li>
 </ul>
-<pre class="r"><code>print(TCGA_LUAD)</code></pre>
-<p>Like the “View” function, “print” returns all the data, with one
-difference. Data is not displayed in a new window, but directly in the
-console.</p>
-</div>
-<div id="section-1" class="section level2">
-<h2>————————————————————————————————————</h2>
-<ul>
-<li>Display the first rows</li>
-</ul>
-<pre class="r"><code>head(TCGA_LUAD)</code></pre>
-<p>The “head” function displays only the first few lines of the
-table.</p>
-</div>
-<div id="section-2" class="section level2">
-<h2>————————————————————————————————————</h2>
-<ul>
-<li>Display a few more rows</li>
-</ul>
-<pre class="r"><code>head(TCGA_LUAD, n=20)</code></pre>
-<p>The “head” function doesn’t just have one argument, it also has one
-that sets the number of lines to be displayed (you can verify it in Help
-section of RStudio).</p>
-</div>
-<div id="section-3" class="section level2">
-<h2>————————————————————————————————————</h2>
-<ul>
-<li>Display the last rows</li>
-</ul>
-<pre class="r"><code>tail(TCGA_LUAD)</code></pre>
-<p>It is also possible to view the last lines of our data set, using the
-tail function. Like the “head” function, “tail” has several
-arguments.</p>
-</div>
-<div id="section-4" class="section level2">
-<h2>————————————————————————————————————</h2>
-<ul>
-<li>Dimensions of the data frame</li>
-</ul>
-<p>We can display more information about our data frame : number of
-columns/rows, type of columns, names…</p>
-<pre class="r"><code>ncol(TCGA_LUAD)</code></pre>
+<pre class="r"><code>df_1</code></pre>
 <details>
 <summary>
-Solution
+df_1 structure
 </summary>
-<pre><code>[1] 6
-
-The &quot;ncol&quot; function displays the number of columns in the data frame.</code></pre>
+<pre><code>  id   name month_salary
+1  1 Andrew         1560
+2  2  Susan         1263
+3  3   John         1576
+4  4    Joe         1502
+5  5   Jack         1684
+6  6  Jacob         1774
+7  7   Mary         1715
+8  8   Kate         1564</code></pre>
 </details>
-<hr />
-<pre class="r"><code>nrow(TCGA_LUAD)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 246
-
-The &quot;nrow&quot; function displays the number of rows in the data frame.</code></pre>
-</details>
-<hr />
-<pre class="r"><code>dim(TCGA_LUAD)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] 246   6
-
-The &quot;dim&quot; function displays the dimension of the data frame, the number of rows and columns</code></pre>
-</details>
-<hr />
-<pre class="r"><code>colnames(TCGA_LUAD)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>[1] &quot;known.oncogenes&quot;         &quot;Purity&quot;                  &quot;pathologic_stage&quot;        &quot;gender&quot;                  &quot;tobacco_smoking_history&quot; &quot;signature_MAPK&quot;
-
-The &quot;colnames&quot; function displays the columns names (header)</code></pre>
-</details>
-<hr />
-<pre class="r"><code>rownames(TCGA_LUAD)</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>  [1] &quot;TCGA.05.4249.01&quot; &quot;TCGA.05.4250.01&quot; &quot;TCGA.05.4384.01&quot; &quot;TCGA.05.4389.01&quot; &quot;TCGA.05.4390.01&quot; &quot;TCGA.05.4395.01&quot; &quot;TCGA.05.4396.01&quot; &quot;TCGA.05.4397.01&quot;
-  [9] &quot;TCGA.05.4403.01&quot; &quot;TCGA.05.4415.01&quot; &quot;TCGA.05.4418.01&quot; &quot;TCGA.05.4420.01&quot; &quot;TCGA.05.4422.01&quot; &quot;TCGA.05.4426.01&quot; &quot;TCGA.05.4427.01&quot; &quot;TCGA.05.4433.01&quot;
- [17] &quot;TCGA.05.4434.01&quot; &quot;TCGA.05.5423.01&quot; &quot;TCGA.05.5428.01&quot; &quot;TCGA.05.5429.01&quot; &quot;TCGA.05.5715.01&quot; &quot;TCGA.35.3615.01&quot; &quot;TCGA.35.5375.01&quot; &quot;TCGA.38.4628.01&quot;
- [25] &quot;TCGA.38.4630.01&quot; &quot;TCGA.38.4631.01&quot; &quot;TCGA.44.2666.01&quot; &quot;TCGA.44.3919.01&quot; &quot;TCGA.44.4112.01&quot; &quot;TCGA.44.5643.01&quot; &quot;TCGA.44.5644.01&quot; &quot;TCGA.44.5645.01&quot;
- [33] &quot;TCGA.44.6146.01&quot; &quot;TCGA.44.6147.01&quot; &quot;TCGA.44.6774.01&quot; &quot;TCGA.44.6776.01&quot; &quot;TCGA.44.6779.01&quot; &quot;TCGA.44.7659.01&quot; &quot;TCGA.44.7660.01&quot; &quot;TCGA.44.7669.01&quot;
- [41] &quot;TCGA.44.7670.01&quot; &quot;TCGA.44.7671.01&quot; &quot;TCGA.44.8117.01&quot; &quot;TCGA.44.8119.01&quot; &quot;TCGA.44.8120.01&quot; &quot;TCGA.44.A47B.01&quot; &quot;TCGA.44.A4SU.01&quot; &quot;TCGA.49.4486.01&quot;
- [49] &quot;TCGA.49.4488.01&quot; &quot;TCGA.49.4494.01&quot; &quot;TCGA.49.4505.01&quot; &quot;TCGA.49.4510.01&quot; &quot;TCGA.49.6742.01&quot; &quot;TCGA.49.AAR9.01&quot; &quot;TCGA.49.AARQ.01&quot; &quot;TCGA.49.AARR.01&quot;
- [57] &quot;TCGA.4B.A93V.01&quot; &quot;TCGA.50.5051.01&quot; &quot;TCGA.50.5930.01&quot; &quot;TCGA.50.5931.01&quot; &quot;TCGA.50.5932.01&quot; &quot;TCGA.50.5936.01&quot; &quot;TCGA.50.5942.01&quot; &quot;TCGA.50.5944.01&quot;
- [65] &quot;TCGA.50.5946.01&quot; &quot;TCGA.50.6591.01&quot; &quot;TCGA.50.6594.01&quot; &quot;TCGA.50.6597.01&quot; &quot;TCGA.50.8457.01&quot; &quot;TCGA.53.7624.01&quot; &quot;TCGA.53.A4EZ.01&quot; &quot;TCGA.55.1592.01&quot;
- [73] &quot;TCGA.55.1594.01&quot; &quot;TCGA.55.1595.01&quot; &quot;TCGA.55.1596.01&quot; &quot;TCGA.55.5899.01&quot; &quot;TCGA.55.6543.01&quot; &quot;TCGA.55.6968.01&quot; &quot;TCGA.55.6970.01&quot; &quot;TCGA.55.6972.01&quot;
- [81] &quot;TCGA.55.6975.01&quot; &quot;TCGA.55.6984.01&quot; &quot;TCGA.55.7227.01&quot; &quot;TCGA.55.7283.01&quot; &quot;TCGA.55.7570.01&quot; &quot;TCGA.55.7576.01&quot; &quot;TCGA.55.7725.01&quot; &quot;TCGA.55.7727.01&quot;
- [89] &quot;TCGA.55.7903.01&quot; &quot;TCGA.55.7910.01&quot; &quot;TCGA.55.7914.01&quot; &quot;TCGA.55.7994.01&quot; &quot;TCGA.55.7995.01&quot; &quot;TCGA.55.8085.01&quot; &quot;TCGA.55.8087.01&quot; &quot;TCGA.55.8091.01&quot;
- [97] &quot;TCGA.55.8094.01&quot; &quot;TCGA.55.8097.01&quot; &quot;TCGA.55.8206.01&quot; &quot;TCGA.55.8207.01&quot; &quot;TCGA.55.8299.01&quot; &quot;TCGA.55.8506.01&quot; &quot;TCGA.55.8507.01&quot; &quot;TCGA.55.8513.01&quot;
-[105] &quot;TCGA.55.8514.01&quot; &quot;TCGA.55.8615.01&quot; &quot;TCGA.55.8620.01&quot; &quot;TCGA.55.A492.01&quot; &quot;TCGA.55.A494.01&quot; &quot;TCGA.62.8394.01&quot; &quot;TCGA.62.8395.01&quot; &quot;TCGA.62.8397.01&quot;
-[113] &quot;TCGA.62.8399.01&quot; &quot;TCGA.62.8402.01&quot; &quot;TCGA.62.A46O.01&quot; &quot;TCGA.62.A46P.01&quot; &quot;TCGA.62.A46S.01&quot; &quot;TCGA.62.A46V.01&quot; &quot;TCGA.62.A46Y.01&quot; &quot;TCGA.62.A470.01&quot;
-[121] &quot;TCGA.62.A471.01&quot; &quot;TCGA.64.1676.01&quot; &quot;TCGA.64.1678.01&quot; &quot;TCGA.64.1680.01&quot; &quot;TCGA.64.5774.01&quot; &quot;TCGA.64.5775.01&quot; &quot;TCGA.64.5778.01&quot; &quot;TCGA.67.3770.01&quot;
-[129] &quot;TCGA.67.3771.01&quot; &quot;TCGA.67.3772.01&quot; &quot;TCGA.67.3773.01&quot; &quot;TCGA.67.3774.01&quot; &quot;TCGA.67.4679.01&quot; &quot;TCGA.67.6215.01&quot; &quot;TCGA.67.6216.01&quot; &quot;TCGA.69.7760.01&quot;
-[137] &quot;TCGA.69.7764.01&quot; &quot;TCGA.69.7973.01&quot; &quot;TCGA.69.7979.01&quot; &quot;TCGA.69.7980.01&quot; &quot;TCGA.71.6725.01&quot; &quot;TCGA.73.4662.01&quot; &quot;TCGA.73.4666.01&quot; &quot;TCGA.73.4668.01&quot;
-[145] &quot;TCGA.73.4670.01&quot; &quot;TCGA.73.4675.01&quot; &quot;TCGA.73.4676.01&quot; &quot;TCGA.73.4677.01&quot; &quot;TCGA.73.7498.01&quot; &quot;TCGA.73.A9RS.01&quot; &quot;TCGA.75.5146.01&quot; &quot;TCGA.75.6206.01&quot;
-[153] &quot;TCGA.75.6207.01&quot; &quot;TCGA.75.6214.01&quot; &quot;TCGA.75.7027.01&quot; &quot;TCGA.75.7030.01&quot; &quot;TCGA.75.7031.01&quot; &quot;TCGA.78.7145.01&quot; &quot;TCGA.78.7146.01&quot; &quot;TCGA.78.7147.01&quot;
-[161] &quot;TCGA.78.7148.01&quot; &quot;TCGA.78.7149.01&quot; &quot;TCGA.78.7150.01&quot; &quot;TCGA.78.7152.01&quot; &quot;TCGA.78.7154.01&quot; &quot;TCGA.78.7155.01&quot; &quot;TCGA.78.7156.01&quot; &quot;TCGA.78.7158.01&quot;
-[169] &quot;TCGA.78.7161.01&quot; &quot;TCGA.78.7163.01&quot; &quot;TCGA.78.7166.01&quot; &quot;TCGA.78.7167.01&quot; &quot;TCGA.78.7220.01&quot; &quot;TCGA.78.7535.01&quot; &quot;TCGA.78.7536.01&quot; &quot;TCGA.78.7537.01&quot;
-[177] &quot;TCGA.78.7539.01&quot; &quot;TCGA.78.7540.01&quot; &quot;TCGA.78.7633.01&quot; &quot;TCGA.78.8648.01&quot; &quot;TCGA.78.8655.01&quot; &quot;TCGA.78.8662.01&quot; &quot;TCGA.80.5607.01&quot; &quot;TCGA.80.5608.01&quot;
-[185] &quot;TCGA.80.5611.01&quot; &quot;TCGA.86.6562.01&quot; &quot;TCGA.86.7713.01&quot; &quot;TCGA.86.7714.01&quot; &quot;TCGA.86.7955.01&quot; &quot;TCGA.86.8054.01&quot; &quot;TCGA.86.8074.01&quot; &quot;TCGA.86.8278.01&quot;
-[193] &quot;TCGA.86.8279.01&quot; &quot;TCGA.86.8280.01&quot; &quot;TCGA.86.8281.01&quot; &quot;TCGA.86.8358.01&quot; &quot;TCGA.86.8669.01&quot; &quot;TCGA.86.8674.01&quot; &quot;TCGA.86.A4P7.01&quot; &quot;TCGA.86.A4P8.01&quot;
-[201] &quot;TCGA.91.6829.01&quot; &quot;TCGA.91.6831.01&quot; &quot;TCGA.91.6836.01&quot; &quot;TCGA.91.6840.01&quot; &quot;TCGA.91.6847.01&quot; &quot;TCGA.91.6849.01&quot; &quot;TCGA.91.8496.01&quot; &quot;TCGA.91.8497.01&quot;
-[209] &quot;TCGA.91.8499.01&quot; &quot;TCGA.91.A4BD.01&quot; &quot;TCGA.93.7348.01&quot; &quot;TCGA.95.7043.01&quot; &quot;TCGA.95.7562.01&quot; &quot;TCGA.95.7567.01&quot; &quot;TCGA.95.7947.01&quot; &quot;TCGA.95.7948.01&quot;
-[217] &quot;TCGA.95.8039.01&quot; &quot;TCGA.95.8494.01&quot; &quot;TCGA.95.A4VK.01&quot; &quot;TCGA.97.7546.01&quot; &quot;TCGA.97.7547.01&quot; &quot;TCGA.97.7937.01&quot; &quot;TCGA.97.7938.01&quot; &quot;TCGA.97.8171.01&quot;
-[225] &quot;TCGA.97.8176.01&quot; &quot;TCGA.97.8179.01&quot; &quot;TCGA.97.8547.01&quot; &quot;TCGA.97.A4M0.01&quot; &quot;TCGA.97.A4M3.01&quot; &quot;TCGA.99.AA5R.01&quot; &quot;TCGA.J2.A4AD.01&quot; &quot;TCGA.J2.A4AE.01&quot;
-[233] &quot;TCGA.L4.A4E5.01&quot; &quot;TCGA.L9.A443.01&quot; &quot;TCGA.L9.A50W.01&quot; &quot;TCGA.L9.A5IP.01&quot; &quot;TCGA.L9.A7SV.01&quot; &quot;TCGA.MN.A4N1.01&quot; &quot;TCGA.MP.A4SW.01&quot; &quot;TCGA.MP.A4T6.01&quot;
-[241] &quot;TCGA.MP.A4T8.01&quot; &quot;TCGA.MP.A4TC.01&quot; &quot;TCGA.MP.A5C7.01&quot; &quot;TCGA.NJ.A4YF.01&quot; &quot;TCGA.NJ.A4YI.01&quot; &quot;TCGA.NJ.A7XG.01&quot;
-
-The &quot;rownames&quot; function displays the rows names</code></pre>
-</details>
-</div>
-<div id="section-5" class="section level2">
-<h2>————————————————————————————————————</h2>
-</div>
-</div>
-<div id="work-with-the-dimensions" class="section level1">
-<h1>Work with the dimensions</h1>
-<p>R’s strength lies in its ability to enable the user to modulate and
-extract certain data from a data frame more automatically than is
-possible with conventional spreadsheet software. This requires a
-knowledge of how a data frame is organized on R. The syntax for
-manipulating data frames uses square brackets “[ ]”.</p>
-<pre class="r"><code>dataframe[row_index, column_index]</code></pre>
 <hr />
 <ul>
-<li>Select columns or rows by names</li>
+<li>df_2</li>
 </ul>
-<p>When there are few columns or rows, and we know their names, we can
-select them. IMPORTANT : Be careful to respect the case !</p>
-<pre class="r"><code>TCGA_LUAD[,&quot;Purity&quot;]</code></pre>
+<pre class="r"><code>df_2</code></pre>
 <details>
 <summary>
-Solution
+df_2 structure
 </summary>
-<pre><code>  [1] 0.49 0.50 0.49 0.48 0.57 0.61 0.82 0.87 0.46 0.67 0.55 0.59 0.62 0.70 0.47 0.62 0.45 0.59 0.63 0.82 0.73 0.69 0.58 0.50 0.79 0.49 0.59 0.51 0.55 0.56
- [31] 0.75 0.54 0.70 0.47 0.45 0.65 0.60 0.56 0.58 0.50 0.50 0.58 0.66 0.55 0.54 0.50 0.59 0.73 0.45 0.46 0.45 0.64 0.49 0.75 0.52 0.97 0.62 0.59 0.95 0.86
- [61] 0.84 0.60 0.69 0.57 0.75 0.90 0.60 0.48 0.60 0.69 0.47 0.49 0.55 0.52 0.63 0.67 0.65 0.65 0.56 0.83 0.46 0.81 0.53 0.47 0.57 0.47 0.61 0.56 0.64 0.58
- [91] 0.56 0.51 0.49 0.56 0.82 0.60 0.79 0.64 0.46 0.57 0.49 0.45 0.64 0.50 0.54 0.57 0.62 0.54 0.81 0.53 0.65 0.69 0.50 0.50 0.82 0.70 0.45 0.52 0.48 0.59
-[121] 0.46 0.51 0.57 0.61 0.76 0.71 0.59 0.65 0.46 0.45 0.70 0.48 0.71 0.69 0.56 0.65 0.80 0.55 0.53 0.55 0.63 0.48 0.45 0.53 0.62 0.57 0.77 0.47 0.62 0.61
-[151] 0.58 0.70 0.64 0.64 0.62 0.50 0.49 0.63 0.68 0.62 0.60 0.60 0.46 0.55 0.50 0.82 0.80 0.90 0.75 0.68 0.63 0.84 0.61 0.60 0.78 0.74 0.52 0.59 0.75 0.64
-[181] 0.46 0.79 0.49 0.48 0.51 0.46 0.65 0.67 0.73 0.74 0.51 0.56 0.50 0.45 0.54 0.72 0.57 0.58 1.00 0.79 0.49 0.50 0.67 0.62 0.85 0.62 0.50 0.45 0.77 0.55
-[211] 0.45 0.76 0.55 0.53 0.66 0.71 0.47 0.53 0.57 0.67 0.55 0.59 0.61 0.82 0.53 0.48 0.48 0.55 0.69 0.96 0.57 0.52 0.66 0.48 0.76 0.53 0.83 0.48 0.46 0.59
-[241] 0.59 0.45 0.87 0.55 0.58 0.62
-
-All values for the column named &quot;Purity&quot;.</code></pre>
+<pre><code>  id       name age       position
+1  1     Andrew  59            CTO
+2  2      Susan  59            CFO
+3  3       John  54 Administrative
+4  4        Joe  50     Technician
+5  6      Jacob  62     Technician
+6  7       Mary  53     Technician
+7  8       Kate  58     Technician
+8  9 Jacqueline  39     Technician
+9 10        Ivy  61     Technician</code></pre>
 </details>
+<p><br />
+Looking at these two dataframes, the first thing we notice is that there
+are two common columns, “id” and “name”. Then each dataframe has its own
+columns.<br />
+The second observation we can make is that there are not the same number
+of lines between the two dataframes. We will merge our dataframes by
+“id” and “name”. Let’s see what happens.</p>
 <hr />
-<pre class="r"><code>TCGA_LUAD[&quot;TCGA.05.4249.01&quot;,]</code></pre>
+<pre class="r"><code>df_3 &lt;- merge(df_1, df_2, by = c(&quot;id&quot;,&quot;name&quot;))</code></pre>
 <details>
 <summary>
-Solution
+df_3 structure
 </summary>
-<pre><code>                known.oncogenes Purity pathologic_stage gender                tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE Current reformed smoker for &gt; 15 years      0.9298746
-
-All values for the row named &quot;TCGA.05.4249.01&quot;.</code></pre>
+<pre><code>  id   name month_salary age       position
+1  1 Andrew         1560  59            CTO
+2  2  Susan         1263  59            CFO
+3  3   John         1576  54 Administrative
+4  4    Joe         1502  50     Technician
+5  6  Jacob         1774  62     Technician
+6  7   Mary         1715  53     Technician
+7  8   Kate         1564  58     Technician</code></pre>
 </details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[,c(&quot;Purity&quot;,&quot;gender&quot;)]</code></pre>
+<p><br />
+We have created a new variable called “df_3” which contains the result
+of the merge of the two dataframes “df_1” and “df_2”. What’s most
+striking is the number of lines in this new dataframe. There are 7
+lines, compared with 8 in df_1 and 10 in df_2. This is because the merge
+only takes into account common elements between each dataframe.</p>
+<p>In df_1, we have a line with an id/name combination that is 5/Jack.
+This combination does not exist in df_2. This line is then ignored by
+the <em>merge</em> function. Why doesn’t merge take different lines into
+account?</p>
+<p>Remember, when searching for function help, there are many other
+arguments than the ones we’ve used, including an argument called “all”.
+This argument allows you to specify whether you wish to keep all rows
+that is not common. By default, this argument is set to FALSE, so that
+only rows with data from both x and y are included in the output. So we
+need, to keep all rows, to set the argument to TRUE.</p>
+<pre class="r"><code>df_4 &lt;- merge(df_1, df_2, by = c(&quot;id&quot;,&quot;name&quot;), all = TRUE)</code></pre>
 <details>
 <summary>
-Solution
+df_4 structure
 </summary>
-<pre><code>                Purity gender
-TCGA.05.4249.01   0.49   MALE
-TCGA.05.4250.01   0.50 FEMALE
-TCGA.05.4384.01   0.49   MALE
-TCGA.05.4389.01   0.48   MALE
-TCGA.05.4390.01   0.57 FEMALE
-TCGA.05.4395.01   0.61   MALE
-TCGA.05.4396.01   0.82   MALE
-TCGA.05.4397.01   0.87   MALE
-TCGA.05.4403.01   0.46   MALE
-TCGA.05.4415.01   0.67   MALE
-TCGA.05.4418.01   0.55   MALE
-TCGA.05.4420.01   0.59   MALE
-TCGA.05.4422.01   0.62   MALE
-TCGA.05.4426.01   0.70   MALE
-TCGA.05.4427.01   0.47 FEMALE
-TCGA.05.4433.01   0.62   MALE
-TCGA.05.4434.01   0.45 FEMALE
-TCGA.05.5423.01   0.59   MALE
-TCGA.05.5428.01   0.63   MALE
-TCGA.05.5429.01   0.82   MALE
-TCGA.05.5715.01   0.73 FEMALE
-TCGA.35.3615.01   0.69   MALE
-TCGA.35.5375.01   0.58   MALE
-TCGA.38.4628.01   0.50 FEMALE
-TCGA.38.4630.01   0.79 FEMALE
-TCGA.38.4631.01   0.49 FEMALE
-TCGA.44.2666.01   0.59   MALE
-TCGA.44.3919.01   0.51 FEMALE
-TCGA.44.4112.01   0.55 FEMALE
-TCGA.44.5643.01   0.56   MALE
-TCGA.44.5644.01   0.75 FEMALE
-TCGA.44.5645.01   0.54 FEMALE
-TCGA.44.6146.01   0.70   MALE
-TCGA.44.6147.01   0.47 FEMALE
-TCGA.44.6774.01   0.45 FEMALE
-TCGA.44.6776.01   0.65 FEMALE
-TCGA.44.6779.01   0.60 FEMALE
-TCGA.44.7659.01   0.56   MALE
-TCGA.44.7660.01   0.58   MALE
-TCGA.44.7669.01   0.50   MALE
-TCGA.44.7670.01   0.50 FEMALE
-TCGA.44.7671.01   0.58   MALE
-TCGA.44.8117.01   0.66 FEMALE
-TCGA.44.8119.01   0.55   MALE
-TCGA.44.8120.01   0.54   MALE
-TCGA.44.A47B.01   0.50   MALE
-TCGA.44.A4SU.01   0.59 FEMALE
-TCGA.49.4486.01   0.73   MALE
-TCGA.49.4488.01   0.45 FEMALE
-TCGA.49.4494.01   0.46   MALE
-TCGA.49.4505.01   0.45 FEMALE
-TCGA.49.4510.01   0.64 FEMALE
-TCGA.49.6742.01   0.49   MALE
-TCGA.49.AAR9.01   0.75   MALE
-TCGA.49.AARQ.01   0.52 FEMALE
-TCGA.49.AARR.01   0.97   MALE
-TCGA.4B.A93V.01   0.62 FEMALE
-TCGA.50.5051.01   0.59 FEMALE
-TCGA.50.5930.01   0.95   MALE
-TCGA.50.5931.01   0.86 FEMALE
-TCGA.50.5932.01   0.84   MALE
-TCGA.50.5936.01   0.60   MALE
-TCGA.50.5942.01   0.69 FEMALE
-TCGA.50.5944.01   0.57 FEMALE
-TCGA.50.5946.01   0.75   MALE
-TCGA.50.6591.01   0.90 FEMALE
-TCGA.50.6594.01   0.60 FEMALE
-TCGA.50.6597.01   0.48 FEMALE
-TCGA.50.8457.01   0.60 FEMALE
-TCGA.53.7624.01   0.69 FEMALE
-TCGA.53.A4EZ.01   0.47   MALE
-TCGA.55.1592.01   0.49   MALE
-TCGA.55.1594.01   0.55   MALE
-TCGA.55.1595.01   0.52 FEMALE
-TCGA.55.1596.01   0.63   MALE
-TCGA.55.5899.01   0.67   MALE
-TCGA.55.6543.01   0.65 FEMALE
-TCGA.55.6968.01   0.65   MALE
-TCGA.55.6970.01   0.56 FEMALE
-TCGA.55.6972.01   0.83   MALE
-TCGA.55.6975.01   0.46   MALE
-TCGA.55.6984.01   0.81 FEMALE
-TCGA.55.7227.01   0.53   MALE
-TCGA.55.7283.01   0.47 FEMALE
-TCGA.55.7570.01   0.57   MALE
-TCGA.55.7576.01   0.47   MALE
-TCGA.55.7725.01   0.61 FEMALE
-TCGA.55.7727.01   0.56   MALE
-TCGA.55.7903.01   0.64   MALE
-TCGA.55.7910.01   0.58 FEMALE
-TCGA.55.7914.01   0.56 FEMALE
-TCGA.55.7994.01   0.51   MALE
-TCGA.55.7995.01   0.49 FEMALE
-TCGA.55.8085.01   0.56   MALE
-TCGA.55.8087.01   0.82 FEMALE
-TCGA.55.8091.01   0.60   MALE
-TCGA.55.8094.01   0.79   MALE
-TCGA.55.8097.01   0.64 FEMALE
-TCGA.55.8206.01   0.46   MALE
-TCGA.55.8207.01   0.57   MALE
-TCGA.55.8299.01   0.49 FEMALE
-TCGA.55.8506.01   0.45 FEMALE
-TCGA.55.8507.01   0.64   MALE
-TCGA.55.8513.01   0.50 FEMALE
-TCGA.55.8514.01   0.54 FEMALE
-TCGA.55.8615.01   0.57   MALE
-TCGA.55.8620.01   0.62   MALE
-TCGA.55.A492.01   0.54 FEMALE
-TCGA.55.A494.01   0.81 FEMALE
-TCGA.62.8394.01   0.53 FEMALE
-TCGA.62.8395.01   0.65 FEMALE
-TCGA.62.8397.01   0.69 FEMALE
-TCGA.62.8399.01   0.50   MALE
-TCGA.62.8402.01   0.50 FEMALE
-TCGA.62.A46O.01   0.82 FEMALE
-TCGA.62.A46P.01   0.70   MALE
-TCGA.62.A46S.01   0.45   MALE
-TCGA.62.A46V.01   0.52 FEMALE
-TCGA.62.A46Y.01   0.48 FEMALE
-TCGA.62.A470.01   0.59   MALE
-TCGA.62.A471.01   0.46   MALE
-TCGA.64.1676.01   0.51   MALE
-TCGA.64.1678.01   0.57 FEMALE
-TCGA.64.1680.01   0.61   MALE
-TCGA.64.5774.01   0.76   MALE
-TCGA.64.5775.01   0.71   MALE
-TCGA.64.5778.01   0.59   MALE
-TCGA.67.3770.01   0.65 FEMALE
-TCGA.67.3771.01   0.46 FEMALE
-TCGA.67.3772.01   0.45 FEMALE
-TCGA.67.3773.01   0.70 FEMALE
-TCGA.67.3774.01   0.48 FEMALE
-TCGA.67.4679.01   0.71   MALE
-TCGA.67.6215.01   0.69 FEMALE
-TCGA.67.6216.01   0.56 FEMALE
-TCGA.69.7760.01   0.65   MALE
-TCGA.69.7764.01   0.80   MALE
-TCGA.69.7973.01   0.55 FEMALE
-TCGA.69.7979.01   0.53 FEMALE
-TCGA.69.7980.01   0.55 FEMALE
-TCGA.71.6725.01   0.63 FEMALE
-TCGA.73.4662.01   0.48 FEMALE
-TCGA.73.4666.01   0.45 FEMALE
-TCGA.73.4668.01   0.53 FEMALE
-TCGA.73.4670.01   0.62 FEMALE
-TCGA.73.4675.01   0.57   MALE
-TCGA.73.4676.01   0.77   MALE
-TCGA.73.4677.01   0.47   MALE
-TCGA.73.7498.01   0.62 FEMALE
-TCGA.73.A9RS.01   0.61   MALE
-TCGA.75.5146.01   0.58   MALE
-TCGA.75.6206.01   0.70   MALE
-TCGA.75.6207.01   0.64   MALE
-TCGA.75.6214.01   0.64 FEMALE
-TCGA.75.7027.01   0.62   MALE
-TCGA.75.7030.01   0.50   MALE
-TCGA.75.7031.01   0.49 FEMALE
-TCGA.78.7145.01   0.63 FEMALE
-TCGA.78.7146.01   0.68 FEMALE
-TCGA.78.7147.01   0.62 FEMALE
-TCGA.78.7148.01   0.60   MALE
-TCGA.78.7149.01   0.60   MALE
-TCGA.78.7150.01   0.46   MALE
-TCGA.78.7152.01   0.55   MALE
-TCGA.78.7154.01   0.50   MALE
-TCGA.78.7155.01   0.82   MALE
-TCGA.78.7156.01   0.80   MALE
-TCGA.78.7158.01   0.90 FEMALE
-TCGA.78.7161.01   0.75 FEMALE
-TCGA.78.7163.01   0.68   MALE
-TCGA.78.7166.01   0.63   MALE
-TCGA.78.7167.01   0.84   MALE
-TCGA.78.7220.01   0.61 FEMALE
-TCGA.78.7535.01   0.60   MALE
-TCGA.78.7536.01   0.78   MALE
-TCGA.78.7537.01   0.74   MALE
-TCGA.78.7539.01   0.52 FEMALE
-TCGA.78.7540.01   0.59 FEMALE
-TCGA.78.7633.01   0.75   MALE
-TCGA.78.8648.01   0.64 FEMALE
-TCGA.78.8655.01   0.46 FEMALE
-TCGA.78.8662.01   0.79 FEMALE
-TCGA.80.5607.01   0.49 FEMALE
-TCGA.80.5608.01   0.48 FEMALE
-TCGA.80.5611.01   0.51   MALE
-TCGA.86.6562.01   0.46   MALE
-TCGA.86.7713.01   0.65   MALE
-TCGA.86.7714.01   0.67 FEMALE
-TCGA.86.7955.01   0.73   MALE
-TCGA.86.8054.01   0.74   MALE
-TCGA.86.8074.01   0.51 FEMALE
-TCGA.86.8278.01   0.56 FEMALE
-TCGA.86.8279.01   0.50   MALE
-TCGA.86.8280.01   0.45 FEMALE
-TCGA.86.8281.01   0.54   MALE
-TCGA.86.8358.01   0.72   MALE
-TCGA.86.8669.01   0.57   MALE
-TCGA.86.8674.01   0.58   MALE
-TCGA.86.A4P7.01   1.00 FEMALE
-TCGA.86.A4P8.01   0.79 FEMALE
-TCGA.91.6829.01   0.49   MALE
-TCGA.91.6831.01   0.50   MALE
-TCGA.91.6836.01   0.67 FEMALE
-TCGA.91.6840.01   0.62 FEMALE
-TCGA.91.6847.01   0.85 FEMALE
-TCGA.91.6849.01   0.62 FEMALE
-TCGA.91.8496.01   0.50 FEMALE
-TCGA.91.8497.01   0.45 FEMALE
-TCGA.91.8499.01   0.77 FEMALE
-TCGA.91.A4BD.01   0.55   MALE
-TCGA.93.7348.01   0.45 FEMALE
-TCGA.95.7043.01   0.76 FEMALE
-TCGA.95.7562.01   0.55   MALE
-TCGA.95.7567.01   0.53   MALE
-TCGA.95.7947.01   0.66   MALE
-TCGA.95.7948.01   0.71 FEMALE
-TCGA.95.8039.01   0.47   MALE
-TCGA.95.8494.01   0.53   MALE
-TCGA.95.A4VK.01   0.57 FEMALE
-TCGA.97.7546.01   0.67 FEMALE
-TCGA.97.7547.01   0.55 FEMALE
-TCGA.97.7937.01   0.59   MALE
-TCGA.97.7938.01   0.61 FEMALE
-TCGA.97.8171.01   0.82   MALE
-TCGA.97.8176.01   0.53   MALE
-TCGA.97.8179.01   0.48   MALE
-TCGA.97.8547.01   0.48 FEMALE
-TCGA.97.A4M0.01   0.55 FEMALE
-TCGA.97.A4M3.01   0.69 FEMALE
-TCGA.99.AA5R.01   0.96 FEMALE
-TCGA.J2.A4AD.01   0.57 FEMALE
-TCGA.J2.A4AE.01   0.52 FEMALE
-TCGA.L4.A4E5.01   0.66 FEMALE
-TCGA.L9.A443.01   0.48 FEMALE
-TCGA.L9.A50W.01   0.76   MALE
-TCGA.L9.A5IP.01   0.53 FEMALE
-TCGA.L9.A7SV.01   0.83   MALE
-TCGA.MN.A4N1.01   0.48   MALE
-TCGA.MP.A4SW.01   0.46   MALE
-TCGA.MP.A4T6.01   0.59 FEMALE
-TCGA.MP.A4T8.01   0.59   MALE
-TCGA.MP.A4TC.01   0.45   MALE
-TCGA.MP.A5C7.01   0.87 FEMALE
-TCGA.NJ.A4YF.01   0.55 FEMALE
-TCGA.NJ.A4YI.01   0.58 FEMALE
-TCGA.NJ.A7XG.01   0.62   MALE
-
-All values for columns &quot;Purity&quot; and &quot;gender&quot;.</code></pre>
+<pre><code>   id       name month_salary age       position
+1   1     Andrew         1560  59            CTO
+2   2      Susan         1263  59            CFO
+3   3       John         1576  54 Administrative
+4   4        Joe         1502  50     Technician
+5   5       Jack         1684  NA           &lt;NA&gt;
+6   6      Jacob         1774  62     Technician
+7   7       Mary         1715  53     Technician
+8   8       Kate         1564  58     Technician
+9   9 Jacqueline           NA  39     Technician
+10 10        Ivy           NA  61     Technician</code></pre>
 </details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[c(&quot;TCGA.05.4249.01&quot;,&quot;TCGA.05.4250.01&quot;),]</code></pre>
+<p><br />
+Now we have all the rows of the two dataframes df_1 and df_2. To
+compensate for the fact that some rows are not common and therefore lack
+information, NAs (Not Available) have been introduced.</p>
+</div>
+</div>
+<div id="dplyr-package" class="section level1">
+<h1><em>dplyr</em> package</h1>
+<p><em>dplyr</em> is a powerful package for data manipulation. It
+provides set of functions that can help to simplify complex data
+operations.</p>
+<p>For the following examples, we will take a built-in dataset in R. The
+dataset is named “storms” and it is contained in the <em>dplyr</em>
+package.</p>
+<pre class="r"><code>storms &lt;- storms
+storms</code></pre>
 <details>
 <summary>
-Solution
+storms dataset structure
 </summary>
-<pre><code>                known.oncogenes Purity pathologic_stage gender                     tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE      Current reformed smoker for &gt; 15 years      0.9298746
-TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE Current reformed smoker for &lt; or = 15 years      0.4811406
-
-All values for rows &quot;TCGA.05.4249.01&quot; and &quot;TCGA.05.4250.01&quot;.</code></pre>
+<pre><code># A tibble: 19,537 × 13
+   name   year month   day  hour   lat  long status              category  wind pressure tropicalstorm_force_diameter hurricane_force_diameter
+   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;                  &lt;dbl&gt; &lt;int&gt;    &lt;int&gt;                        &lt;int&gt;                    &lt;int&gt;
+ 1 Amy    1975     6    27     0  27.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 2 Amy    1975     6    27     6  28.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 3 Amy    1975     6    27    12  29.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 4 Amy    1975     6    27    18  30.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 5 Amy    1975     6    28     0  31.5 -78.8 tropical depression       NA    25     1012                           NA                       NA
+ 6 Amy    1975     6    28     6  32.4 -78.7 tropical depression       NA    25     1012                           NA                       NA
+ 7 Amy    1975     6    28    12  33.3 -78   tropical depression       NA    25     1011                           NA                       NA
+ 8 Amy    1975     6    28    18  34   -77   tropical depression       NA    30     1006                           NA                       NA
+ 9 Amy    1975     6    29     0  34.4 -75.8 tropical storm            NA    35     1004                           NA                       NA
+10 Amy    1975     6    29     6  34   -74.8 tropical storm            NA    40     1002                           NA                       NA
+# ℹ 19,527 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
 </details>
-<hr />
-<p>If you look at the Environment panel, you’ll find, as we’ve seen, the
-variable containing the data frame. If you click on the little blue
-arrow, a drop-down list appears, showing all the columns present, their
-type and the first data they contain. There’s also a dollar sign (“$”).
-This symbol can be used to extract column of interest.</p>
-<pre class="r"><code>TCGA_LUAD$Purity</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>  [1] 0.49 0.50 0.49 0.48 0.57 0.61 0.82 0.87 0.46 0.67 0.55 0.59 0.62 0.70 0.47 0.62 0.45 0.59 0.63 0.82 0.73 0.69 0.58 0.50 0.79 0.49 0.59 0.51 0.55 0.56
- [31] 0.75 0.54 0.70 0.47 0.45 0.65 0.60 0.56 0.58 0.50 0.50 0.58 0.66 0.55 0.54 0.50 0.59 0.73 0.45 0.46 0.45 0.64 0.49 0.75 0.52 0.97 0.62 0.59 0.95 0.86
- [61] 0.84 0.60 0.69 0.57 0.75 0.90 0.60 0.48 0.60 0.69 0.47 0.49 0.55 0.52 0.63 0.67 0.65 0.65 0.56 0.83 0.46 0.81 0.53 0.47 0.57 0.47 0.61 0.56 0.64 0.58
- [91] 0.56 0.51 0.49 0.56 0.82 0.60 0.79 0.64 0.46 0.57 0.49 0.45 0.64 0.50 0.54 0.57 0.62 0.54 0.81 0.53 0.65 0.69 0.50 0.50 0.82 0.70 0.45 0.52 0.48 0.59
-[121] 0.46 0.51 0.57 0.61 0.76 0.71 0.59 0.65 0.46 0.45 0.70 0.48 0.71 0.69 0.56 0.65 0.80 0.55 0.53 0.55 0.63 0.48 0.45 0.53 0.62 0.57 0.77 0.47 0.62 0.61
-[151] 0.58 0.70 0.64 0.64 0.62 0.50 0.49 0.63 0.68 0.62 0.60 0.60 0.46 0.55 0.50 0.82 0.80 0.90 0.75 0.68 0.63 0.84 0.61 0.60 0.78 0.74 0.52 0.59 0.75 0.64
-[181] 0.46 0.79 0.49 0.48 0.51 0.46 0.65 0.67 0.73 0.74 0.51 0.56 0.50 0.45 0.54 0.72 0.57 0.58 1.00 0.79 0.49 0.50 0.67 0.62 0.85 0.62 0.50 0.45 0.77 0.55
-[211] 0.45 0.76 0.55 0.53 0.66 0.71 0.47 0.53 0.57 0.67 0.55 0.59 0.61 0.82 0.53 0.48 0.48 0.55 0.69 0.96 0.57 0.52 0.66 0.48 0.76 0.53 0.83 0.48 0.46 0.59
-[241] 0.59 0.45 0.87 0.55 0.58 0.62
-</code></pre>
-</details>
-<div id="section-6" class="section level2">
-<h2>————————————————————————————————————</h2>
+<p>Unlike our first example, you can see in the Environment panel that
+this dataset contains almost 20,000 rows. This doesn’t change the
+functions we’ll be using; on the contrary, you’ll see that you’ll be
+able to work on very large datasets more easily.</p>
+<p>With <em>dplyr</em> we can :</p>
 <ul>
-<li>Select the columns or rows by their indices</li>
+<li>Subset : We can select specific portions of data, such as rows,
+columns, or both, from a larger data set based on certain conditions.
+Subsetting allows to extract meaningful data for analysis without
+modifying the original data set. We can subset rows or columns or
+both.</li>
 </ul>
-<p>Each row or column is indexed, that is, the first line is line 1, the
-second is line 2, etc…</p>
-<p>In our example (TCGA_LUAD), the first column is named
-“known.oncogenes”, this column is the column 1 (index 1). This notion of
-index is important, as it will be used to extract rows/columns of
-interest.</p>
-<p>So now let’s extract information from our data frame !</p>
-<pre class="r"><code>TCGA_LUAD[1, 2]</code></pre>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAuMCAwLjAgOTYwLjAgNTQwLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2xpcFBhdGggaWQ9ImcyZmY2NjJhYzhjOF8wXzE1LjAiPjxwYXRoIGQ9Im0wIDBsOTYwLjAgMGwwIDU0MC4wbC05NjAuMCAwbDAgLTU0MC4weiIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjZzJmZjY2MmFjOGM4XzBfMTUuMCkiPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Im0wIDBsOTYwLjAgMGwwIDU0MC4wbC05NjAuMCAweiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtMzEuMzc1MzI4IDE5LjM1NDMzbDYzLjI5NjU4NSAwbDAgNDEuNTk1ODAybC02My4yOTY1ODUgMGwwIC00MS41OTU4MDJ6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im05NC42NzE5MSAxOS4zNTQzM2w2My4yOTY1OTMgMGwwIDQxLjU5NTgwMmwtNjMuMjk2NTkzIDBsMCAtNDEuNTk1ODAyeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtMTU3Ljk2ODUgMTkuMzU0MzNsNjMuMjk2NTg1IDBsMCA0MS41OTU4MDJsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTIyMS4yNjUwOSAxOS4zNTQzM2w2My4yOTY1ODUgMGwwIDQxLjU5NTgwMmwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1ODAyeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtMjg0LjU2MTY4IDE5LjM1NDMzbDYzLjI5NjYgMGwwIDQxLjU5NTgwMmwtNjMuMjk2NiAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTM0Ny44NTgyOCAxOS4zNTQzM2w2My4yOTY1NyAwbDAgNDEuNTk1ODAybC02My4yOTY1NyAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTMxLjM3NTMyOCAxMDIuNTQ1OTNsNjMuMjk2NTg1IDBsMCA0MS41OTU4MWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im05NC42NzE5MSAxMDIuNTQ1OTNsNjMuMjk2NTkzIDBsMCA0MS41OTU4MWwtNjMuMjk2NTkzIDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0xNTcuOTY4NSAxMDIuNTQ1OTNsNjMuMjk2NTg1IDBsMCA0MS41OTU4MWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0yMjEuMjY1MDkgMTAyLjU0NTkzbDYzLjI5NjU4NSAwbDAgNDEuNTk1ODFsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjg0LjU2MTY4IDEwMi41NDU5M2w2My4yOTY2IDBsMCA0MS41OTU4MWwtNjMuMjk2NiAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMzQ3Ljg1ODI4IDEwMi41NDU5M2w2My4yOTY1NyAwbDAgNDEuNTk1ODFsLTYzLjI5NjU3IDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0zMS4zNzUzMjggMTQ0LjE0MTc0bDYzLjI5NjU4NSAwbDAgNDEuNTk1Nzk1bC02My4yOTY1ODUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im05NC42NzE5MSAxNDQuMTQxNzRsNjMuMjk2NTkzIDBsMCA0MS41OTU3OTVsLTYzLjI5NjU5MyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTE1Ny45Njg1IDE0NC4xNDE3NGw2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjIxLjI2NTA5IDE0NC4xNDE3NGw2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjg0LjU2MTY4IDE0NC4xNDE3NGw2My4yOTY2IDBsMCA0MS41OTU3OTVsLTYzLjI5NjYgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0zNDcuODU4MjggMTQ0LjE0MTc0bDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMzEuMzc1MzI4IDE4NS43Mzc1M2w2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtOTQuNjcxOTEgMTg1LjczNzUzbDYzLjI5NjU5MyAwbDAgNDEuNTk1Nzk1bC02My4yOTY1OTMgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0xNTcuOTY4NSAxODUuNzM3NTNsNjMuMjk2NTg1IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTIyMS4yNjUwOSAxODUuNzM3NTNsNjMuMjk2NTg1IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTI4NC41NjE2OCAxODUuNzM3NTNsNjMuMjk2NiAwbDAgNDEuNTk1Nzk1bC02My4yOTY2IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMzQ3Ljg1ODI4IDE4NS43Mzc1M2w2My4yOTY1NyAwbDAgNDEuNTk1Nzk1bC02My4yOTY1NyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzEuMzc1MzI4IDE4Ljg1NTY0MmwwIDI1MC41NzIxOSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im05NC42NzE5MSAxOC44NTU2NDJsMCAyNTAuNTcyMTkiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMTU3Ljk2ODUgMTguODU1NjQybDAgMjUwLjU3MjE5IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTIyMS4yNjUwOSAxOC44NTU2NDJsMCAyNTAuNTcyMTkiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMjg0LjU2MTY4IDE4Ljg1NTY0MmwwIDI1MC41NzIxOSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0zNDcuODU4MjggMTguODU1NjQybDAgMjUwLjU3MjE5IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTQxMS4xNTQ4NSAxOC44NTU2NDJsMCAyNTAuNTcyMTkiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgMTkuMzU0MzNsMzgwLjc3NjkgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0zMC44NzY2NCA2MC45NTAxM2wzODAuNzc2OSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMwLjg3NjY0IDEwMi41NDU5M2wzODAuNzc2OSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMwLjg3NjY0IDE0NC4xNDE3NGwzODAuNzc2OSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMwLjg3NjY0IDE4NS43Mzc1M2wzODAuNzc2OSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMwLjg3NjY0IDIyNy4zMzMzM2wzODAuNzc2OSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMwLjg3NjY0IDI2OC45MjkxNGwzODAuNzc2OSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMCIgZD0ibTQxNi42NDA0IDE0MC40MDk0NWwxNDYuOTYwNjYgMCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggc3Ryb2tlPSIjNTk1OTU5IiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im00MTYuNjQwNCAxNDAuNDA5NDVsMTQwLjk2MDY2IDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIGZpbGw9IiM1OTU5NTkiIHN0cm9rZT0iIzU5NTk1OSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTU3LjYwMTEgMTQyLjA2MTE5bDQuNTM4MDg2IC0xLjY1MTczMzRsLTQuNTM4MDg2IC0xLjY1MTczMzR6IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im0zMS4zNzUzMjggMjc5LjQ4NTU3bDYzLjI5NjU4NSAwbDAgNDEuNTk1Nzk1bC02My4yOTY1ODUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im05NC42NzE5MSAyNzkuNDg1NTdsNjMuMjk2NTkzIDBsMCA0MS41OTU3OTVsLTYzLjI5NjU5MyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzZmYThkYyIgZD0ibTE1Ny45Njg1IDI3OS40ODU1N2w2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmZhOGRjIiBkPSJtMjIxLjI2NTA5IDI3OS40ODU1N2w2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmZhOGRjIiBkPSJtMjg0LjU2MTY4IDI3OS40ODU1N2w2My4yOTY2IDBsMCA0MS41OTU3OTVsLTYzLjI5NjYgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im0zNDcuODU4MjggMjc5LjQ4NTU3bDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMTU3Ljk2ODUgMzIxLjA4MTM2bDYzLjI5NjU4NSAwbDAgNDEuNTk1Nzk1bC02My4yOTY1ODUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0yMjEuMjY1MDkgMzIxLjA4MTM2bDYzLjI5NjU4NSAwbDAgNDEuNTk1Nzk1bC02My4yOTY1ODUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0yODQuNTYxNjggMzIxLjA4MTM2bDYzLjI5NjYgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NiAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTE1Ny45Njg1IDM2Mi42NzcxNWw2My4yOTY1ODUgMGwwIDQxLjU5NTgyNWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1ODI1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjIxLjI2NTA5IDM2Mi42NzcxNWw2My4yOTY1ODUgMGwwIDQxLjU5NTgyNWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1ODI1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjg0LjU2MTY4IDM2Mi42NzcxNWw2My4yOTY2IDBsMCA0MS41OTU4MjVsLTYzLjI5NjYgMGwwIC00MS41OTU4MjV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0xNTcuOTY4NSA0MDQuMjcyOThsNjMuMjk2NTg1IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTIyMS4yNjUwOSA0MDQuMjcyOThsNjMuMjk2NTg1IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTI4NC41NjE2OCA0MDQuMjcyOThsNjMuMjk2NiAwbDAgNDEuNTk1Nzk1bC02My4yOTY2IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMTU3Ljk2ODUgNDQ1Ljg2ODc3bDYzLjI5NjU4NSAwbDAgNDEuNTk1Nzk1bC02My4yOTY1ODUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0yMjEuMjY1MDkgNDQ1Ljg2ODc3bDYzLjI5NjU4NSAwbDAgNDEuNTk1Nzk1bC02My4yOTY1ODUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0yODQuNTYxNjggNDQ1Ljg2ODc3bDYzLjI5NjYgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NiAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTE1Ny45Njg1IDQ4Ny40NjQ1N2w2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjIxLjI2NTA5IDQ4Ny40NjQ1N2w2My4yOTY1ODUgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTg1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMjg0LjU2MTY4IDQ4Ny40NjQ1N2w2My4yOTY2IDBsMCA0MS41OTU3OTVsLTYzLjI5NjYgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMxLjM3NTMyOCAyNzguOTg2ODhsMCAyNTAuNTcyMiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im05NC42NzE5MSAyNzguOTg2ODhsMCAyNTAuNTcyMiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0xNTcuOTY4NSAyNzguOTg2ODhsMCAyNTAuNTcyMiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0yMjEuMjY1MDkgMjc4Ljk4Njg4bDAgMjUwLjU3MjIiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMjg0LjU2MTY4IDI3OC45ODY4OGwwIDI1MC41NzIyIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTM0Ny44NTgyOCAyNzguOTg2ODhsMCAyNTAuNTcyMiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im00MTEuMTU0ODUgMjc4Ljk4Njg4bDAgMjUwLjU3MjIiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgMjc5LjQ4NTU3bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgMzIxLjA4MTM2bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgMzYyLjY3NzE1bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgNDA0LjI3Mjk4bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgNDQ1Ljg2ODc3bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgNDg3LjQ2NDU3bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzAuODc2NjQgNTI5LjA2MDM2bDM4MC43NzY5IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wIiBkPSJtNDE2LjY0MDQgNDA0LjI3Mjk4bDE0Ni45NjA2NiAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48cGF0aCBzdHJva2U9IiM1OTU5NTkiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTQxNi42NDA0IDQwNC4yNzI5OGwxNDAuOTYwNjYgMCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggZmlsbD0iIzU5NTk1OSIgc3Ryb2tlPSIjNTk1OTU5IiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01NTcuNjAxMSA0MDUuOTI0N2w0LjUzODA4NiAtMS42NTE3MzM0bC00LjUzODA4NiAtMS42NTE3MzM0eiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtNTY5LjA4NjYgNTkuMDgzOTlsNjMuMjk2NTcgMGwwIDQxLjU5NThsLTYzLjI5NjU3IDBsMCAtNDEuNTk1OHoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTYzMi4zODMyIDU5LjA4Mzk5bDYzLjI5NjYzIDBsMCA0MS41OTU4bC02My4yOTY2MyAwbDAgLTQxLjU5NTh6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im02OTUuNjc5OCA1OS4wODM5OWw2My4yOTY1NyAwbDAgNDEuNTk1OGwtNjMuMjk2NTcgMGwwIC00MS41OTU4eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtNzU4Ljk3NjQgNTkuMDgzOTlsNjMuMjk2NTcgMGwwIDQxLjU5NThsLTYzLjI5NjU3IDBsMCAtNDEuNTk1OHoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTgyMi4yNzI5NSA1OS4wODM5OWw2My4yOTY2MyAwbDAgNDEuNTk1OGwtNjMuMjk2NjMgMGwwIC00MS41OTU4eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtODg1LjU2OTYgNTkuMDgzOTlsNjMuMjk2NTcgMGwwIDQxLjU5NThsLTYzLjI5NjU3IDBsMCAtNDEuNTk1OHoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTU2OS4wODY2IDEwMC42Nzk3OWw2My4yOTY1NyAwbDAgNDEuNTk1ODAybC02My4yOTY1NyAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTYzMi4zODMyIDEwMC42Nzk3OWw2My4yOTY2MyAwbDAgNDEuNTk1ODAybC02My4yOTY2MyAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTY5NS42Nzk4IDEwMC42Nzk3OWw2My4yOTY1NyAwbDAgNDEuNTk1ODAybC02My4yOTY1NyAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTc1OC45NzY0IDEwMC42Nzk3OWw2My4yOTY1NyAwbDAgNDEuNTk1ODAybC02My4yOTY1NyAwbDAgLTQxLjU5NTgwMnoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTgyMi4yNzI5NSAxMDAuNjc5NzlsNjMuMjk2NjMgMGwwIDQxLjU5NTgwMmwtNjMuMjk2NjMgMGwwIC00MS41OTU4MDJ6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im04ODUuNTY5NiAxMDAuNjc5NzlsNjMuMjk2NTcgMGwwIDQxLjU5NTgwMmwtNjMuMjk2NTcgMGwwIC00MS41OTU4MDJ6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im01NjkuMDg2NiAxNDIuMjc1NTlsNjMuMjk2NTcgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im02MzIuMzgzMiAxNDIuMjc1NTlsNjMuMjk2NjMgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NjMgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im02OTUuNjc5OCAxNDIuMjc1NTlsNjMuMjk2NTcgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im03NTguOTc2NCAxNDIuMjc1NTlsNjMuMjk2NTcgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im04MjIuMjcyOTUgMTQyLjI3NTU5bDYzLjI5NjYzIDBsMCA0MS41OTU3OTVsLTYzLjI5NjYzIDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtODg1LjU2OTYgMTQyLjI3NTU5bDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNTY5LjA4NjYgMTgzLjg3MTM4bDYzLjI5NjU3IDBsMCA0MS41OTU4MWwtNjMuMjk2NTcgMGwwIC00MS41OTU4MXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTYzMi4zODMyIDE4My44NzEzOGw2My4yOTY2MyAwbDAgNDEuNTk1ODFsLTYzLjI5NjYzIDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im02OTUuNjc5OCAxODMuODcxMzhsNjMuMjk2NTcgMGwwIDQxLjU5NTgxbC02My4yOTY1NyAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNzU4Ljk3NjQgMTgzLjg3MTM4bDYzLjI5NjU3IDBsMCA0MS41OTU4MWwtNjMuMjk2NTcgMGwwIC00MS41OTU4MXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTgyMi4yNzI5NSAxODMuODcxMzhsNjMuMjk2NjMgMGwwIDQxLjU5NTgxbC02My4yOTY2MyAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtODg1LjU2OTYgMTgzLjg3MTM4bDYzLjI5NjU3IDBsMCA0MS41OTU4MWwtNjMuMjk2NTcgMGwwIC00MS41OTU4MXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTY5LjA4NjYgNTguNTg1M2wwIDE2Ny4zODA1OCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im02MzIuMzgzMiA1OC41ODUzbDAgMTY3LjM4MDU4IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTY5NS42Nzk4IDU4LjU4NTNsMCAxNjcuMzgwNTgiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNzU4Ljk3NjQgNTguNTg1M2wwIDE2Ny4zODA1OCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im04MjIuMjcyOTUgNTguNTg1M2wwIDE2Ny4zODA1OCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im04ODUuNTY5NiA1OC41ODUzbDAgMTY3LjM4MDU4IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTk0OC44NjYxNSA1OC41ODUzbDAgMTY3LjM4MDU4IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2OC41ODc5NSA1OS4wODM5OWwzODAuNzc2ODYgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01NjguNTg3OTUgMTAwLjY3OTc5bDM4MC43NzY4NiAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2OC41ODc5NSAxNDIuMjc1NTlsMzgwLjc3Njg2IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTY4LjU4Nzk1IDE4My44NzEzOGwzODAuNzc2ODYgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01NjguNTg3OTUgMjI1LjQ2NzJsMzgwLjc3Njg2IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzZmYThkYyIgZD0ibTY2NC4wMzE1IDI4MS4zNTE3bDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmZhOGRjIiBkPSJtNzI3LjMyODA2IDI4MS4zNTE3bDYzLjI5NjYzIDBsMCA0MS41OTU3OTVsLTYzLjI5NjYzIDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmZhOGRjIiBkPSJtNzkwLjYyNDcgMjgxLjM1MTdsNjMuMjk2NTcgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im02NjQuMDMxNSAzMjIuOTQ3NWw2My4yOTY1NyAwbDAgNDEuNTk1Nzk1bC02My4yOTY1NyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTcyNy4zMjgwNiAzMjIuOTQ3NWw2My4yOTY2MyAwbDAgNDEuNTk1Nzk1bC02My4yOTY2MyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTc5MC42MjQ3IDMyMi45NDc1bDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNjY0LjAzMTUgMzY0LjU0MzNsNjMuMjk2NTcgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im03MjcuMzI4MDYgMzY0LjU0MzNsNjMuMjk2NjMgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NjMgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im03OTAuNjI0NyAzNjQuNTQzM2w2My4yOTY1NyAwbDAgNDEuNTk1Nzk1bC02My4yOTY1NyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTY2NC4wMzE1IDQwNi4xMzkxbDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNzI3LjMyODA2IDQwNi4xMzkxbDYzLjI5NjYzIDBsMCA0MS41OTU3OTVsLTYzLjI5NjYzIDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNzkwLjYyNDcgNDA2LjEzOTFsNjMuMjk2NTcgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im02NjQuMDMxNSA0NDcuNzM0OWw2My4yOTY1NyAwbDAgNDEuNTk1ODI1bC02My4yOTY1NyAwbDAgLTQxLjU5NTgyNXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTcyNy4zMjgwNiA0NDcuNzM0OWw2My4yOTY2MyAwbDAgNDEuNTk1ODI1bC02My4yOTY2MyAwbDAgLTQxLjU5NTgyNXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTc5MC42MjQ3IDQ0Ny43MzQ5bDYzLjI5NjU3IDBsMCA0MS41OTU4MjVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1ODI1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNjY0LjAzMTUgNDg5LjMzMDcybDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtNzI3LjMyODA2IDQ4OS4zMzA3Mmw2My4yOTY2MyAwbDAgNDEuNTk1Nzk1bC02My4yOTY2MyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTc5MC42MjQ3IDQ4OS4zMzA3Mmw2My4yOTY1NyAwbDAgNDEuNTk1Nzk1bC02My4yOTY1NyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNjY0LjAzMTUgMjgwLjg1MzAzbDAgMjUwLjU3MjE0IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTcyNy4zMjgwNiAyODAuODUzMDNsMCAyNTAuNTcyMTQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNzkwLjYyNDcgMjgwLjg1MzAzbDAgMjUwLjU3MjE0IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTg1My45MjEyNiAyODAuODUzMDNsMCAyNTAuNTcyMTQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNjYzLjUzMjg0IDI4MS4zNTE3bDE5MC44ODcwOCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTY2My41MzI4NCAzMjIuOTQ3NWwxOTAuODg3MDggMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im02NjMuNTMyODQgMzY0LjU0MzNsMTkwLjg4NzA4IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNjYzLjUzMjg0IDQwNi4xMzkxbDE5MC44ODcwOCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTY2My41MzI4NCA0NDcuNzM0OWwxOTAuODg3MDggMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im02NjMuNTMyODQgNDg5LjMzMDcybDE5MC44ODcwOCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTY2My41MzI4NCA1MzAuOTI2NWwxOTAuODg3MDggMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvc3ZnPg==" /> * Reshape : We can change
+the layout of a dataset. It means, for example, transform columns into
+rows or the invert. This is a common task in data analysis, particularly
+when you need to organize data in a structure that is best suited for
+your analysis. In R, this often involves transforming data between long
+(tidy) and wide formats. In a wide format, each row represent a single
+observation, and columns represent variables (like in our df_1 or df_2
+examples). In a long format, each row is a single measurement, with a
+separate column for the variable and the value. This structure will be
+useful later for certain graphical representations.</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAuMCAwLjAgOTYwLjAgNTQwLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2xpcFBhdGggaWQ9ImcyZmY2NjJhYzhjOF8wXzMxLjAiPjxwYXRoIGQ9Im0wIDBsOTYwLjAgMGwwIDU0MC4wbC05NjAuMCAwbDAgLTU0MC4weiIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjZzJmZjY2MmFjOGM4XzBfMzEuMCkiPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Im0wIDBsOTYwLjAgMGwwIDU0MC4wbC05NjAuMCAweiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjYjdiN2I3IiBkPSJtMTIyLjMzNTk2IDE5NC43Nzk1M2w2MC43NDgwMjQgMGwwIDQxLjU5NTgxbC02MC43NDgwMjQgMGwwIC00MS41OTU4MXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzNkODVjNiIgZD0ibTE4My4wODM5OCAxOTQuNzc5NTNsNjAuNzQ4MDMgMGwwIDQxLjU5NTgxbC02MC43NDgwMyAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmFhODRmIiBkPSJtMjQzLjgzMjAyIDE5NC43Nzk1M2w2MC43NDgwMyAwbDAgNDEuNTk1ODFsLTYwLjc0ODAzIDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNlNjkxMzgiIGQ9Im0zMDQuNTgwMDUgMTk0Ljc3OTUzbDYwLjc0ODA0NyAwbDAgNDEuNTk1ODFsLTYwLjc0ODA0NyAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjZDlkOWQ5IiBkPSJtMTIyLjMzNTk2IDIzNi4zNzUzNGw2MC43NDgwMjQgMGwwIDQxLjU5NTc5NWwtNjAuNzQ4MDI0IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOWZjNWU4IiBkPSJtMTgzLjA4Mzk4IDIzNi4zNzUzNGw2MC43NDgwMyAwbDAgNDEuNTk1Nzk1bC02MC43NDgwMyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2I2ZDdhOCIgZD0ibTI0My44MzIwMiAyMzYuMzc1MzRsNjAuNzQ4MDMgMGwwIDQxLjU5NTc5NWwtNjAuNzQ4MDMgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNmNmIyNmIiIGQ9Im0zMDQuNTgwMDUgMjM2LjM3NTM0bDYwLjc0ODA0NyAwbDAgNDEuNTk1Nzk1bC02MC43NDgwNDcgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNkOWQ5ZDkiIGQ9Im0xMjIuMzM1OTYgMjc3Ljk3MTEzbDYwLjc0ODAyNCAwbDAgNDEuNTk1Nzk1bC02MC43NDgwMjQgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im0xODMuMDgzOTggMjc3Ljk3MTEzbDYwLjc0ODAzIDBsMCA0MS41OTU3OTVsLTYwLjc0ODAzIDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjYjZkN2E4IiBkPSJtMjQzLjgzMjAyIDI3Ny45NzExM2w2MC43NDgwMyAwbDAgNDEuNTk1Nzk1bC02MC43NDgwMyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2Y2YjI2YiIgZD0ibTMwNC41ODAwNSAyNzcuOTcxMTNsNjAuNzQ4MDQ3IDBsMCA0MS41OTU3OTVsLTYwLjc0ODA0NyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMTIyLjMzNTk2IDE5NC4yODA4NGwwIDEyNS43ODQ3NzUiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMTgzLjA4Mzk4IDE5NC4yODA4NGwwIDEyNS43ODQ3NzUiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMjQzLjgzMjAyIDE5NC4yODA4NGwwIDEyNS43ODQ3NzUiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzA0LjU4MDA1IDE5NC4yODA4NGwwIDEyNS43ODQ3NzUiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzY1LjMyODEgMTk0LjI4MDg0bDAgMTI1Ljc4NDc3NSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0xMjEuODM3MjcgMTk0Ljc3OTUzbDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMTIxLjgzNzI3IDIzNi4zNzUzNGwyNDMuOTg5NSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTEyMS44MzcyNyAyNzcuOTcxMTNsMjQzLjk4OTUgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0xMjEuODM3MjcgMzE5LjU2NjkzbDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2I3YjdiNyIgZD0ibTU3MS42Nzk4IDEwOS43MjE3OWw4MC45OTczNzUgMGwwIDQxLjU5NTc5NWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjOTk5OTk5IiBkPSJtNjUyLjY3NzIgMTA5LjcyMTc5bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5OTk5OTkiIGQ9Im03MzMuNjc0NTYgMTA5LjcyMTc5bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNkOWQ5ZDkiIGQ9Im01NzEuNjc5OCAxNTEuMzE3NThsODAuOTk3Mzc1IDBsMCA0MS41OTU4MWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiMzZDg1YzYiIGQ9Im02NTIuNjc3MiAxNTEuMzE3NThsODAuOTk3Mzc1IDBsMCA0MS41OTU4MWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im03MzMuNjc0NTYgMTUxLjMxNzU4bDgwLjk5NzM3NSAwbDAgNDEuNTk1ODFsLTgwLjk5NzM3NSAwbDAgLTQxLjU5NTgxeiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjZDlkOWQ5IiBkPSJtNTcxLjY3OTggMTkyLjkxMzM5bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiMzZDg1YzYiIGQ9Im02NTIuNjc3MiAxOTIuOTEzMzlsODAuOTk3Mzc1IDBsMCA0MS41OTU3OTVsLTgwLjk5NzM3NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTczMy42NzQ1NiAxOTIuOTEzMzlsODAuOTk3Mzc1IDBsMCA0MS41OTU3OTVsLTgwLjk5NzM3NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2Q5ZDlkOSIgZD0ibTU3MS42Nzk4IDIzNC41MDkxOWw4MC45OTczNzUgMGwwIDQxLjU5NTc5NWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmFhODRmIiBkPSJtNjUyLjY3NzIgMjM0LjUwOTE5bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNiNmQ3YTgiIGQ9Im03MzMuNjc0NTYgMjM0LjUwOTE5bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNkOWQ5ZDkiIGQ9Im01NzEuNjc5OCAyNzYuMTA0OThsODAuOTk3Mzc1IDBsMCA0MS41OTU3OTVsLTgwLjk5NzM3NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzZhYTg0ZiIgZD0ibTY1Mi42NzcyIDI3Ni4xMDQ5OGw4MC45OTczNzUgMGwwIDQxLjU5NTc5NWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjYjZkN2E4IiBkPSJtNzMzLjY3NDU2IDI3Ni4xMDQ5OGw4MC45OTczNzUgMGwwIDQxLjU5NTc5NWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjZDlkOWQ5IiBkPSJtNTcxLjY3OTggMzE3LjcwMDc4bDgwLjk5NzM3NSAwbDAgNDEuNTk1ODI1bC04MC45OTczNzUgMGwwIC00MS41OTU4MjV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNlNjkxMzgiIGQ9Im02NTIuNjc3MiAzMTcuNzAwNzhsODAuOTk3Mzc1IDBsMCA0MS41OTU4MjVsLTgwLjk5NzM3NSAwbDAgLTQxLjU5NTgyNXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2Y2YjI2YiIgZD0ibTczMy42NzQ1NiAzMTcuNzAwNzhsODAuOTk3Mzc1IDBsMCA0MS41OTU4MjVsLTgwLjk5NzM3NSAwbDAgLTQxLjU5NTgyNXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2Q5ZDlkOSIgZD0ibTU3MS42Nzk4IDM1OS4yOTY2bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNlNjkxMzgiIGQ9Im02NTIuNjc3MiAzNTkuMjk2Nmw4MC45OTczNzUgMGwwIDQxLjU5NTc5NWwtODAuOTk3Mzc1IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjZjZiMjZiIiBkPSJtNzMzLjY3NDU2IDM1OS4yOTY2bDgwLjk5NzM3NSAwbDAgNDEuNTk1Nzk1bC04MC45OTczNzUgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU3MS42Nzk4IDEwOS4yMjMxbDAgMjkyLjE2Nzk3IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTY1Mi42NzcyIDEwOS4yMjMxbDAgMjkyLjE2Nzk3IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTczMy42NzQ1NiAxMDkuMjIzMWwwIDI5Mi4xNjc5NyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im04MTQuNjcxOTQgMTA5LjIyMzFsMCAyOTIuMTY3OTciIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMTA5LjcyMTc5bDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMTUxLjMxNzU4bDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMTkyLjkxMzM5bDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMjM0LjUwOTE5bDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMjc2LjEwNDk4bDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMzE3LjcwMDc4bDI0My45ODk1IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTcxLjE4MTEgMzU5LjI5NjZsMjQzLjk4OTUgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01NzEuMTgxMSA0MDAuODkyNGwyNDMuOTg5NSAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMCIgZD0ibTM5MS4wMTgzNyAyNTUuNjQwNDNsMTQ2Ljk2MDYzIDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIHN0cm9rZT0iIzU5NTk1OSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMzkxLjAxODM3IDI1NS42NDA0M2wxNDAuOTYwNjMgMCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggZmlsbD0iIzU5NTk1OSIgc3Ryb2tlPSIjNTk1OTU5IiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01MzEuOTc5IDI1Ny4yOTIxNGw0LjUzODA4NiAtMS42NTE3MTgxbC00LjUzODA4NiAtMS42NTE3MzM0eiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjAiIGQ9Im01MzUuNDAxNTUgMjg5LjcwODY1bC0xNDMuMjEyNTkgMCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggc3Ryb2tlPSIjNTk1OTU5IiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01MzUuNDAxNTUgMjg5LjcwODY1bC0xMzcuMjEyNTkgMCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PHBhdGggZmlsbD0iIzU5NTk1OSIgc3Ryb2tlPSIjNTk1OTU5IiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0zOTguMTg4OTYgMjg4LjA1NjkybC00LjUzODA4NiAxLjY1MTczMzRsNC41MzgwODYgMS42NTE3MzM0eiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9nPjwvc3ZnPg==" /> * Modify : We can add new
+columns or modify existing columns in a dataframe. It allows to create
+new variables based on existing ones or to change the values in existing
+columns.</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAuMCAwLjAgOTYwLjAgNTQwLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2xpcFBhdGggaWQ9ImcyZmZlMzRjZGJmN18wXzAuMCI+PHBhdGggZD0ibTAgMGw5NjAuMCAwbDAgNTQwLjBsLTk2MC4wIDBsMCAtNTQwLjB6IiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxnIGNsaXAtcGF0aD0idXJsKCNnMmZmZTM0Y2RiZjdfMF8wLjApIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJtMCAwbDk2MC4wIDBsMCA1NDAuMGwtOTYwLjAgMHoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTcuMDY4MjQxNiAxNDguOTQ0ODlsNjMuMjk2NTkgMGwwIDQxLjU5NTc5NWwtNjMuMjk2NTkgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im03MC4zNjQ4MyAxNDguOTQ0ODlsNjMuMjk2NTkzIDBsMCA0MS41OTU3OTVsLTYzLjI5NjU5MyAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTEzMy42NjE0MiAxNDguOTQ0ODlsNjMuMjk2NTg1IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU4NSAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTE5Ni45NTgwMSAxNDguOTQ0ODlsNjMuMjk2NiAwbDAgNDEuNTk1Nzk1bC02My4yOTY2IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtMjYwLjI1NDYgMTQ4Ljk0NDg5bDYzLjI5NjU3IDBsMCA0MS41OTU3OTVsLTYzLjI5NjU3IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtMzIzLjU1MTE4IDE0OC45NDQ4OWw2My4yOTY2IDBsMCA0MS41OTU3OTVsLTYzLjI5NjYgMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTcuMDY4MjQxNiAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im03MC4zNjQ4MyAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0xMzMuNjYxNDIgMTQ4LjQ0NjJsMCAyNTAuNTcyMTciIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtMTk2Ljk1ODAxIDE0OC40NDYybDAgMjUwLjU3MjE3IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTI2MC4yNTQ2IDE0OC40NDYybDAgMjUwLjU3MjE3IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTMyMy41NTExOCAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im0zODYuODQ3NzggMTQ4LjQ0NjJsMCAyNTAuNTcyMTciIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNi41Njk1NTQgMTQ4Ljk0NDg5bDM4MC43NzY5MiAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTYuNTY5NTU0IDE5MC41NDA2OGwzODAuNzc2OTIgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im02LjU2OTU1NCAyMzIuMTM2NDlsMzgwLjc3NjkyIDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNi41Njk1NTQgMjczLjczMjI3bDM4MC43NzY5MiAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTYuNTY5NTU0IDMxNS4zMjgxbDM4MC43NzY5MiAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTYuNTY5NTU0IDM1Ni45MjM5bDM4MC43NzY5MiAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTYuNTY5NTU0IDM5OC41MTk2OGwzODAuNzc2OTIgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtNTY2LjM1MTcgMTQ4Ljk0NDg5bDU0LjI1NDY0IDBsMCA0MS41OTU3OTVsLTU0LjI1NDY0IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtNjIwLjYwNjMgMTQ4Ljk0NDg5bDU0LjI1NDU3OCAwbDAgNDEuNTk1Nzk1bC01NC4yNTQ1NzggMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiNjY2NjY2MiIGQ9Im02NzQuODYwOSAxNDguOTQ0ODlsNTQuMjU0NTc4IDBsMCA0MS41OTU3OTVsLTU0LjI1NDU3OCAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTcyOS4xMTU1IDE0OC45NDQ4OWw1NC4yNTQ1NzggMGwwIDQxLjU5NTc5NWwtNTQuMjU0NTc4IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjY2NjY2NjIiBkPSJtNzgzLjM3MDA2IDE0OC45NDQ4OWw1NC4yNTQ2NCAwbDAgNDEuNTk1Nzk1bC01NC4yNTQ2NCAwbDAgLTQxLjU5NTc5NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iI2NjY2NjYyIgZD0ibTgzNy42MjQ3IDE0OC45NDQ4OWw1NC4yNTQ1NzggMGwwIDQxLjU5NTc5NWwtNTQuMjU0NTc4IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIiBmaWxsPSIjNmZhOGRjIiBkPSJtODkxLjg3OTMgMTQ4Ljk0NDg5bDU0LjI1NDU3OCAwbDAgNDEuNTk1Nzk1bC01NC4yNTQ1NzggMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im04OTEuODc5MyAxOTAuNTQwNjhsNTQuMjU0NTc4IDBsMCA0MS41OTU4MWwtNTQuMjU0NTc4IDBsMCAtNDEuNTk1ODF6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im04OTEuODc5MyAyMzIuMTM2NDlsNTQuMjU0NTc4IDBsMCA0MS41OTU3OGwtNTQuMjU0NTc4IDBsMCAtNDEuNTk1Nzh6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im04OTEuODc5MyAyNzMuNzMyMjdsNTQuMjU0NTc4IDBsMCA0MS41OTU4MjVsLTU0LjI1NDU3OCAwbDAgLTQxLjU5NTgyNXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgZmlsbD0iIzlmYzVlOCIgZD0ibTg5MS44NzkzIDMxNS4zMjgxbDU0LjI1NDU3OCAwbDAgNDEuNTk1Nzk1bC01NC4yNTQ1NzggMGwwIC00MS41OTU3OTV6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiIGZpbGw9IiM5ZmM1ZTgiIGQ9Im04OTEuODc5MyAzNTYuOTIzOWw1NC4yNTQ1NzggMGwwIDQxLjU5NTc5NWwtNTQuMjU0NTc4IDBsMCAtNDEuNTk1Nzk1eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01NjYuMzUxNyAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im02MjAuNjA2MyAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im02NzQuODYwOSAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im03MjkuMTE1NSAxNDguNDQ2MmwwIDI1MC41NzIxNyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im03ODMuMzcwMDYgMTQ4LjQ0NjJsMCAyNTAuNTcyMTciIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtODM3LjYyNDcgMTQ4LjQ0NjJsMCAyNTAuNTcyMTciIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtODkxLjg3OTMgMTQ4LjQ0NjJsMCAyNTAuNTcyMTciIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtOTQ2LjEzMzg1IDE0OC40NDYybDAgMjUwLjU3MjE3IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2NS44NTMgMTQ4Ljk0NDg5bDM4MC43Nzk1NCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2NS44NTMgMTkwLjU0MDY4bDM4MC43Nzk1NCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2NS44NTMgMjMyLjEzNjQ5bDM4MC43Nzk1NCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2NS44NTMgMjczLjczMjI3bDM4MC43Nzk1NCAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBzdHJva2U9IiM5ZTllOWUiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU2NS44NTMgMzE1LjMyODFsMzgwLjc3OTU0IDAiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIHN0cm9rZT0iIzllOWU5ZSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNTY1Ljg1MyAzNTYuOTIzOWwzODAuNzc5NTQgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggc3Ryb2tlPSIjOWU5ZTllIiBzdHJva2Utd2lkdGg9IjEuMCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGQ9Im01NjUuODUzIDM5OC41MTk2OGwzODAuNzc5NTQgMCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjAiIGQ9Im00MDYuNTE5NjggMjczLjczMjI3bDE0Ni45NjA2IDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIHN0cm9rZT0iIzU5NTk1OSIgc3Ryb2tlLXdpZHRoPSIxLjAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBkPSJtNDA2LjUxOTY4IDI3My43MzIyN2wxNDAuOTYwNiAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48cGF0aCBmaWxsPSIjNTk1OTU5IiBzdHJva2U9IiM1OTU5NTkiIHN0cm9rZS13aWR0aD0iMS4wIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgZD0ibTU0Ny40ODAzIDI3NS4zODRsNC41MzgxNDcgLTEuNjUxNzMzNGwtNC41MzgxNDcgLTEuNjUxNzMzNHoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=" /></p>
+<p>IMPORTANT : Before diving into the details of the package and its
+possibilities, you need to know there’s a special way of using the
+functions in this package. We will take a look at a new symbol called
+pipe operator : “%&gt;%”. This symbol is used to link several operations
+(functions) to achieve the desired result.</p>
+<pre class="r"><code>your_dataset %&gt;% 
+  function1(...) %&gt;%
+  function2(...)</code></pre>
+<p>Here the functions correspond tot he function available in
+<em>dplyr</em> package. Let’s take a look at some of the most important
+functions.</p>
+<div id="filter-function" class="section level2">
+<h2><em>filter</em> function</h2>
+<p>The first function we will see is the <em>filter</em> function. This
+function allows you to extract the row(s) you are interested in based on
+a condition in column(s).</p>
+<pre class="r"><code>?dplyr::filter</code></pre>
+<p>Example : Extract every storm that occurred in 2000</p>
+<pre class="r"><code>storms %&gt;% 
+  filter(year == 2000)</code></pre>
 <details>
 <summary>
-Solution
+filter by year 2000
 </summary>
-<pre><code>[1] 0.49
-
-The value of the first row and the second column.
- </code></pre>
+<pre><code># A tibble: 449 × 13
+   name      year month   day  hour   lat  long status              category  wind pressure tropicalstorm_force_diameter hurricane_force_diameter
+   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;                  &lt;dbl&gt; &lt;int&gt;    &lt;int&gt;                        &lt;int&gt;                    &lt;int&gt;
+ 1 AL012000  2000     6     7    18  21   -93   tropical depression       NA    25     1008                           NA                       NA
+ 2 AL012000  2000     6     8     0  20.9 -92.8 tropical depression       NA    25     1009                           NA                       NA
+ 3 AL012000  2000     6     8     6  20.7 -93.1 tropical depression       NA    25     1010                           NA                       NA
+ 4 AL012000  2000     6     8    12  20.8 -93.5 tropical depression       NA    25     1010                           NA                       NA
+ 5 AL022000  2000     6    23     0   9.5 -19.8 tropical depression       NA    25     1010                           NA                       NA
+ 6 AL022000  2000     6    23     6   9.6 -21   tropical depression       NA    30     1009                           NA                       NA
+ 7 AL022000  2000     6    23    12   9.9 -22.6 tropical depression       NA    30     1009                           NA                       NA
+ 8 AL022000  2000     6    23    18  10.2 -24.5 tropical depression       NA    30     1009                           NA                       NA
+ 9 AL022000  2000     6    24     0  10.1 -26.2 tropical depression       NA    30     1009                           NA                       NA
+10 AL022000  2000     6    24     6   9.9 -27.8 tropical depression       NA    30     1009                           NA                       NA
+# ℹ 439 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
 </details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[1,]</code></pre>
+<p>To filter by year, we refer to the year column and set that we want
+the year 2000 with the equality operator “==”.</p>
+</div>
+<div id="select-function" class="section level2">
+<h2><em>select</em> function</h2>
+<p>The function <em>select</em> allows to extract the columns(s).</p>
+<pre class="r"><code>?dplyr::select</code></pre>
+<p>Example : Extract name of storms and their status</p>
+<pre class="r"><code>storms %&gt;% 
+  select(name, status)</code></pre>
 <details>
 <summary>
-Solution
+select name and status
 </summary>
-<pre><code>                known.oncogenes Purity pathologic_stage gender                tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE Current reformed smoker for &gt; 15 years      0.9298746
-
-All values of the first row, with every columns.
- </code></pre>
-</details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[,2]</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>  [1] 0.49 0.50 0.49 0.48 0.57 0.61 0.82 0.87 0.46 0.67 0.55 0.59 0.62 0.70 0.47 0.62 0.45 0.59 0.63 0.82 0.73 0.69 0.58 0.50 0.79 0.49 0.59 0.51 0.55 0.56
- [31] 0.75 0.54 0.70 0.47 0.45 0.65 0.60 0.56 0.58 0.50 0.50 0.58 0.66 0.55 0.54 0.50 0.59 0.73 0.45 0.46 0.45 0.64 0.49 0.75 0.52 0.97 0.62 0.59 0.95 0.86
- [61] 0.84 0.60 0.69 0.57 0.75 0.90 0.60 0.48 0.60 0.69 0.47 0.49 0.55 0.52 0.63 0.67 0.65 0.65 0.56 0.83 0.46 0.81 0.53 0.47 0.57 0.47 0.61 0.56 0.64 0.58
- [91] 0.56 0.51 0.49 0.56 0.82 0.60 0.79 0.64 0.46 0.57 0.49 0.45 0.64 0.50 0.54 0.57 0.62 0.54 0.81 0.53 0.65 0.69 0.50 0.50 0.82 0.70 0.45 0.52 0.48 0.59
-[121] 0.46 0.51 0.57 0.61 0.76 0.71 0.59 0.65 0.46 0.45 0.70 0.48 0.71 0.69 0.56 0.65 0.80 0.55 0.53 0.55 0.63 0.48 0.45 0.53 0.62 0.57 0.77 0.47 0.62 0.61
-[151] 0.58 0.70 0.64 0.64 0.62 0.50 0.49 0.63 0.68 0.62 0.60 0.60 0.46 0.55 0.50 0.82 0.80 0.90 0.75 0.68 0.63 0.84 0.61 0.60 0.78 0.74 0.52 0.59 0.75 0.64
-[181] 0.46 0.79 0.49 0.48 0.51 0.46 0.65 0.67 0.73 0.74 0.51 0.56 0.50 0.45 0.54 0.72 0.57 0.58 1.00 0.79 0.49 0.50 0.67 0.62 0.85 0.62 0.50 0.45 0.77 0.55
-[211] 0.45 0.76 0.55 0.53 0.66 0.71 0.47 0.53 0.57 0.67 0.55 0.59 0.61 0.82 0.53 0.48 0.48 0.55 0.69 0.96 0.57 0.52 0.66 0.48 0.76 0.53 0.83 0.48 0.46 0.59
-[241] 0.59 0.45 0.87 0.55 0.58 0.62
-
-All values of the second columns, with every rows.
- </code></pre>
-</details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[,c(1:4)]</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>                known.oncogenes Purity pathologic_stage gender
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE
-TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE
-TCGA.05.4384.01            RIT1   0.49       Stage IIIA   MALE
-TCGA.05.4389.01        BRAF_act   0.48         Stage IA   MALE
-TCGA.05.4390.01            KRAS   0.57         Stage IB FEMALE
-TCGA.05.4395.01            KRAS   0.61       Stage IIIB   MALE
-TCGA.05.4396.01            None   0.82       Stage IIIB   MALE
-TCGA.05.4397.01            None   0.87        Stage IIB   MALE
-TCGA.05.4403.01            KRAS   0.46         Stage IB   MALE
-TCGA.05.4415.01            KRAS   0.67       Stage IIIB   MALE
-TCGA.05.4418.01            KRAS   0.55       Stage IIIA   MALE
-TCGA.05.4420.01            None   0.59         Stage IB   MALE
-TCGA.05.4422.01            None   0.62         Stage IB   MALE
-TCGA.05.4426.01            ROS1   0.70         Stage IB   MALE
-TCGA.05.4427.01            KRAS   0.47        Stage IIB FEMALE
-TCGA.05.4433.01            KRAS   0.62         Stage IB   MALE
-TCGA.05.4434.01           ERBB2   0.45         Stage IV FEMALE
-TCGA.05.5423.01            EGFR   0.59        Stage IIB   MALE
-TCGA.05.5428.01        BRAF.non   0.63        Stage IIA   MALE
-TCGA.05.5429.01            None   0.82       Stage IIIA   MALE
-TCGA.05.5715.01           ERBB2   0.73         Stage IB FEMALE
-TCGA.35.3615.01            KRAS   0.69         Stage IB   MALE
-TCGA.35.5375.01            None   0.58       Stage IIIA   MALE
-TCGA.38.4628.01            EGFR   0.50        Stage IIB FEMALE
-TCGA.38.4630.01           ERBB2   0.79         Stage IB FEMALE
-TCGA.38.4631.01             NF1   0.49         Stage IB FEMALE
-TCGA.44.2666.01        BRAF_act   0.59         Stage IB   MALE
-TCGA.44.3919.01           ERBB2   0.51         Stage IA FEMALE
-TCGA.44.4112.01            None   0.55         Stage IB FEMALE
-TCGA.44.5643.01            None   0.56       Stage IIIA   MALE
-TCGA.44.5644.01             NF1   0.75         Stage IB FEMALE
-TCGA.44.5645.01            EGFR   0.54         Stage IA FEMALE
-TCGA.44.6146.01            KRAS   0.70        Stage IIB   MALE
-TCGA.44.6147.01            EGFR   0.47         Stage IA FEMALE
-TCGA.44.6774.01        BRAF.non   0.45       Stage IIIA FEMALE
-TCGA.44.6776.01            KRAS   0.65         Stage IA FEMALE
-TCGA.44.6779.01            RIT1   0.60        Stage IIB FEMALE
-TCGA.44.7659.01            KRAS   0.56         Stage IA   MALE
-TCGA.44.7660.01            None   0.58         Stage IB   MALE
-TCGA.44.7669.01            None   0.50        Stage IIA   MALE
-TCGA.44.7670.01            None   0.50        Stage IIA FEMALE
-TCGA.44.7671.01            KRAS   0.58         Stage IB   MALE
-TCGA.44.8117.01            None   0.66         Stage IB FEMALE
-TCGA.44.8119.01             NF1   0.55        Stage IIB   MALE
-TCGA.44.8120.01            None   0.54         Stage IB   MALE
-TCGA.44.A47B.01           ERBB2   0.50         Stage IB   MALE
-TCGA.44.A4SU.01            EGFR   0.59         Stage IA FEMALE
-TCGA.49.4486.01            None   0.73         Stage IA   MALE
-TCGA.49.4488.01             NF1   0.45         Stage IA FEMALE
-TCGA.49.4494.01            EGFR   0.46       Stage IIIA   MALE
-TCGA.49.4505.01            KRAS   0.45        Stage IIB FEMALE
-TCGA.49.4510.01            KRAS   0.64        Stage IIB FEMALE
-TCGA.49.6742.01            None   0.49        Stage IIB   MALE
-TCGA.49.AAR9.01            None   0.75        Stage IIB   MALE
-TCGA.49.AARQ.01            KRAS   0.52          Stage I FEMALE
-TCGA.49.AARR.01            None   0.97         Stage IA   MALE
-TCGA.4B.A93V.01            KRAS   0.62         Stage IA FEMALE
-TCGA.50.5051.01            KRAS   0.59       Stage IIIA FEMALE
-TCGA.50.5930.01        BRAF.non   0.95       Stage IIIA   MALE
-TCGA.50.5931.01            None   0.86         Stage IB FEMALE
-TCGA.50.5932.01            KRAS   0.84        Stage IIB   MALE
-TCGA.50.5936.01            KRAS   0.60       Stage IIIA   MALE
-TCGA.50.5942.01        BRAF_act   0.69         Stage IA FEMALE
-TCGA.50.5944.01            EGFR   0.57         Stage IA FEMALE
-TCGA.50.5946.01        BRAF_act   0.75         Stage IA   MALE
-TCGA.50.6591.01            EGFR   0.90         Stage IV FEMALE
-TCGA.50.6594.01        BRAF.non   0.60       Stage IIIA FEMALE
-TCGA.50.6597.01             MET   0.48         Stage IB FEMALE
-TCGA.50.8457.01            KRAS   0.60         Stage IA FEMALE
-TCGA.53.7624.01            None   0.69         Stage IV FEMALE
-TCGA.53.A4EZ.01        BRAF.non   0.47        Stage IIA   MALE
-TCGA.55.1592.01             NF1   0.49         Stage IA   MALE
-TCGA.55.1594.01            None   0.55       Stage IIIA   MALE
-TCGA.55.1595.01            KRAS   0.52         Stage IA FEMALE
-TCGA.55.1596.01            RIT1   0.63        Stage IIB   MALE
-TCGA.55.5899.01            None   0.67         Stage IA   MALE
-TCGA.55.6543.01            None   0.65         Stage IA FEMALE
-TCGA.55.6968.01        BRAF.non   0.65         Stage IV   MALE
-TCGA.55.6970.01            KRAS   0.56       Stage IIIA FEMALE
-TCGA.55.6972.01            None   0.83         Stage IB   MALE
-TCGA.55.6975.01            KRAS   0.46        Stage IIB   MALE
-TCGA.55.6984.01            KRAS   0.81        Stage IIB FEMALE
-TCGA.55.7227.01          MAP2K1   0.53       Stage IIIA   MALE
-TCGA.55.7283.01            KRAS   0.47       Stage IIIA FEMALE
-TCGA.55.7570.01            None   0.57         Stage IA   MALE
-TCGA.55.7576.01            KRAS   0.47         Stage IB   MALE
-TCGA.55.7725.01            KRAS   0.61         Stage IA FEMALE
-TCGA.55.7727.01            None   0.56       Stage IIIA   MALE
-TCGA.55.7903.01        BRAF_act   0.64         Stage IA   MALE
-TCGA.55.7910.01            KRAS   0.58        Stage IIA FEMALE
-TCGA.55.7914.01            KRAS   0.56        Stage IIA FEMALE
-TCGA.55.7994.01             NF1   0.51        Stage IIB   MALE
-TCGA.55.7995.01             NF1   0.49         Stage IA FEMALE
-TCGA.55.8085.01            None   0.56         Stage IA   MALE
-TCGA.55.8087.01            EGFR   0.82         Stage IB FEMALE
-TCGA.55.8091.01            None   0.60         Stage IB   MALE
-TCGA.55.8094.01            KRAS   0.79         Stage IV   MALE
-TCGA.55.8097.01            KRAS   0.64         Stage IA FEMALE
-TCGA.55.8206.01            EGFR   0.46         Stage IA   MALE
-TCGA.55.8207.01            KRAS   0.57         Stage IB   MALE
-TCGA.55.8299.01            KRAS   0.49         Stage IA FEMALE
-TCGA.55.8506.01            EGFR   0.45        Stage IIB FEMALE
-TCGA.55.8507.01            None   0.64         Stage IA   MALE
-TCGA.55.8513.01            None   0.50        Stage IIB FEMALE
-TCGA.55.8514.01            KRAS   0.54         Stage IB FEMALE
-TCGA.55.8615.01            KRAS   0.57       Stage IIIA   MALE
-TCGA.55.8620.01             MET   0.62         Stage IV   MALE
-TCGA.55.A492.01            None   0.54         Stage IA FEMALE
-TCGA.55.A494.01            KRAS   0.81         Stage IB FEMALE
-TCGA.62.8394.01            EGFR   0.53       Stage IIIB FEMALE
-TCGA.62.8395.01            None   0.65        Stage IIB FEMALE
-TCGA.62.8397.01            EGFR   0.69        Stage IIB FEMALE
-TCGA.62.8399.01            None   0.50       Stage IIIA   MALE
-TCGA.62.8402.01            EGFR   0.50       Stage IIIA FEMALE
-TCGA.62.A46O.01            None   0.82         Stage IB FEMALE
-TCGA.62.A46P.01            None   0.70         Stage IB   MALE
-TCGA.62.A46S.01            KRAS   0.45         Stage IB   MALE
-TCGA.62.A46V.01        BRAF_act   0.52         Stage IB FEMALE
-TCGA.62.A46Y.01            ROS1   0.48       Stage IIIA FEMALE
-TCGA.62.A470.01            None   0.59         Stage IB   MALE
-TCGA.62.A471.01            None   0.46        Stage IIB   MALE
-TCGA.64.1676.01          MAP2K1   0.51         Stage IA   MALE
-TCGA.64.1678.01          MAP2K1   0.57        Stage IIA FEMALE
-TCGA.64.1680.01            ROS1   0.61         Stage IV   MALE
-TCGA.64.5774.01            KRAS   0.76         Stage IB   MALE
-TCGA.64.5775.01            KRAS   0.71       Stage IIIA   MALE
-TCGA.64.5778.01            KRAS   0.59         Stage IB   MALE
-TCGA.67.3770.01            EGFR   0.65         Stage IA FEMALE
-TCGA.67.3771.01            None   0.46         Stage IA FEMALE
-TCGA.67.3772.01            EGFR   0.45         Stage IB FEMALE
-TCGA.67.3773.01            KRAS   0.70         Stage IB FEMALE
-TCGA.67.3774.01            KRAS   0.48         Stage IB FEMALE
-TCGA.67.4679.01            KRAS   0.71         Stage IB   MALE
-TCGA.67.6215.01             ALK   0.69         Stage IB FEMALE
-TCGA.67.6216.01             ALK   0.56         Stage IA FEMALE
-TCGA.69.7760.01            EGFR   0.65        Stage IIB   MALE
-TCGA.69.7764.01             NF1   0.80         Stage IA   MALE
-TCGA.69.7973.01            KRAS   0.55         Stage IB FEMALE
-TCGA.69.7979.01             NF1   0.53         Stage IB FEMALE
-TCGA.69.7980.01            KRAS   0.55          Stage I FEMALE
-TCGA.71.6725.01            EGFR   0.63         Stage IB FEMALE
-TCGA.73.4662.01            KRAS   0.48         Stage IA FEMALE
-TCGA.73.4666.01            RIT1   0.45         Stage IV FEMALE
-TCGA.73.4668.01            KRAS   0.53        Stage IIB FEMALE
-TCGA.73.4670.01            None   0.62         Stage IV FEMALE
-TCGA.73.4675.01            RIT1   0.57       Stage IIIA   MALE
-TCGA.73.4676.01             NF1   0.77        Stage IIA   MALE
-TCGA.73.4677.01            KRAS   0.47         Stage IA   MALE
-TCGA.73.7498.01            KRAS   0.62         Stage IA FEMALE
-TCGA.73.A9RS.01            None   0.61        Stage IIB   MALE
-TCGA.75.5146.01        BRAF_act   0.58         Stage IB   MALE
-TCGA.75.6206.01            KRAS   0.70         Stage IB   MALE
-TCGA.75.6207.01            EGFR   0.64       Stage IIIA   MALE
-TCGA.75.6214.01            None   0.64       Stage IIIA FEMALE
-TCGA.75.7027.01            KRAS   0.62         Stage IB   MALE
-TCGA.75.7030.01            KRAS   0.50        Stage IIB   MALE
-TCGA.75.7031.01            None   0.49         Stage IB FEMALE
-TCGA.78.7145.01            KRAS   0.63         Stage IV FEMALE
-TCGA.78.7146.01             NF1   0.68       Stage IIIA FEMALE
-TCGA.78.7147.01            EGFR   0.62        Stage IIB FEMALE
-TCGA.78.7148.01            KRAS   0.60        Stage IIB   MALE
-TCGA.78.7149.01            None   0.60       Stage IIIB   MALE
-TCGA.78.7150.01            None   0.46        Stage IIB   MALE
-TCGA.78.7152.01            None   0.55         Stage IB   MALE
-TCGA.78.7154.01             MET   0.50       Stage IIIA   MALE
-TCGA.78.7155.01            None   0.82         Stage IB   MALE
-TCGA.78.7156.01            None   0.80         Stage IV   MALE
-TCGA.78.7158.01            None   0.90       Stage IIIB FEMALE
-TCGA.78.7161.01            KRAS   0.75        Stage IIB FEMALE
-TCGA.78.7163.01             ALK   0.68         Stage IB   MALE
-TCGA.78.7166.01            KRAS   0.63        Stage IIB   MALE
-TCGA.78.7167.01            KRAS   0.84         Stage IV   MALE
-TCGA.78.7220.01             MET   0.61       Stage IIIA FEMALE
-TCGA.78.7535.01             NF1   0.60         Stage IB   MALE
-TCGA.78.7536.01            None   0.78       Stage IIIA   MALE
-TCGA.78.7537.01        BRAF.non   0.74         Stage IB   MALE
-TCGA.78.7539.01            KRAS   0.52        Stage IIA FEMALE
-TCGA.78.7540.01            KRAS   0.59         Stage IB FEMALE
-TCGA.78.7633.01        BRAF.non   0.75         Stage IA   MALE
-TCGA.78.8648.01            None   0.64        Stage IIB FEMALE
-TCGA.78.8655.01            KRAS   0.46         Stage IA FEMALE
-TCGA.78.8662.01        BRAF.non   0.79         Stage IB FEMALE
-TCGA.80.5607.01        BRAF_act   0.49        Stage IIB FEMALE
-TCGA.80.5608.01            KRAS   0.48         Stage IA FEMALE
-TCGA.80.5611.01            None   0.51         Stage IB   MALE
-TCGA.86.6562.01           ERBB2   0.46        Stage IIA   MALE
-TCGA.86.7713.01            KRAS   0.65        Stage IIA   MALE
-TCGA.86.7714.01        BRAF_act   0.67       Stage IIIA FEMALE
-TCGA.86.7955.01            None   0.73         Stage IB   MALE
-TCGA.86.8054.01            KRAS   0.74        Stage IIB   MALE
-TCGA.86.8074.01            EGFR   0.51        Stage IIA FEMALE
-TCGA.86.8278.01            ROS1   0.56        Stage IIB FEMALE
-TCGA.86.8279.01             NF1   0.50        Stage IIA   MALE
-TCGA.86.8280.01            EGFR   0.45        Stage IIA FEMALE
-TCGA.86.8281.01            KRAS   0.54         Stage IA   MALE
-TCGA.86.8358.01            None   0.72         Stage IB   MALE
-TCGA.86.8669.01             NF1   0.57         Stage IA   MALE
-TCGA.86.8674.01            KRAS   0.58        Stage IIA   MALE
-TCGA.86.A4P7.01            EGFR   1.00         Stage IB FEMALE
-TCGA.86.A4P8.01             ALK   0.79       Stage IIIA FEMALE
-TCGA.91.6829.01             NF1   0.49         Stage IB   MALE
-TCGA.91.6831.01            None   0.50         Stage IB   MALE
-TCGA.91.6836.01            KRAS   0.67         Stage IB FEMALE
-TCGA.91.6840.01            None   0.62         Stage IA FEMALE
-TCGA.91.6847.01            EGFR   0.85         Stage IB FEMALE
-TCGA.91.6849.01            KRAS   0.62       Stage IIIA FEMALE
-TCGA.91.8496.01            EGFR   0.50         Stage IB FEMALE
-TCGA.91.8497.01            KRAS   0.45         Stage IA FEMALE
-TCGA.91.8499.01            None   0.77         Stage IA FEMALE
-TCGA.91.A4BD.01        BRAF_act   0.55        Stage IIA   MALE
-TCGA.93.7348.01             MET   0.45         Stage IA FEMALE
-TCGA.95.7043.01             NF1   0.76         Stage IA FEMALE
-TCGA.95.7562.01            KRAS   0.55        Stage IIA   MALE
-TCGA.95.7567.01            KRAS   0.53        Stage IIB   MALE
-TCGA.95.7947.01           ERBB2   0.66         Stage IA   MALE
-TCGA.95.7948.01            None   0.71         Stage IB FEMALE
-TCGA.95.8039.01             MET   0.47         Stage IA   MALE
-TCGA.95.8494.01            None   0.53        Stage IIA   MALE
-TCGA.95.A4VK.01            KRAS   0.57       Stage IIIA FEMALE
-TCGA.97.7546.01            None   0.67         Stage IA FEMALE
-TCGA.97.7547.01             NF1   0.55         Stage IB FEMALE
-TCGA.97.7937.01            None   0.59         Stage IB   MALE
-TCGA.97.7938.01            KRAS   0.61         Stage IA FEMALE
-TCGA.97.8171.01            EGFR   0.82         Stage IV   MALE
-TCGA.97.8176.01            KRAS   0.53       Stage IIIA   MALE
-TCGA.97.8179.01            None   0.48         Stage IA   MALE
-TCGA.97.8547.01            EGFR   0.48       Stage IIIA FEMALE
-TCGA.97.A4M0.01            KRAS   0.55         Stage IB FEMALE
-TCGA.97.A4M3.01            None   0.69         Stage IA FEMALE
-TCGA.99.AA5R.01            None   0.96         Stage IA FEMALE
-TCGA.J2.A4AD.01            None   0.57         Stage IA FEMALE
-TCGA.J2.A4AE.01             MET   0.52         Stage IA FEMALE
-TCGA.L4.A4E5.01             NF1   0.66          Stage I FEMALE
-TCGA.L9.A443.01            KRAS   0.48         Stage IA FEMALE
-TCGA.L9.A50W.01            EGFR   0.76        Stage IIA   MALE
-TCGA.L9.A5IP.01             NF1   0.53         Stage IV FEMALE
-TCGA.L9.A7SV.01            None   0.83        Stage IIA   MALE
-TCGA.MN.A4N1.01        BRAF_act   0.48        Stage IIA   MALE
-TCGA.MP.A4SW.01            EGFR   0.46        Stage IIB   MALE
-TCGA.MP.A4T6.01            EGFR   0.59       Stage IIIA FEMALE
-TCGA.MP.A4T8.01            KRAS   0.59       Stage IIIA   MALE
-TCGA.MP.A4TC.01            None   0.45       Stage IIIA   MALE
-TCGA.MP.A5C7.01            None   0.87         Stage IB FEMALE
-TCGA.NJ.A4YF.01            None   0.55         Stage IA FEMALE
-TCGA.NJ.A4YI.01            KRAS   0.58       Stage IIIA FEMALE
-TCGA.NJ.A7XG.01            ROS1   0.62       Stage IIIA   MALE
-
-All values of the column 1 to 4, with every rows.
- </code></pre>
-</details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[c(1:4),]</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>                known.oncogenes Purity pathologic_stage gender                     tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE      Current reformed smoker for &gt; 15 years      0.9298746
-TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE Current reformed smoker for &lt; or = 15 years      0.4811406
-TCGA.05.4384.01            RIT1   0.49       Stage IIIA   MALE      Current reformed smoker for &gt; 15 years      0.5672071
-TCGA.05.4389.01        BRAF_act   0.48         Stage IA   MALE      Current reformed smoker for &gt; 15 years      0.3474326
-
-All values of the rows 1 to 4, with every columns.
-</code></pre>
-</details>
-<hr />
-<pre class="r"><code>TCGA_LUAD[,c(2,1)]</code></pre>
-<details>
-<summary>
-Solution
-</summary>
-<pre><code>                Purity known.oncogenes
-TCGA.05.4249.01   0.49            KRAS
-TCGA.05.4250.01   0.50            KRAS
-TCGA.05.4384.01   0.49            RIT1
-TCGA.05.4389.01   0.48        BRAF_act
-TCGA.05.4390.01   0.57            KRAS
-TCGA.05.4395.01   0.61            KRAS
-TCGA.05.4396.01   0.82            None
-TCGA.05.4397.01   0.87            None
-TCGA.05.4403.01   0.46            KRAS
-TCGA.05.4415.01   0.67            KRAS
-TCGA.05.4418.01   0.55            KRAS
-TCGA.05.4420.01   0.59            None
-TCGA.05.4422.01   0.62            None
-TCGA.05.4426.01   0.70            ROS1
-TCGA.05.4427.01   0.47            KRAS
-TCGA.05.4433.01   0.62            KRAS
-TCGA.05.4434.01   0.45           ERBB2
-TCGA.05.5423.01   0.59            EGFR
-TCGA.05.5428.01   0.63        BRAF.non
-TCGA.05.5429.01   0.82            None
-TCGA.05.5715.01   0.73           ERBB2
-TCGA.35.3615.01   0.69            KRAS
-TCGA.35.5375.01   0.58            None
-TCGA.38.4628.01   0.50            EGFR
-TCGA.38.4630.01   0.79           ERBB2
-TCGA.38.4631.01   0.49             NF1
-TCGA.44.2666.01   0.59        BRAF_act
-TCGA.44.3919.01   0.51           ERBB2
-TCGA.44.4112.01   0.55            None
-TCGA.44.5643.01   0.56            None
-TCGA.44.5644.01   0.75             NF1
-TCGA.44.5645.01   0.54            EGFR
-TCGA.44.6146.01   0.70            KRAS
-TCGA.44.6147.01   0.47            EGFR
-TCGA.44.6774.01   0.45        BRAF.non
-TCGA.44.6776.01   0.65            KRAS
-TCGA.44.6779.01   0.60            RIT1
-TCGA.44.7659.01   0.56            KRAS
-TCGA.44.7660.01   0.58            None
-TCGA.44.7669.01   0.50            None
-TCGA.44.7670.01   0.50            None
-TCGA.44.7671.01   0.58            KRAS
-TCGA.44.8117.01   0.66            None
-TCGA.44.8119.01   0.55             NF1
-TCGA.44.8120.01   0.54            None
-TCGA.44.A47B.01   0.50           ERBB2
-TCGA.44.A4SU.01   0.59            EGFR
-TCGA.49.4486.01   0.73            None
-TCGA.49.4488.01   0.45             NF1
-TCGA.49.4494.01   0.46            EGFR
-TCGA.49.4505.01   0.45            KRAS
-TCGA.49.4510.01   0.64            KRAS
-TCGA.49.6742.01   0.49            None
-TCGA.49.AAR9.01   0.75            None
-TCGA.49.AARQ.01   0.52            KRAS
-TCGA.49.AARR.01   0.97            None
-TCGA.4B.A93V.01   0.62            KRAS
-TCGA.50.5051.01   0.59            KRAS
-TCGA.50.5930.01   0.95        BRAF.non
-TCGA.50.5931.01   0.86            None
-TCGA.50.5932.01   0.84            KRAS
-TCGA.50.5936.01   0.60            KRAS
-TCGA.50.5942.01   0.69        BRAF_act
-TCGA.50.5944.01   0.57            EGFR
-TCGA.50.5946.01   0.75        BRAF_act
-TCGA.50.6591.01   0.90            EGFR
-TCGA.50.6594.01   0.60        BRAF.non
-TCGA.50.6597.01   0.48             MET
-TCGA.50.8457.01   0.60            KRAS
-TCGA.53.7624.01   0.69            None
-TCGA.53.A4EZ.01   0.47        BRAF.non
-TCGA.55.1592.01   0.49             NF1
-TCGA.55.1594.01   0.55            None
-TCGA.55.1595.01   0.52            KRAS
-TCGA.55.1596.01   0.63            RIT1
-TCGA.55.5899.01   0.67            None
-TCGA.55.6543.01   0.65            None
-TCGA.55.6968.01   0.65        BRAF.non
-TCGA.55.6970.01   0.56            KRAS
-TCGA.55.6972.01   0.83            None
-TCGA.55.6975.01   0.46            KRAS
-TCGA.55.6984.01   0.81            KRAS
-TCGA.55.7227.01   0.53          MAP2K1
-TCGA.55.7283.01   0.47            KRAS
-TCGA.55.7570.01   0.57            None
-TCGA.55.7576.01   0.47            KRAS
-TCGA.55.7725.01   0.61            KRAS
-TCGA.55.7727.01   0.56            None
-TCGA.55.7903.01   0.64        BRAF_act
-TCGA.55.7910.01   0.58            KRAS
-TCGA.55.7914.01   0.56            KRAS
-TCGA.55.7994.01   0.51             NF1
-TCGA.55.7995.01   0.49             NF1
-TCGA.55.8085.01   0.56            None
-TCGA.55.8087.01   0.82            EGFR
-TCGA.55.8091.01   0.60            None
-TCGA.55.8094.01   0.79            KRAS
-TCGA.55.8097.01   0.64            KRAS
-TCGA.55.8206.01   0.46            EGFR
-TCGA.55.8207.01   0.57            KRAS
-TCGA.55.8299.01   0.49            KRAS
-TCGA.55.8506.01   0.45            EGFR
-TCGA.55.8507.01   0.64            None
-TCGA.55.8513.01   0.50            None
-TCGA.55.8514.01   0.54            KRAS
-TCGA.55.8615.01   0.57            KRAS
-TCGA.55.8620.01   0.62             MET
-TCGA.55.A492.01   0.54            None
-TCGA.55.A494.01   0.81            KRAS
-TCGA.62.8394.01   0.53            EGFR
-TCGA.62.8395.01   0.65            None
-TCGA.62.8397.01   0.69            EGFR
-TCGA.62.8399.01   0.50            None
-TCGA.62.8402.01   0.50            EGFR
-TCGA.62.A46O.01   0.82            None
-TCGA.62.A46P.01   0.70            None
-TCGA.62.A46S.01   0.45            KRAS
-TCGA.62.A46V.01   0.52        BRAF_act
-TCGA.62.A46Y.01   0.48            ROS1
-TCGA.62.A470.01   0.59            None
-TCGA.62.A471.01   0.46            None
-TCGA.64.1676.01   0.51          MAP2K1
-TCGA.64.1678.01   0.57          MAP2K1
-TCGA.64.1680.01   0.61            ROS1
-TCGA.64.5774.01   0.76            KRAS
-TCGA.64.5775.01   0.71            KRAS
-TCGA.64.5778.01   0.59            KRAS
-TCGA.67.3770.01   0.65            EGFR
-TCGA.67.3771.01   0.46            None
-TCGA.67.3772.01   0.45            EGFR
-TCGA.67.3773.01   0.70            KRAS
-TCGA.67.3774.01   0.48            KRAS
-TCGA.67.4679.01   0.71            KRAS
-TCGA.67.6215.01   0.69             ALK
-TCGA.67.6216.01   0.56             ALK
-TCGA.69.7760.01   0.65            EGFR
-TCGA.69.7764.01   0.80             NF1
-TCGA.69.7973.01   0.55            KRAS
-TCGA.69.7979.01   0.53             NF1
-TCGA.69.7980.01   0.55            KRAS
-TCGA.71.6725.01   0.63            EGFR
-TCGA.73.4662.01   0.48            KRAS
-TCGA.73.4666.01   0.45            RIT1
-TCGA.73.4668.01   0.53            KRAS
-TCGA.73.4670.01   0.62            None
-TCGA.73.4675.01   0.57            RIT1
-TCGA.73.4676.01   0.77             NF1
-TCGA.73.4677.01   0.47            KRAS
-TCGA.73.7498.01   0.62            KRAS
-TCGA.73.A9RS.01   0.61            None
-TCGA.75.5146.01   0.58        BRAF_act
-TCGA.75.6206.01   0.70            KRAS
-TCGA.75.6207.01   0.64            EGFR
-TCGA.75.6214.01   0.64            None
-TCGA.75.7027.01   0.62            KRAS
-TCGA.75.7030.01   0.50            KRAS
-TCGA.75.7031.01   0.49            None
-TCGA.78.7145.01   0.63            KRAS
-TCGA.78.7146.01   0.68             NF1
-TCGA.78.7147.01   0.62            EGFR
-TCGA.78.7148.01   0.60            KRAS
-TCGA.78.7149.01   0.60            None
-TCGA.78.7150.01   0.46            None
-TCGA.78.7152.01   0.55            None
-TCGA.78.7154.01   0.50             MET
-TCGA.78.7155.01   0.82            None
-TCGA.78.7156.01   0.80            None
-TCGA.78.7158.01   0.90            None
-TCGA.78.7161.01   0.75            KRAS
-TCGA.78.7163.01   0.68             ALK
-TCGA.78.7166.01   0.63            KRAS
-TCGA.78.7167.01   0.84            KRAS
-TCGA.78.7220.01   0.61             MET
-TCGA.78.7535.01   0.60             NF1
-TCGA.78.7536.01   0.78            None
-TCGA.78.7537.01   0.74        BRAF.non
-TCGA.78.7539.01   0.52            KRAS
-TCGA.78.7540.01   0.59            KRAS
-TCGA.78.7633.01   0.75        BRAF.non
-TCGA.78.8648.01   0.64            None
-TCGA.78.8655.01   0.46            KRAS
-TCGA.78.8662.01   0.79        BRAF.non
-TCGA.80.5607.01   0.49        BRAF_act
-TCGA.80.5608.01   0.48            KRAS
-TCGA.80.5611.01   0.51            None
-TCGA.86.6562.01   0.46           ERBB2
-TCGA.86.7713.01   0.65            KRAS
-TCGA.86.7714.01   0.67        BRAF_act
-TCGA.86.7955.01   0.73            None
-TCGA.86.8054.01   0.74            KRAS
-TCGA.86.8074.01   0.51            EGFR
-TCGA.86.8278.01   0.56            ROS1
-TCGA.86.8279.01   0.50             NF1
-TCGA.86.8280.01   0.45            EGFR
-TCGA.86.8281.01   0.54            KRAS
-TCGA.86.8358.01   0.72            None
-TCGA.86.8669.01   0.57             NF1
-TCGA.86.8674.01   0.58            KRAS
-TCGA.86.A4P7.01   1.00            EGFR
-TCGA.86.A4P8.01   0.79             ALK
-TCGA.91.6829.01   0.49             NF1
-TCGA.91.6831.01   0.50            None
-TCGA.91.6836.01   0.67            KRAS
-TCGA.91.6840.01   0.62            None
-TCGA.91.6847.01   0.85            EGFR
-TCGA.91.6849.01   0.62            KRAS
-TCGA.91.8496.01   0.50            EGFR
-TCGA.91.8497.01   0.45            KRAS
-TCGA.91.8499.01   0.77            None
-TCGA.91.A4BD.01   0.55        BRAF_act
-TCGA.93.7348.01   0.45             MET
-TCGA.95.7043.01   0.76             NF1
-TCGA.95.7562.01   0.55            KRAS
-TCGA.95.7567.01   0.53            KRAS
-TCGA.95.7947.01   0.66           ERBB2
-TCGA.95.7948.01   0.71            None
-TCGA.95.8039.01   0.47             MET
-TCGA.95.8494.01   0.53            None
-TCGA.95.A4VK.01   0.57            KRAS
-TCGA.97.7546.01   0.67            None
-TCGA.97.7547.01   0.55             NF1
-TCGA.97.7937.01   0.59            None
-TCGA.97.7938.01   0.61            KRAS
-TCGA.97.8171.01   0.82            EGFR
-TCGA.97.8176.01   0.53            KRAS
-TCGA.97.8179.01   0.48            None
-TCGA.97.8547.01   0.48            EGFR
-TCGA.97.A4M0.01   0.55            KRAS
-TCGA.97.A4M3.01   0.69            None
-TCGA.99.AA5R.01   0.96            None
-TCGA.J2.A4AD.01   0.57            None
-TCGA.J2.A4AE.01   0.52             MET
-TCGA.L4.A4E5.01   0.66             NF1
-TCGA.L9.A443.01   0.48            KRAS
-TCGA.L9.A50W.01   0.76            EGFR
-TCGA.L9.A5IP.01   0.53             NF1
-TCGA.L9.A7SV.01   0.83            None
-TCGA.MN.A4N1.01   0.48        BRAF_act
-TCGA.MP.A4SW.01   0.46            EGFR
-TCGA.MP.A4T6.01   0.59            EGFR
-TCGA.MP.A4T8.01   0.59            KRAS
-TCGA.MP.A4TC.01   0.45            None
-TCGA.MP.A5C7.01   0.87            None
-TCGA.NJ.A4YF.01   0.55            None
-TCGA.NJ.A4YI.01   0.58            KRAS
-TCGA.NJ.A7XG.01   0.62            ROS1
-
-All values of the columns 1 and 2, inversely, with every rows.
-</code></pre>
+<pre><code># A tibble: 19,537 × 2
+   name  status             
+   &lt;chr&gt; &lt;fct&gt;              
+ 1 Amy   tropical depression
+ 2 Amy   tropical depression
+ 3 Amy   tropical depression
+ 4 Amy   tropical depression
+ 5 Amy   tropical depression
+ 6 Amy   tropical depression
+ 7 Amy   tropical depression
+ 8 Amy   tropical depression
+ 9 Amy   tropical storm     
+10 Amy   tropical storm     
+# ℹ 19,527 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
 </details>
 </div>
-<div id="section-7" class="section level2">
-<h2>————————————————————————————————————</h2>
+<div id="gather-function" class="section level2">
+<h2><em>gather</em> function</h2>
+<p><em>gather</em> function enables to gather columns into rows.</p>
+<pre class="r"><code>?dplyr::gather</code></pre>
+</div>
+<div id="spread-function" class="section level2">
+<h2><em>spread</em> function</h2>
+<p><em>spread</em> function do the invert of <em>gather</em> and enables
+to spread rows into columns</p>
+<pre class="r"><code>?dplyr::spread</code></pre>
 </div>
 </div>
 
