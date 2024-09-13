@@ -497,7 +497,7 @@ Key words to write on your favorite browser
 <li>Add another geometric shape: points</li>
 </ol>
 <p>This task consist of <strong>adding a new layer</strong> containing the points colored by known oncogenes. Which function should we use ? Note that there are two answers but one is more suitable for boxplot as it is adding some random noise to the positions in order to avoid overlaps.</p>
-<p>&lt;details&gt;</p>
+<details>
 <summary>
 Key words to write on your favorite browser
 </summary>
@@ -505,7 +505,7 @@ Key words to write on your favorite browser
 <li><code>R ggplot2 point</code></li>
 <li><code>R ggplot2 point boxplot</code></li>
 </ul>
-
+</details>
 <p><strong><em>Option 1</em></strong></p>
 <div class="cell">
 <details>
@@ -556,47 +556,28 @@ Key words to write on your favorite browser
 <p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<ol start="9" type="1">
-<li>Change boxplots for violin plots</li>
-</ol>
-<p>Search for the good geometric function.</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes, <span class="at">size=</span>Purity), <span class="at">shape=</span><span class="dv">17</span>, <span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 </section>
 <section id="create-a-density-plot" class="level2">
 <h2 class="anchored" data-anchor-id="create-a-density-plot">Create a density plot</h2>
-<p>Your goal is to produce the following plot showing the <strong>density distributions</strong> of the MAPK signature in function of the known oncogenes (use <code>palette.known.onco</code>). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the <strong>aspect ratio</strong>. Thanks to it, you can force to have squared plots for instance.</p>
+<p>Your goal is to produce the following density plot showing the <strong>density distributions</strong> of the MAPK signature in function of the known oncogenes (use <code>palette.known.onco</code>). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the <strong>aspect ratio</strong>. Thanks to it, you can force to have squared plots for instance.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ol type="1">
 <li>Identify what contain the axis.</li>
 </ol>
-<p>&lt;details&gt;</p>
+<details>
 <summary>
 Answer
 </summary>
 <p>The x-axis contains the value of the column <code>signature_MAPK</code> and the y-axis indicates the density of the distribution, the y-axis do not need to be specified.</p>
-
+</details>
 <ol start="2" type="1">
 <li>Make a list of the aesthetics you need to modify and layers that need to be added.</li>
 </ol>
-<p>&lt;details&gt;</p>
+<details>
 <summary>
 Answer
 </summary>
@@ -604,35 +585,67 @@ Answer
 <li><p>layers: the geometric shape, label of the x-axis, theme background, theme aspect ratio, custom color palette</p></li>
 <li><p>aesthetics: x-axis , color of the lines</p></li>
 </ul>
-
+</details>
 <ol start="3" type="1">
 <li>Write your code ! (Do not forget your best friend: the Web)</li>
 </ol>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>signature_MAPK)) <span class="sc">+</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="create-a-bar-plot" class="level2">
 <h2 class="anchored" data-anchor-id="create-a-bar-plot">Create a bar plot</h2>
-<p>Your goal is to produce the following plot showing the number of tumor harboring each known oncogene.</p>
+<p>Your goal is to produce the following <strong>bar plot</strong> showing the number of tumor from genders (column <code>gender</code> - play with the <strong>transparency</strong>) harboring each known oncogene. In this case the <strong>aspect ratio</strong> is inverse compared to the previous one.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ol type="1">
-<li><p>Identify what contain the axis.</p></li>
-<li><p>Make a list of the aesthetics you need to modify.</p></li>
-<li><p>Identify the appropriate geometric function.</p></li>
+<li>Identify what contain the axis.</li>
 </ol>
+<details>
+<summary>
+Answer
+</summary>
+<p>The x-axis indicates the number of sample harboring the known oncogene, the x-axis do not need to be specified. The y-axis indicates the known oncogenes. As a reminder, one would prefer to flip the coordinates but it is not mandatory.</p>
+</details>
+<ol start="2" type="1">
+<li>Make a list of the aesthetics you need to modify and layers that need to be added.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<ul>
+<li><p>layers: the geometric shape, label of the y-axis, theme background, theme aspect ratio, custom color palette</p></li>
+<li><p>aesthetics: y-axis , color of the lines, fill of the bars, transparency according to gender</p></li>
+</ul>
+</details>
+<ol start="3" type="1">
+<li>Write your code ! (Do not forget your best friend: the Web)</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>known.oncogenes, <span class="at">color=</span>known.oncogenes,<span class="at">alpha=</span>gender)) <span class="sc">+</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="display-expression-data" class="level2">
 <h2 class="anchored" data-anchor-id="display-expression-data">Display expression data</h2>

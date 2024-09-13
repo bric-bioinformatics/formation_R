@@ -302,7 +302,7 @@ ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
 
 This task consist of **adding a new layer** containing the points colored by known oncogenes. Which function should we use ? Note that there are two answers but one is more suitable for boxplot as it is adding some random noise to the positions in order to avoid overlaps.
 
-\<`details>`{=html}
+<details>
 
 <summary>Key words to write on your favorite browser</summary>
 
@@ -347,23 +347,9 @@ ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
   geom_jitter(aes(color=known.oncogenes, size=Purity), shape=17, alpha=0.5)
 ```
 
-9.  Change boxplots for violin plots
-
-Search for the good geometric function.
-
-```{r}
-ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
-  geom_violin(aes(color=known.oncogenes)) + 
-  labs(x="Known Oncogenes", y="MAPK activity signature") +
-  theme_bw() +
-  scale_colour_manual(values=palette.known.onco) +
-  coord_flip() +
-  geom_jitter(aes(color=known.oncogenes, size=Purity), shape=17, alpha=0.5)
-```
-
 ## Create a density plot
 
-Your goal is to produce the following plot showing the **density distributions** of the MAPK signature in function of the known oncogenes (use `palette.known.onco`). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the **aspect ratio**. Thanks to it, you can force to have squared plots for instance.
+Your goal is to produce the following density plot showing the **density distributions** of the MAPK signature in function of the known oncogenes (use `palette.known.onco`). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the **aspect ratio**. Thanks to it, you can force to have squared plots for instance.
 
 ```{r, echo=FALSE}
 ggplot(data = clinical, aes(x=signature_MAPK)) +
@@ -376,7 +362,7 @@ ggplot(data = clinical, aes(x=signature_MAPK)) +
 
 1.  Identify what contain the axis.
 
-\<`details>`{=html}
+<details>
 
 <summary>Answer</summary>
 
@@ -386,7 +372,7 @@ The x-axis contains the value of the column `signature_MAPK` and the y-axis indi
 
 2.  Make a list of the aesthetics you need to modify and layers that need to be added.
 
-\<`details>`{=html}
+<details>
 
 <summary>Answer</summary>
 
@@ -409,22 +395,53 @@ ggplot(data = clinical, aes(x=signature_MAPK)) +
 
 ## Create a bar plot
 
-Your goal is to produce the following plot showing the number of tumor harboring each known oncogene.
+Your goal is to produce the following **bar plot** showing the number of tumor from genders (column `gender` - play with the **transparency**) harboring each known oncogene. In this case the **aspect ratio** is inverse compared to the previous one.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=F, message=F}
 ggplot(data = clinical, aes(x=known.oncogenes)) +
-  geom_bar(aes(fill=known.oncogenes)) + 
+  geom_bar(aes(fill=known.oncogenes, color=known.oncogenes,alpha=gender)) + 
   labs(x="Known Oncogenes") +
   theme_bw() +
   scale_fill_manual(values=palette.known.onco) +
-  coord_flip()
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  theme(aspect.ratio = 2/1)
 ```
 
 1.  Identify what contain the axis.
 
-2.  Make a list of the aesthetics you need to modify.
+<details>
 
-3.  Identify the appropriate geometric function.
+<summary>Answer</summary>
+
+The x-axis indicates the number of sample harboring the known oncogene, the x-axis do not need to be specified. The y-axis indicates the known oncogenes. As a reminder, one would prefer to flip the coordinates but it is not mandatory.
+
+</details>
+
+2.  Make a list of the aesthetics you need to modify and layers that need to be added.
+
+<details>
+
+<summary>Answer</summary>
+
+-   layers: the geometric shape, label of the y-axis, theme background, theme aspect ratio, custom color palette
+
+-   aesthetics: y-axis , color of the lines, fill of the bars, transparency according to gender
+
+</details>
+
+3.  Write your code ! (Do not forget your best friend: the Web)
+
+```{r, eval=F}
+ggplot(data = clinical, aes(x=known.oncogenes)) +
+  geom_bar(aes(fill=known.oncogenes, color=known.oncogenes,alpha=gender)) + 
+  labs(x="Known Oncogenes") +
+  theme_bw() +
+  scale_fill_manual(values=palette.known.onco) +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  theme(aspect.ratio = 2/1)
+```
 
 ## Display expression data
 
