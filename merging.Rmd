@@ -158,4 +158,152 @@ Now we have all the rows of the two dataframes df_1 and df_2. To compensate for 
 
 # *dplyr* package
 
-dplyr is a powerful package for data manipulation. It provides set of verbs that can help.
+*dplyr* is a powerful package for data manipulation. It provides set of functions that can help to simplify complex data operations.
+
+For the following examples, we will take a built-in dataset in R.
+The dataset is named "storms" and it is contained in the *dplyr* package.
+
+```{r storms dataset}
+storms <- storms
+storms
+```
+<details>
+  <summary>storms dataset structure</summary>
+
+```
+# A tibble: 19,537 × 13
+   name   year month   day  hour   lat  long status              category  wind pressure tropicalstorm_force_diameter hurricane_force_diameter
+   <chr> <dbl> <dbl> <int> <dbl> <dbl> <dbl> <fct>                  <dbl> <int>    <int>                        <int>                    <int>
+ 1 Amy    1975     6    27     0  27.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 2 Amy    1975     6    27     6  28.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 3 Amy    1975     6    27    12  29.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 4 Amy    1975     6    27    18  30.5 -79   tropical depression       NA    25     1013                           NA                       NA
+ 5 Amy    1975     6    28     0  31.5 -78.8 tropical depression       NA    25     1012                           NA                       NA
+ 6 Amy    1975     6    28     6  32.4 -78.7 tropical depression       NA    25     1012                           NA                       NA
+ 7 Amy    1975     6    28    12  33.3 -78   tropical depression       NA    25     1011                           NA                       NA
+ 8 Amy    1975     6    28    18  34   -77   tropical depression       NA    30     1006                           NA                       NA
+ 9 Amy    1975     6    29     0  34.4 -75.8 tropical storm            NA    35     1004                           NA                       NA
+10 Amy    1975     6    29     6  34   -74.8 tropical storm            NA    40     1002                           NA                       NA
+# ℹ 19,527 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+</details>
+
+Unlike our first example, you can see in the Environment panel that this dataset contains almost 20,000 rows. This doesn't change the functions we'll be using; on the contrary, you'll see that you'll be able to work on very large datasets more easily.
+
+With *dplyr* we can :
+
+* Subset : We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Subsetting allows to extract meaningful data for analysis without modifying the original data set. We can subset rows or columns or both.
+
+![](figures_merging/subset.svg)
+* Reshape : We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis. In R, this often involves transforming data between long (tidy) and wide formats.
+In a wide format, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples).
+In a long format, each row is a single measurement, with a separate column for the variable and the value. This structure will be useful later for certain graphical representations.
+
+![](figures_merging/reshape.svg)
+* Modify : We can add new columns or modify existing columns in a dataframe. It allows to create new variables based on existing ones or to change the values in existing columns.
+
+![](figures_merging/mutate.svg)
+
+IMPORTANT : Before diving into the details of the package and its possibilities, you need to know there's a special way of using the functions in this package. We will take a look at a new symbol called pipe operator : "%>%". This symbol is used to link several operations (functions) to achieve the desired result.
+
+```{r pipe example}
+your_dataset %>% 
+  function1(...) %>%
+  function2(...)
+```
+
+Here the functions correspond tot he function available in *dplyr* package.
+Let's take a look at some of the most important functions.
+
+
+## *filter* function
+
+The first function we will see is the *filter* function. This function allows you to extract the row(s) you are interested in based on a condition in column(s).
+
+```{r filter help}
+?dplyr::filter
+```
+
+Example : Extract every storm that occurred in 2000
+
+```{r filter example}
+storms %>% 
+  filter(year == 2000)
+```
+<details>
+  <summary>filter by year 2000</summary>
+
+```
+# A tibble: 449 × 13
+   name      year month   day  hour   lat  long status              category  wind pressure tropicalstorm_force_diameter hurricane_force_diameter
+   <chr>    <dbl> <dbl> <int> <dbl> <dbl> <dbl> <fct>                  <dbl> <int>    <int>                        <int>                    <int>
+ 1 AL012000  2000     6     7    18  21   -93   tropical depression       NA    25     1008                           NA                       NA
+ 2 AL012000  2000     6     8     0  20.9 -92.8 tropical depression       NA    25     1009                           NA                       NA
+ 3 AL012000  2000     6     8     6  20.7 -93.1 tropical depression       NA    25     1010                           NA                       NA
+ 4 AL012000  2000     6     8    12  20.8 -93.5 tropical depression       NA    25     1010                           NA                       NA
+ 5 AL022000  2000     6    23     0   9.5 -19.8 tropical depression       NA    25     1010                           NA                       NA
+ 6 AL022000  2000     6    23     6   9.6 -21   tropical depression       NA    30     1009                           NA                       NA
+ 7 AL022000  2000     6    23    12   9.9 -22.6 tropical depression       NA    30     1009                           NA                       NA
+ 8 AL022000  2000     6    23    18  10.2 -24.5 tropical depression       NA    30     1009                           NA                       NA
+ 9 AL022000  2000     6    24     0  10.1 -26.2 tropical depression       NA    30     1009                           NA                       NA
+10 AL022000  2000     6    24     6   9.9 -27.8 tropical depression       NA    30     1009                           NA                       NA
+# ℹ 439 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+</details>
+
+To filter by year, we refer to the year column and set that we want the year 2000 with the equality operator “==”.
+
+## *select* function
+
+The function *select* allows to extract the columns(s).
+
+```{r select help}
+?dplyr::select
+```
+
+Example : Extract name of storms and their status
+
+```{r select example}
+storms %>% 
+  select(name, status)
+```
+<details>
+  <summary>select name and status</summary>
+
+```
+# A tibble: 19,537 × 2
+   name  status             
+   <chr> <fct>              
+ 1 Amy   tropical depression
+ 2 Amy   tropical depression
+ 3 Amy   tropical depression
+ 4 Amy   tropical depression
+ 5 Amy   tropical depression
+ 6 Amy   tropical depression
+ 7 Amy   tropical depression
+ 8 Amy   tropical depression
+ 9 Amy   tropical storm     
+10 Amy   tropical storm     
+# ℹ 19,527 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+</details>
+
+## *gather* function
+
+*gather* function enables to gather columns into rows.
+
+```{r gather help}
+?dplyr::gather
+```
+
+
+## *spread* function
+
+*spread* function do the invert of *gather* and enables to spread rows into columns
+
+```{r spread help}
+?dplyr::spread
+```
