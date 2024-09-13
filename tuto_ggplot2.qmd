@@ -36,12 +36,25 @@ library(ggplot2)
 
 #### You first need to load the data.
 
-Follow the procedure using the interface to load the file `TCGA_LUAD_subset.tsv` and name the variable `clinical` or by coding
+Follow the procedure using the interface to load the file or try to use the function `read.table.`
+
+<!--# Describe rows and columns -->
+
+Clinical data: `TCGA_LUAD_subset.tsv`, name the variable `clinical`
+
+Survival data: `TCGA_LUAD_subset_survival.tsv`, name the variable `surv_dat`
+
+Expression data : `TCGA_LUAD_expression.tsv,` name the variable `luad_expr`
 
 ```{r}
 # or you can try to adapt this code
 clinical <- read.table("data/TCGA_LUAD_subset.tsv",sep="\t",head=T)
 head(clinical)
+surv_dat <- read.table("data/TCGA_LUAD_subset_survival.tsv",sep="\t",head=T)
+head(surv_dat)
+luad_expr <- read.table("data/TCGA_LUAD_expression.tsv",sep="\t",head=T,row=1)
+luad_expr[1:6,1:6]
+
 ```
 
 #### Install ggplot2 and load the library
@@ -444,6 +457,14 @@ ggplot(data = clinical, aes(x=known.oncogenes)) +
 ```
 
 ## Display expression data
+
+The goal of this section is to manipulate the expression and clinical datasets by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package `corrplot`. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package `pheatmap`.
+
+#### Prepare the data
+
+1.  Join the clinical annotations with the expression of the MAPK signature genes.
+
+The best way to complete this task is to i) filter for our genes of interest by declaring a variable containing a vector with the gene symbols and ii) **transpose** (flip columns and rows) the expression table (`luad_expr`). The function allowing this operation return a object of type `matrix` , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in **`data.frame`** format.
 
 #### Scatter plot
 
