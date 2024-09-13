@@ -363,7 +363,7 @@ ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
 
 ## Create a density plot
 
-Your goal is to produce the following plot showing the **density distributions** of the MAPK signature in function of the known oncogenes (use `palette.known.onco`). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 3 times longer than the y-axis which we call the **aspect ratio**. Thanks to it, you can force to have squared plots for instance.
+Your goal is to produce the following plot showing the **density distributions** of the MAPK signature in function of the known oncogenes (use `palette.known.onco`). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the **aspect ratio**. Thanks to it, you can force to have squared plots for instance.
 
 ```{r, echo=FALSE}
 ggplot(data = clinical, aes(x=signature_MAPK)) +
@@ -371,7 +371,7 @@ ggplot(data = clinical, aes(x=signature_MAPK)) +
   labs(x="MAPK activity signature") +
   theme_bw() +
   scale_colour_manual(values=palette.known.onco) +
-  theme(aspect.ratio = 1/3)
+  theme(aspect.ratio = 1/2)
 ```
 
 1.  Identify what contain the axis.
