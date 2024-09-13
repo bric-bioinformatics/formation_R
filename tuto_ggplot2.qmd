@@ -1,0 +1,509 @@
+---
+title: "ggplot2 tutorial"
+format:
+  html:
+    code-fold: true
+editor: visual
+---
+
+```{=html}
+<style>
+  details > summary {  
+    padding: 4px;  
+    width: 400px;  
+    background-color: #eeeeee;  
+    border: none;  
+    box-shadow: 1px 1px 2px #bbbbbb;  
+    cursor: pointer;
+    
+  }
+  details > p {  
+    background-color: #E0F8EC;  
+    padding: 4px;  
+    margin: 0;  
+    box-shadow: 1px 1px 2px #bbbbbb;
+  }
+</style>
+```
+```{r, setup, echo=F, warning=FALSE,message=FALSE}
+require("knitr")
+library(ggplot2)
+```
+
+## Introduction
+
+## Load the data
+
+#### You first need to load the data.
+
+Follow the procedure using the interface to load the file or try to use the function `read.table.`
+
+<!--# Describe rows and columns -->
+
+Clinical data: `TCGA_LUAD_subset.tsv`, name the variable `clinical`
+
+Survival data: `TCGA_LUAD_subset_survival.tsv`, name the variable `surv_dat`
+
+Expression data : `TCGA_LUAD_expression.tsv,` name the variable `luad_expr`
+
+```{r}
+# or you can try to adapt this code
+clinical <- read.table("data/TCGA_LUAD_subset.tsv",sep="\t",head=T)
+head(clinical)
+surv_dat <- read.table("data/TCGA_LUAD_subset_survival.tsv",sep="\t",head=T)
+head(surv_dat)
+luad_expr <- read.table("data/TCGA_LUAD_expression.tsv",sep="\t",head=T,row=1)
+luad_expr[1:6,1:6]
+
+```
+
+#### Install ggplot2 and load the library
+
+```{r, eval=FALSE}
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+## Display your first plot step by step
+
+Before unfolding the code and answers boxes, try to find the solution from what we have seen in the lecture or by **searching on the web**, it should become an automatism, no one knows everything !
+
+1.  Use the function `ggplot` alone.
+
+```{r}
+ggplot()
+```
+
+A default grey background is displayed.
+
+2.  Display the axis: Add the data and choose the x and y axis from the column names that you can display using `colnames`. For instance, we want to evaluate the distribution of the MAPK activity signature (y-axis) in function of the known oncogenes (x-axis).
+
+```{r}
+# Display the column names
+colnames(clinical)
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK))
+```
+
+<details>
+
+<summary>Answer</summary>
+
+The default theme displays a grey background and a white grid. We will see that is easy to change this features.
+
+Note that the axis are automatically labelled with the column names.
+
+</details>
+
+3.  Display the geometric shape: **boxplot**
+
+**Add a layer** to the plot. Which is the function to use ?
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 boxplot`
+
+</details>
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot()
+```
+
+## Customize by adding layers and modifying aesthetics
+
+1.  Change the x-axis labels: we want to make it prettier: e.g Known Oncogenes and the y-axis to make it more explicit: e.g MAPK activity signature
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot() + 
+  labs(x="Known Oncogenes", y="MAPK activity signature")
+```
+
+2.  Change the global theme to have a white background more suitable for figures and projection
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 theme white background`
+
+</details>
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot() + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw()
+```
+
+3.  Change the color and fill of the boxplots
+
+-   All the boxplots in red and filled with grey. You can search for how colors are named in R if you want to try your favorite colors. Many palettes are available through dedicated packages. (My favorite function to call for colors is `colours()` systematically installed and loaded with R, you can try some of my preferred ones: `colours()[124]`, `colours()[613]`, `colours()[53]`, `colours()[144]`).
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 colors`
+
+```{r}
+# the fonction colours() returns the name of the color
+colours()[124]
+# use the function c() to concat several elements, we call it a vector
+c(colours()[613], colours()[53], colours()[144]) 
+```
+
+-   `R ggplot2 boxplot color`
+
+</details>
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(color="red", fill="grey") +
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw()
+```
+
+You can play globally on the color of the borders (parameter `color`), the filling (parameter `fill`), the transparency (parameter `alpha`)) and more. The accessible aesthetics can vary according to the geometric shape, form. instance for lines you will have the width and the type.
+
+4.  Change the color of the boxplots in function of the known oncogenes
+
+-   During the previous step the same colors have been applied to all boxplots, the goal here is to use the information contained in a column of our dataset (`known.oncogenes`). This is part of the aesthetics. Based on the current code, how would you add this information (2 possibilities) ?
+
+***Option 1***
+
+```{r, eval=F}
+# Directly in the aesthetics of the ggplot function that will be accessible for all
+# layers
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK, color=known.oncogenes)) + # Add the new aesthetics color
+  geom_boxplot() + # remove the global colors
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw()
+```
+
+***Option 2***
+
+```{r}
+# Within the geom_boxplot() function which will define the aesthetics 
+# with aes() only for this layer
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw()
+```
+
+-   By default the colors are not very contrasted ... you can customize them by i) defining your own palette optionally by **attributing a color to each category** ; ii) find a predefined palette to help you to define the colors. To do this task, you will need to add a new layer by using a function that help in **scaling the colors manually**.
+
+i\) To define your own palette, you need to concatenate as many colors as the number of categories, here 12 colors. You can assign the colors to the categories by building a **named vector**.
+
+```{r}
+# We use the function c(), to name the elements of a vector you use the name you want
+# and you assign the values with the sign =
+palette.known.onco <- c(ALK="darkgrey",
+                        BRAF_act=colours()[613],
+                        BRAF.non=colours()[11],
+                        EGFR=colours()[128],
+                        ERBB2=colours()[76],
+                        MAP2K1=colours()[509],
+                        MET=colours()[121],
+                        NF1=colours()[468],
+                        None=colours()[92],
+                        RIT1=colours()[642],
+                        ROS1=colours()[34],
+                        KRAS="black")
+# Display the content
+palette.known.onco
+```
+
+Now you have your colors, add the layer to the ggplot object and use the variable `palette.known.onco` you just created.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 scaling color manually`
+
+</details>
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco)
+```
+
+ii\) R natively provides a few continuous color palettes which means that you do not need to install and load any library. Also when you install `ggplot2`, it installs some dependencies (packages that `ggplot2` needs to work properly), among them it installs the packages `RColorBrewer`, `viridis`, `paletteer`, `khroma` etc. and have implemented specific functions to use the palettes, it means that those packages are installed but not loaded. You can see which functions are available when typing `scale_color_` on RStudio. If you want to use the functions from these packages you need to load the package but it is not mandatory. Finally, a lot more palettes are available through packages.
+
+***Native palettes***
+
+```{r}
+# rainbow, heat.colors, terrain.colors, topo.colors, cm.colors
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=terrain.colors(12))
+```
+
+***Viridis palettes***
+
+```{r}
+# options: viridis, magma, plasma, inferno, cividis
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_viridis_d(option="inferno")
+```
+
+5.  Customize **theme** elements by **rotating** the **x-axis labels** by 45°
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 rotate x axis labels`
+
+</details>
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_viridis_d(option="inferno") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+6.  Flip the plot to get horizontal boxplots
+
+There is two ways, the first one is very simple and consists in inverting x and y aesthetics, the second one involves the **addition** of a new layer to **flip the axis** (preferred option and it provides more flexibility). Lets keep our own color palette `palette.known.onco`
+
+***Option 1***
+
+```{r, eval=F}
+ggplot(data = clinical, aes(y=known.oncogenes, x=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco)
+```
+
+***Option 2***
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 flip axis`
+
+</details>
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip()
+```
+
+7.  Add another geometric shape: points
+
+This task consist of **adding a new layer** containing the points colored by known oncogenes. Which function should we use ? Note that there are two answers but one is more suitable for boxplot as it is adding some random noise to the positions in order to avoid overlaps.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+-   `R ggplot2 point`
+-   `R ggplot2 point boxplot`
+
+</details>
+
+***Option 1***
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  geom_point(aes(color=known.oncogenes))
+```
+
+***Option 2***
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  geom_jitter(aes(color=known.oncogenes))
+```
+
+8.  Try to change the **shape** in plain triangle for all points and decrease **opacity** by half and to manage the **size** according to the tumor purity (column `Purity`).
+
+```{r}
+ggplot(data = clinical, aes(x=known.oncogenes, y=signature_MAPK)) +
+  geom_boxplot(aes(color=known.oncogenes)) + 
+  labs(x="Known Oncogenes", y="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  geom_jitter(aes(color=known.oncogenes, size=Purity), shape=17, alpha=0.5)
+```
+
+## Create a density plot
+
+Your goal is to produce the following density plot showing the **density distributions** of the MAPK signature in function of the known oncogenes (use `palette.known.onco`). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the **aspect ratio**. Thanks to it, you can force to have squared plots for instance.
+
+```{r, echo=FALSE}
+ggplot(data = clinical, aes(x=signature_MAPK)) +
+  geom_density(aes(color=known.oncogenes)) + 
+  labs(x="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  theme(aspect.ratio = 1/2)
+```
+
+1.  Identify what contain the axis.
+
+<details>
+
+<summary>Answer</summary>
+
+The x-axis contains the value of the column `signature_MAPK` and the y-axis indicates the density of the distribution, the y-axis do not need to be specified.
+
+</details>
+
+2.  Make a list of the aesthetics you need to modify and layers that need to be added.
+
+<details>
+
+<summary>Answer</summary>
+
+-   layers: the geometric shape, label of the x-axis, theme background, theme aspect ratio, custom color palette
+
+-   aesthetics: x-axis , color of the lines
+
+</details>
+
+3.  Write your code ! (Do not forget your best friend: the Web)
+
+```{r, eval=F}
+ggplot(data = clinical, aes(x=signature_MAPK)) +
+  geom_density(aes(color=known.oncogenes)) + 
+  labs(x="MAPK activity signature") +
+  theme_bw() +
+  scale_colour_manual(values=palette.known.onco) +
+  theme(aspect.ratio = 1/3)
+```
+
+## Create a bar plot
+
+Your goal is to produce the following **bar plot** showing the number of tumor from genders (column `gender` - play with the **transparency**) harboring each known oncogene. In this case the **aspect ratio** is inverse compared to the previous one.
+
+```{r, echo=FALSE, warning=F, message=F}
+ggplot(data = clinical, aes(x=known.oncogenes)) +
+  geom_bar(aes(fill=known.oncogenes, color=known.oncogenes,alpha=gender)) + 
+  labs(x="Known Oncogenes") +
+  theme_bw() +
+  scale_fill_manual(values=palette.known.onco) +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  theme(aspect.ratio = 2/1)
+```
+
+1.  Identify what contain the axis.
+
+<details>
+
+<summary>Answer</summary>
+
+The x-axis indicates the number of sample harboring the known oncogene, the x-axis do not need to be specified. The y-axis indicates the known oncogenes. As a reminder, one would prefer to flip the coordinates but it is not mandatory.
+
+</details>
+
+2.  Make a list of the aesthetics you need to modify and layers that need to be added.
+
+<details>
+
+<summary>Answer</summary>
+
+-   layers: the geometric shape, label of the y-axis, theme background, theme aspect ratio, custom color palette
+
+-   aesthetics: y-axis , color of the lines, fill of the bars, transparency according to gender
+
+</details>
+
+3.  Write your code ! (Do not forget your best friend: the Web)
+
+```{r, eval=F}
+ggplot(data = clinical, aes(x=known.oncogenes)) +
+  geom_bar(aes(fill=known.oncogenes, color=known.oncogenes,alpha=gender)) + 
+  labs(x="Known Oncogenes") +
+  theme_bw() +
+  scale_fill_manual(values=palette.known.onco) +
+  scale_colour_manual(values=palette.known.onco) +
+  coord_flip() +
+  theme(aspect.ratio = 2/1)
+```
+
+## Display expression data
+
+The goal of this section is to manipulate the expression and clinical datasets by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package `corrplot`. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package `pheatmap`.
+
+#### Prepare the data
+
+1.  Join the clinical annotations with the expression of the MAPK signature genes.
+
+The best way to complete this task is to i) filter for our genes of interest by declaring a variable containing a vector with the gene symbols and ii) **transpose** (flip columns and rows) the expression table (`luad_expr`). The function allowing this operation return a object of type `matrix` , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in **`data.frame`** format.
+
+#### Scatter plot
+
+geom_point
+
+geom_smooth
+
+#### Correlation plot
+
+corrplot
+
+#### Heatmap
+
+pheatmap
+
+## Create a KM plot
+
+survival
+
+ggsurvfit
+
+## Some useful links
+
+-   <https://ggplot2.tidyverse.org/index.html>
+
+-   <https://ggplot2.tidyverse.org/reference/ggtheme.html>
+
+-   <http://www.sthda.com/english/wiki/ggplot2-themes-and-background-colors-the-3-elements>
+
+-   <https://r-graph-gallery.com/>
+
+-   <https://www.cedricscherer.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/>
+
+-   <https://r-graph-gallery.com/ggplot2-color.html>
+
+-   [https://larmarange.github.io/analyse-R/couleurs.html](https://larmarange.github.io/analyse-R/couleurs.html#ggsci)
+
+-   <https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html>
+
+-   <https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html>
+
+-   <https://biostatsquid.com/step-by-step-heatmap-tutorial-with-pheatmap/>

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ggplot2 tutorial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="tuto_ggplot2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="tuto_ggplot2_files/libs/quarto-html/quarto.js"></script>
+<script src="tuto_ggplot2_files/libs/quarto-html/popper.min.js"></script>
+<script src="tuto_ggplot2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="tuto_ggplot2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="tuto_ggplot2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="tuto_ggplot2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="tuto_ggplot2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="tuto_ggplot2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="tuto_ggplot2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ggplot2 tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<style>
+  details > summary {  
+    padding: 4px;  
+    width: 400px;  
+    background-color: #eeeeee;  
+    border: none;  
+    box-shadow: 1px 1px 2px #bbbbbb;  
+    cursor: pointer;
+    
+  }
+  details > p {  
+    background-color: #E0F8EC;  
+    padding: 4px;  
+    margin: 0;  
+    box-shadow: 1px 1px 2px #bbbbbb;
+  }
+</style>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</section>
+<section id="load-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-data">Load the data</h2>
+<section id="you-first-need-to-load-the-data." class="level4">
+<h4 class="anchored" data-anchor-id="you-first-need-to-load-the-data.">You first need to load the data.</h4>
+<p>Follow the procedure using the interface to load the file or try to use the function <code>read.table.</code></p>
+<!--# Describe rows and columns -->
+<p>Clinical data: <code>TCGA_LUAD_subset.tsv</code>, name the variable <code>clinical</code></p>
+<p>Survival data: <code>TCGA_LUAD_subset_survival.tsv</code>, name the variable <code>surv_dat</code></p>
+<p>Expression data : <code>TCGA_LUAD_expression.tsv,</code> name the variable <code>luad_expr</code></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or you can try to adapt this code</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>clinical <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/TCGA_LUAD_subset.tsv"</span>,<span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,<span class="at">head=</span>T)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clinical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         sampleID known.oncogenes Purity pathologic_stage gender
+1 TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE
+2 TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE
+3 TCGA.05.4384.01            RIT1   0.49       Stage IIIA   MALE
+4 TCGA.05.4389.01        BRAF_act   0.48         Stage IA   MALE
+5 TCGA.05.4390.01            KRAS   0.57         Stage IB FEMALE
+6 TCGA.05.4395.01            KRAS   0.61       Stage IIIB   MALE
+                      tobacco_smoking_history signature_MAPK
+1      Current reformed smoker for &gt; 15 years      0.9298746
+2 Current reformed smoker for &lt; or = 15 years      0.4811406
+3      Current reformed smoker for &gt; 15 years      0.5672071
+4      Current reformed smoker for &gt; 15 years      0.3474326
+5 Current reformed smoker for &lt; or = 15 years      0.8763612
+6      Current reformed smoker for &gt; 15 years      0.5578706</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>surv_dat <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/TCGA_LUAD_subset_survival.tsv"</span>,<span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,<span class="at">head=</span>T)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(surv_dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         sampleID X_OS X_OS_IND
+1 TCGA.05.4249.01 1523        0
+2 TCGA.05.4250.01  121        1
+3 TCGA.05.4384.01  426        0
+4 TCGA.05.4389.01 1369        0
+5 TCGA.05.4390.01 1126        0
+6 TCGA.05.4395.01    0        1</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>luad_expr <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/TCGA_LUAD_expression.tsv"</span>,<span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,<span class="at">head=</span>T,<span class="at">row=</span><span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>luad_expr[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       TCGA.05.4249.01 TCGA.05.4250.01 TCGA.05.4384.01 TCGA.05.4389.01
+GRIN1           5.3087          5.2150          5.9420          3.1785
+PSAP           15.3157         15.1531         15.5336         16.4094
+TGFBR2         11.5473         12.1297         12.4083         11.9288
+STK40          10.4577          9.2863         10.5625         11.0288
+ITGA1           9.0958         11.0498         10.1844          9.0444
+NENF           10.6274          9.8561         10.0191         10.9955
+       TCGA.05.4390.01 TCGA.05.4395.01
+GRIN1           4.2870          2.3296
+PSAP           14.7361         15.8842
+TGFBR2         10.8582          9.5220
+STK40          10.6675         10.3251
+ITGA1           9.3652          9.7952
+NENF           10.5253         10.8658</code></pre>
+</div>
+</div>
+</section>
+<section id="install-ggplot2-and-load-the-library" class="level4">
+<h4 class="anchored" data-anchor-id="install-ggplot2-and-load-the-library">Install ggplot2 and load the library</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="display-your-first-plot-step-by-step" class="level2">
+<h2 class="anchored" data-anchor-id="display-your-first-plot-step-by-step">Display your first plot step by step</h2>
+<p>Before unfolding the code and answers boxes, try to find the solution from what we have seen in the lecture or by <strong>searching on the web</strong>, it should become an automatism, no one knows everything !</p>
+<ol type="1">
+<li>Use the function <code>ggplot</code> alone.</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A default grey background is displayed.</p>
+<ol start="2" type="1">
+<li>Display the axis: Add the data and choose the x and y axis from the column names that you can display using <code>colnames</code>. For instance, we want to evaluate the distribution of the MAPK activity signature (y-axis) in function of the known oncogenes (x-axis).</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the column names</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(clinical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sampleID"                "known.oncogenes"        
+[3] "Purity"                  "pathologic_stage"       
+[5] "gender"                  "tobacco_smoking_history"
+[7] "signature_MAPK"         </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<details>
+<summary>
+Answer
+</summary>
+<p>The default theme displays a grey background and a white grid. We will see that is easy to change this features.</p>
+<p>Note that the axis are automatically labelled with the column names.</p>
+</details>
+<ol start="3" type="1">
+<li>Display the geometric shape: <strong>boxplot</strong></li>
+</ol>
+<p><strong>Add a layer</strong> to the plot. Which is the function to use ?</p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 boxplot</code></li>
+</ul>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="customize-by-adding-layers-and-modifying-aesthetics" class="level2">
+<h2 class="anchored" data-anchor-id="customize-by-adding-layers-and-modifying-aesthetics">Customize by adding layers and modifying aesthetics</h2>
+<ol type="1">
+<li>Change the x-axis labels: we want to make it prettier: e.g Known Oncogenes and the y-axis to make it more explicit: e.g MAPK activity signature</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Change the global theme to have a white background more suitable for figures and projection</li>
+</ol>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 theme white background</code></li>
+</ul>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Change the color and fill of the boxplots</li>
+</ol>
+<ul>
+<li>All the boxplots in red and filled with grey. You can search for how colors are named in R if you want to try your favorite colors. Many palettes are available through dedicated packages. (My favorite function to call for colors is <code>colours()</code> systematically installed and loaded with R, you can try some of my preferred ones: <code>colours()[124]</code>, <code>colours()[613]</code>, <code>colours()[53]</code>, <code>colours()[144]</code>).</li>
+</ul>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 colors</code></li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the fonction colours() returns the name of the color</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colours</span>()[<span class="dv">124</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "deepskyblue3"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the function c() to concat several elements, we call it a vector</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">colours</span>()[<span class="dv">613</span>], <span class="fu">colours</span>()[<span class="dv">53</span>], <span class="fu">colours</span>()[<span class="dv">144</span>]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "springgreen3" "chocolate1"   "gold2"       </code></pre>
+</div>
+</div>
+<ul>
+<li><code>R ggplot2 boxplot color</code></li>
+</ul>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>You can play globally on the color of the borders (parameter <code>color</code>), the filling (parameter <code>fill</code>), the transparency (parameter <code>alpha</code>)) and more. The accessible aesthetics can vary according to the geometric shape, form. instance for lines you will have the width and the type.</p>
+<ol start="4" type="1">
+<li>Change the color of the boxplots in function of the known oncogenes</li>
+</ol>
+<ul>
+<li>During the previous step the same colors have been applied to all boxplots, the goal here is to use the information contained in a column of our dataset (<code>known.oncogenes</code>). This is part of the aesthetics. Based on the current code, how would you add this information (2 possibilities) ?</li>
+</ul>
+<p><strong><em>Option 1</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Directly in the aesthetics of the ggplot function that will be accessible for all</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># layers</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK, <span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> <span class="co"># Add the new aesthetics color</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="co"># remove the global colors</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong><em>Option 2</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Within the geom_boxplot() function which will define the aesthetics </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with aes() only for this layer</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>By default the colors are not very contrasted … you can customize them by i) defining your own palette optionally by <strong>attributing a color to each category</strong> ; ii) find a predefined palette to help you to define the colors. To do this task, you will need to add a new layer by using a function that help in <strong>scaling the colors manually</strong>.</li>
+</ul>
+<p>i) To define your own palette, you need to concatenate as many colors as the number of categories, here 12 colors. You can assign the colors to the categories by building a <strong>named vector</strong>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We use the function c(), to name the elements of a vector you use the name you want</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and you assign the values with the sign =</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>palette.known.onco <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">ALK=</span><span class="st">"darkgrey"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">BRAF_act=</span><span class="fu">colours</span>()[<span class="dv">613</span>],</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">BRAF.non=</span><span class="fu">colours</span>()[<span class="dv">11</span>],</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">EGFR=</span><span class="fu">colours</span>()[<span class="dv">128</span>],</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ERBB2=</span><span class="fu">colours</span>()[<span class="dv">76</span>],</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">MAP2K1=</span><span class="fu">colours</span>()[<span class="dv">509</span>],</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">MET=</span><span class="fu">colours</span>()[<span class="dv">121</span>],</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">NF1=</span><span class="fu">colours</span>()[<span class="dv">468</span>],</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">None=</span><span class="fu">colours</span>()[<span class="dv">92</span>],</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">RIT1=</span><span class="fu">colours</span>()[<span class="dv">642</span>],</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ROS1=</span><span class="fu">colours</span>()[<span class="dv">34</span>],</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>                        <span class="at">KRAS=</span><span class="st">"black"</span>)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the content</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>palette.known.onco</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             ALK         BRAF_act         BRAF.non             EGFR 
+      "darkgrey"   "springgreen3"    "aquamarine3"     "dodgerblue" 
+           ERBB2           MAP2K1              MET              NF1 
+"darkgoldenrod1"        "orchid1"    "deepskyblue"  "mediumpurple1" 
+            None             RIT1             ROS1             KRAS 
+   "darkorange2"     "violetred1"         "brown2"          "black" </code></pre>
+</div>
+</div>
+<p>Now you have your colors, add the layer to the ggplot object and use the variable <code>palette.known.onco</code> you just created.</p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 scaling color manually</code></li>
+</ul>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>ii) R natively provides a few continuous color palettes which means that you do not need to install and load any library. Also when you install <code>ggplot2</code>, it installs some dependencies (packages that <code>ggplot2</code> needs to work properly), among them it installs the packages <code>RColorBrewer</code>, <code>viridis</code>, <code>paletteer</code>, <code>khroma</code> etc. and have implemented specific functions to use the palettes, it means that those packages are installed but not loaded. You can see which functions are available when typing <code>scale_color_</code> on RStudio. If you want to use the functions from these packages you need to load the package but it is not mandatory. Finally, a lot more palettes are available through packages.</p>
+<p><strong><em>Native palettes</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rainbow, heat.colors, terrain.colors, topo.colors, cm.colors</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">terrain.colors</span>(<span class="dv">12</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong><em>Viridis palettes</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># options: viridis, magma, plasma, inferno, cividis</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option=</span><span class="st">"inferno"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="5" type="1">
+<li>Customize <strong>theme</strong> elements by <strong>rotating</strong> the <strong>x-axis labels</strong> by 45°</li>
+</ol>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 rotate x axis labels</code></li>
+</ul>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option=</span><span class="st">"inferno"</span>) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="6" type="1">
+<li>Flip the plot to get horizontal boxplots</li>
+</ol>
+<p>There is two ways, the first one is very simple and consists in inverting x and y aesthetics, the second one involves the <strong>addition</strong> of a new layer to <strong>flip the axis</strong> (preferred option and it provides more flexibility). Lets keep our own color palette <code>palette.known.onco</code></p>
+<p><strong><em>Option 1</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">y=</span>known.oncogenes, <span class="at">x=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong><em>Option 2</em></strong></p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 flip axis</code></li>
+</ul>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="7" type="1">
+<li>Add another geometric shape: points</li>
+</ol>
+<p>This task consist of <strong>adding a new layer</strong> containing the points colored by known oncogenes. Which function should we use ? Note that there are two answers but one is more suitable for boxplot as it is adding some random noise to the positions in order to avoid overlaps.</p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<ul>
+<li><code>R ggplot2 point</code></li>
+<li><code>R ggplot2 point boxplot</code></li>
+</ul>
+</details>
+<p><strong><em>Option 1</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong><em>Option 2</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol start="8" type="1">
+<li>Try to change the <strong>shape</strong> in plain triangle for all points and decrease <strong>opacity</strong> by half and to manage the <strong>size</strong> according to the tumor purity (column <code>Purity</code>).</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes, <span class="at">y=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>, <span class="at">y=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes, <span class="at">size=</span>Purity), <span class="at">shape=</span><span class="dv">17</span>, <span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="create-a-density-plot" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-density-plot">Create a density plot</h2>
+<p>Your goal is to produce the following density plot showing the <strong>density distributions</strong> of the MAPK signature in function of the known oncogenes (use <code>palette.known.onco</code>). Here we introduce the customization of the plot dimensions, we want to force the plot to have be x-axis 2 times longer than the y-axis which we call the <strong>aspect ratio</strong>. Thanks to it, you can force to have squared plots for instance.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol type="1">
+<li>Identify what contain the axis.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p>The x-axis contains the value of the column <code>signature_MAPK</code> and the y-axis indicates the density of the distribution, the y-axis do not need to be specified.</p>
+</details>
+<ol start="2" type="1">
+<li>Make a list of the aesthetics you need to modify and layers that need to be added.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<ul>
+<li><p>layers: the geometric shape, label of the x-axis, theme background, theme aspect ratio, custom color palette</p></li>
+<li><p>aesthetics: x-axis , color of the lines</p></li>
+</ul>
+</details>
+<ol start="3" type="1">
+<li>Write your code ! (Do not forget your best friend: the Web)</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>signature_MAPK)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color=</span>known.oncogenes)) <span class="sc">+</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"MAPK activity signature"</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="create-a-bar-plot" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-bar-plot">Create a bar plot</h2>
+<p>Your goal is to produce the following <strong>bar plot</strong> showing the number of tumor from genders (column <code>gender</code> - play with the <strong>transparency</strong>) harboring each known oncogene. In this case the <strong>aspect ratio</strong> is inverse compared to the previous one.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol type="1">
+<li>Identify what contain the axis.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p>The x-axis indicates the number of sample harboring the known oncogene, the x-axis do not need to be specified. The y-axis indicates the known oncogenes. As a reminder, one would prefer to flip the coordinates but it is not mandatory.</p>
+</details>
+<ol start="2" type="1">
+<li>Make a list of the aesthetics you need to modify and layers that need to be added.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<ul>
+<li><p>layers: the geometric shape, label of the y-axis, theme background, theme aspect ratio, custom color palette</p></li>
+<li><p>aesthetics: y-axis , color of the lines, fill of the bars, transparency according to gender</p></li>
+</ul>
+</details>
+<ol start="3" type="1">
+<li>Write your code ! (Do not forget your best friend: the Web)</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clinical, <span class="fu">aes</span>(<span class="at">x=</span>known.oncogenes)) <span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>known.oncogenes, <span class="at">color=</span>known.oncogenes,<span class="at">alpha=</span>gender)) <span class="sc">+</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Known Oncogenes"</span>) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="display-expression-data" class="level2">
+<h2 class="anchored" data-anchor-id="display-expression-data">Display expression data</h2>
+<p>The goal of this section is to manipulate the expression and clinical datasets by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package <code>corrplot</code>. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package <code>pheatmap</code>.</p>
+<section id="prepare-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="prepare-the-data">Prepare the data</h4>
+<ol type="1">
+<li>Join the clinical annotations with the expression of the MAPK signature genes.</li>
+</ol>
+<p>The best way to complete this task is to i) filter for our genes of interest by declaring a variable containing a vector with the gene symbols and ii) <strong>transpose</strong> (flip columns and rows) the expression table (<code>luad_expr</code>). The function allowing this operation return a object of type <code>matrix</code> , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in <strong><code>data.frame</code></strong> format.</p>
+</section>
+<section id="scatter-plot" class="level4">
+<h4 class="anchored" data-anchor-id="scatter-plot">Scatter plot</h4>
+<p>geom_point</p>
+<p>geom_smooth</p>
+</section>
+<section id="correlation-plot" class="level4">
+<h4 class="anchored" data-anchor-id="correlation-plot">Correlation plot</h4>
+<p>corrplot</p>
+</section>
+<section id="heatmap" class="level4">
+<h4 class="anchored" data-anchor-id="heatmap">Heatmap</h4>
+<p>pheatmap</p>
+</section>
+</section>
+<section id="create-a-km-plot" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-km-plot">Create a KM plot</h2>
+<p>survival</p>
+<p>ggsurvfit</p>
+</section>
+<section id="some-useful-links" class="level2">
+<h2 class="anchored" data-anchor-id="some-useful-links">Some useful links</h2>
+<ul>
+<li><p><a href="https://ggplot2.tidyverse.org/index.html" class="uri">https://ggplot2.tidyverse.org/index.html</a></p></li>
+<li><p><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="uri">https://ggplot2.tidyverse.org/reference/ggtheme.html</a></p></li>
+<li><p><a href="http://www.sthda.com/english/wiki/ggplot2-themes-and-background-colors-the-3-elements" class="uri">http://www.sthda.com/english/wiki/ggplot2-themes-and-background-colors-the-3-elements</a></p></li>
+<li><p><a href="https://r-graph-gallery.com/" class="uri">https://r-graph-gallery.com/</a></p></li>
+<li><p><a href="https://www.cedricscherer.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/" class="uri">https://www.cedricscherer.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/</a></p></li>
+<li><p><a href="https://r-graph-gallery.com/ggplot2-color.html" class="uri">https://r-graph-gallery.com/ggplot2-color.html</a></p></li>
+<li><p><a href="https://larmarange.github.io/analyse-R/couleurs.html#ggsci">https://larmarange.github.io/analyse-R/couleurs.html</a></p></li>
+<li><p><a href="https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html" class="uri">https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html</a></p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html" class="uri">https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html</a></p></li>
+<li><p><a href="https://biostatsquid.com/step-by-step-heatmap-tutorial-with-pheatmap/" class="uri">https://biostatsquid.com/step-by-step-heatmap-tutorial-with-pheatmap/</a></p></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
