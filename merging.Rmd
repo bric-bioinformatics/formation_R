@@ -125,9 +125,8 @@ df_3 <- merge(df_1, df_2, by = c("id","name"))
 </details>
 \
 We have created a new variable called “df_3” which contains the result of the merge of the two dataframes “df_1” and “df_2”. What's most striking is the number of lines in this new dataframe. There are 7 lines, compared with 8 in df_1 and 10 in df_2.
-This is because the merge only takes into account common elements between each dataframe.
 
-In df_1, we have a line with an id/name combination that is 5/Jack. This combination does not exist in df_2. This line is then ignored by the *merge* function.
+In df_1, we have a line with an id/name combination that is 5/"Jack". This combination does not exist in df_2. This line is then ignored by the *merge* function.
 Why doesn't merge take different lines into account?
 
 Remember, when searching for function help, there are many other arguments than the ones we've used, including an argument called "all".
@@ -154,14 +153,29 @@ df_4 <- merge(df_1, df_2, by = c("id","name"), all = TRUE)
 ```
 </details>
 \
-Now we have all the rows of the two dataframes df_1 and df_2. To compensate for the fact that some rows are not common and therefore lack information, NAs (Not Available) have been introduced.
+Now we have all the rows of the two dataframes df_1 and df_2. To compensate for the fact that some rows are not common and therefore lack information, NAs (Not Available) have been introduced. 
 
 # *dplyr* package
 
-*dplyr* is a powerful package for data manipulation. It provides set of functions that can help to simplify complex data operations.
+*dplyr* is a powerful package for data manipulation. It provides set of functions that can help to simplify complex data operations. This package is part of a larger package called *tidyverse*. So we need to install *tidyverse* and it will download automatically *dplyr* and other useful packages (see the link below).
+
+## Installation and initialisation of the package
+
+As this package is not installed by default, it must be installed and activated.
+
+```{r install tidyverse}
+install.packages("tidyverse")
+library(tidyverse)
+```
+The first line installs the package and the second activates the package (see Packages sheet)
+
+Link : [Tidyverse](https://www.tidyverse.org/)
+
+## Training dataset : "storms"
 
 For the following examples, we will take a built-in dataset in R.
-The dataset is named "storms" and it is contained in the *dplyr* package.
+The dataset is named "storms" and it is contained in the *dplyr* package. \
+To download it, you just need to type : 
 
 ```{r storms dataset}
 storms <- storms
@@ -191,17 +205,21 @@ storms
 
 Unlike our first example, you can see in the Environment panel that this dataset contains almost 20,000 rows. This doesn't change the functions we'll be using; on the contrary, you'll see that you'll be able to work on very large datasets more easily.
 
-With *dplyr* we can :
+## Possibilities with *dplyr*
 
-* Subset : We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Subsetting allows to extract meaningful data for analysis without modifying the original data set. We can subset rows or columns or both.
+* **Subset** : We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Subsetting allows to extract meaningful data for analysis without modifying the original data set. We can subset rows or columns or both.
 
 ![](figures_merging/subset.svg)
-* Reshape : We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis. In R, this often involves transforming data between long (tidy) and wide formats.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* **Reshape** : We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis. In R, this often involves transforming data between long (tidy) and wide formats (messy).
 In a wide format, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples).
 In a long format, each row is a single measurement, with a separate column for the variable and the value. This structure will be useful later for certain graphical representations.
 
 ![](figures_merging/reshape.svg)
-* Modify : We can add new columns or modify existing columns in a dataframe. It allows to create new variables based on existing ones or to change the values in existing columns.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* **Modify** : We can add new columns or modify existing columns in a dataframe. It allows to create new variables based on existing ones or to change the values in existing columns.
 
 ![](figures_merging/mutate.svg)
 
@@ -216,14 +234,16 @@ your_dataset %>%
 Here the functions correspond tot he function available in *dplyr* package.
 Let's take a look at some of the most important functions.
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## *filter* function
+### *filter* function
 
 The first function we will see is the *filter* function. This function allows you to extract the row(s) you are interested in based on a condition in column(s).
 
 ```{r filter help}
 ?dplyr::filter
 ```
+NOTE : Here, we specify the package name with a double colon (::) and then the function name, to avoid conflicts between functions that may have the same name.
 
 Example : Extract every storm that occurred in 2000
 
@@ -255,7 +275,9 @@ storms %>%
 
 To filter by year, we refer to the year column and set that we want the year 2000 with the equality operator “==”.
 
-## *select* function
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### *select* function
 
 The function *select* allows to extract the columns(s).
 
@@ -291,19 +313,74 @@ storms %>%
 ```
 </details>
 
-## *gather* function
+This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague.
 
-*gather* function enables to gather columns into rows.
+| Functions to combine with *select* | Description | Examples |
+|----------|----------|----------|
+| *starts_with()* | Starts with a specific character/string | **storms %>% select(starts_with("l"))** |
+| *ends_with()* | Ends with a specific character/string | **storms %>% select(ends_with("diameter"))** |
+| *contains()* | Contains a specific character/string | **storms %>% select(contains("on"))** |
+
+These are just a few examples - there are many others, but these are the most important and widely used.\
+It's up to you to use them, test them and change them to understand how they work !
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## *mutate* function 
+
+We've already seen how to select datasets, but there may be times when we need to create new information from existing ones.
+This is the role of the *mutate* function.
+
+```{r mutate help}
+?dplyr::mutate
+```
+
+Example : Operation on a column, and put result into new columns
+
+```{r mutate example}
+storms %>%
+  mutate(example = wind / 10)
+```
+
+As you can see, we just divided the wind column by 10 and put the result in new column named "example".
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## *gather* and *spread* function
+
+These functions are not part of *dplyr*, but of another package called *tidyr*, which is also part of the *tidyverse.*  Since we installed *tidyverse* earlier, we don't need to reinstall *tidyr*.
+*gather* function enables to gather columns into rows, and *spread* function allows to spread rows into columns (see Reshape part).
+We say that *gather* reshapes wide format to long format and *spread* do the invert.
+Wide format is sometimes called messy and long format is named tidy.
+
+We will work with the dataset named "messy_data". This dataset is in wide format (messy) and we will transform it in long format (tidy).
+
+* *gather*
 
 ```{r gather help}
 ?dplyr::gather
 ```
 
+```{r gather example}
+tidy_data <- messy_data %>% 
+                  gather(var, value, var1:var4)
+```
 
-## *spread* function
-
-*spread* function do the invert of *gather* and enables to spread rows into columns
+* *spread*
 
 ```{r spread help}
 ?dplyr::spread
 ```
+
+```{r spread example}
+messy_data <- tidy_data %>% 
+                  spread(var, value)
+```
+
+![](figures_merging/tidy_messy.svg)
+
+If we look at the *gather* and *spread* parameters, there are arguments in particular that will interest us :
+* key : this argument specifies the name of the new column that will contain the names of the existing columns being collapsed. It represents the "variable names" in the long format
+* value : this argument specifies the name of the new column that will contain the values from the gathered columns.
+
+In our example, we named the key "var" and value is simply named "value". The "var" key takes every variable names ("var1", "var2", "var3" and "var4") and the value will be every values in the variables columns ("var1:var4").
