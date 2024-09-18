@@ -28,6 +28,8 @@ editor: visual
 ```{r, setup, echo=F, warning=FALSE,message=FALSE}
 require("knitr")
 library(ggplot2)
+library(ggpubr)
+library(corrplot)
 ```
 
 ## Introduction
@@ -418,7 +420,7 @@ ggplot(data = clinical, aes(x=known.oncogenes)) +
   scale_fill_manual(values=palette.known.onco) +
   scale_colour_manual(values=palette.known.onco) +
   coord_flip() +
-  theme(aspect.ratio = 2/1)
+  theme(aspect.ratio = 2)
 ```
 
 1.  Identify what contain the axis.
@@ -453,28 +455,124 @@ ggplot(data = clinical, aes(x=known.oncogenes)) +
   scale_fill_manual(values=palette.known.onco) +
   scale_colour_manual(values=palette.known.onco) +
   coord_flip() +
-  theme(aspect.ratio = 2/1)
+  theme(aspect.ratio = 2)
 ```
 
 ## Display expression data
 
-The goal of this section is to manipulate the expression and clinical datasets by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package `corrplot`. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package `pheatmap`.
+The goal of this section is to manipulate the expression (`luad_expr`) and clinical datasets (`clinical`) by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package `corrplot`. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package `pheatmap`.
 
 #### Prepare the data
 
 1.  Join the clinical annotations with the expression of the MAPK signature genes.
 
-The best way to complete this task is to i) filter for our genes of interest by declaring a variable containing a vector with the gene symbols and ii) **transpose** (flip columns and rows) the expression table (`luad_expr`). The function allowing this operation return a object of type `matrix` , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in **`data.frame`** format.
+The best way to complete this task is to i) filter for our genes of interest by declaring a variable named `gene.of.interest` containing a vector with the gene symbols and ii) **transpose** (flip columns and rows) the expression table (`luad_expr`). The function allowing this operation return a object of type `matrix` , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in **`data.frame`** format. iii) Create a column `sampleID` containing the sample identifiers present as **row names**. iv) Merge the 2 `data.frame`s.
 
-#### Scatter plot
+Note: In R, if possible, you can transform the type of variables using functions starting with `as.` followed by the desired format. For instance you have a character string `"42"` that you want to transform in numeric, you can run `as.numeric("42")`.
 
-geom_point
+i\) Create `gene.of.interest` containing the genes and filter for the rows containing the expression of these genes by creating a new variable `expression.selected`
 
-geom_smooth
+```{r}
+# Create a vector of characters using c()
+gene.of.interest <- c("ETV4", "ETV5", "DUSP6", "SPRY2","DUSP4")
+# The gene symbols are the row names, then the gene of interest are used as indices
+expression.selected <- luad_expr[gene.of.interest,]
+```
+
+ii\) Transpose the data.frame `expression.selected`
+
+```{r}
+# Transpose the data.frame with t()
+expression.selected <- t(expression.selected)
+# show the type of expression.selected
+class(expression.selected)
+# Transform expression.selected as data.frame 
+expression.selected <- as.data.frame(expression.selected)
+# show the first lines of the table
+head(expression.selected)
+# show the type of expression.selected
+class(expression.selected)
+```
+
+iii\) Create a column `sampleID` in the `data.frame` `expression.selected` containing the sample identifiers that are present in the row names
+
+```{r}
+expression.selected$sampleID <- row.names(expression.selected)
+```
+
+iv\) Merge `expression.selected` and `clinical`
+
+```{r}
+clinical <- merge(clinical,expression.selected, by="sampleID")
+# Always verify the object you obtain 
+head(clinical)
+```
+
+#### What are this plot ?
+
+Analyse the following code chunks, comment all the layers of each plot, which plots would you expect ? What do you need to be able to run these codes. Ask the web or chatGPT !
+
+***Plot 1***
+
+```{r, eval=F}
+ggscatter(clinical, x="DUSP6", y="signature_MAPK", color="known.oncogenes", size = 0.5, add="reg.line") +
+  theme_light() +
+  theme(legend.position = "right") +
+  facet_wrap(~known.oncogenes,ncol=4) +
+  stat_cor(label.y = 1) +
+  scale_colour_manual(values=palette.known.onco) +
+  theme(aspect.ratio = 1)
+```
+
+***Plot 2***
+
+Comment also the lines before the plot.
+
+```{r, eval=F}
+median.signature <- median(clinical$signature_MAPK)
+high.signature <- clinical$signature_MAPK >= median.signature
+clinical$signature_group <- "low"
+clinical$signature_group[high.signature] <- "high"
+
+ggviolin(clinical, x = "signature_group", y = "ETV4", fill = "signature_group", 
+         palette = c(high=colours()[124],low=colours()[144]),
+         add = "boxplot", add.params = list(fill = "white")) +
+  theme_light() +
+  theme(aspect.ratio = 1) +
+  facet_wrap(~known.oncogenes,ncol=4) +
+  stat_compare_means(comparisons = list(c("high","low")), method="wilcox", label.y = 15, label="p.signif") +
+  ylim(c(0,16))
+```
 
 #### Correlation plot
 
-corrplot
+We want to analyse the correlation between the genes of the MAPK activity signature. To this end, we need to **install** and **load** the `corrplot` package. You will use the table stored in `expression.selected`, you need to remove the column containing the sample IDs and compute the correlation between the columns and store the result in a variable.
+
+```{r}
+expression.selected$sampleID <- NULL
+```
+
+You have a very nice introduction to this package: <https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html>.
+
+You want to obtain the following plot:
+
+```{r, echo=F}
+M <- cor(expression.selected) 
+corrplot(M, addCoef.col = 'black', order = 'AOE', col = COL2('PiYG'), tl.pos = 'd', cl.pos = 'b')
+```
+
+Here is the solution:
+
+```{r, eval=F}
+# install the package that is in CRAN repository
+install.packages("corrplot")
+# load the library
+library(corrplot)
+# compute the correlation, by default it compute the correlation between columns
+M <- cor(expression.selected) 
+# the plot !
+corrplot(M, addCoef.col = 'black', order = 'AOE', col = COL2('PiYG'), tl.pos = 'd', cl.pos = 'b')
+```
 
 #### Heatmap
 

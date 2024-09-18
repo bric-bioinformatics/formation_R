@@ -682,28 +682,174 @@ Answer
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="display-expression-data" class="level2">
 <h2 class="anchored" data-anchor-id="display-expression-data">Display expression data</h2>
-<p>The goal of this section is to manipulate the expression and clinical datasets by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package <code>corrplot</code>. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package <code>pheatmap</code>.</p>
+<p>The goal of this section is to manipulate the expression (<code>luad_expr</code>) and clinical datasets (<code>clinical</code>) by filtering for patients harboring specific known oncogene, having extreme MAPK activity signal. We want to observe the correlation between the signature and the genes that were used to compute it: ETV4, ETV5, DUSP6, DUSP4 and SPRY2. We will use scatter plots (basically visualizing samples with points), linear regression estimation and a heatmap using the package <code>corrplot</code>. The expression dataset was subset by filtering for genes involved from closer or farther to MAPK signalling. We will operate a clustering of the samples and genes and visualize the expression of the genes using a heatmap that we will annotate using the package <code>pheatmap</code>.</p>
 <section id="prepare-the-data" class="level4">
 <h4 class="anchored" data-anchor-id="prepare-the-data">Prepare the data</h4>
 <ol type="1">
 <li>Join the clinical annotations with the expression of the MAPK signature genes.</li>
 </ol>
-<p>The best way to complete this task is to i) filter for our genes of interest by declaring a variable containing a vector with the gene symbols and ii) <strong>transpose</strong> (flip columns and rows) the expression table (<code>luad_expr</code>). The function allowing this operation return a object of type <code>matrix</code> , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in <strong><code>data.frame</code></strong> format.</p>
+<p>The best way to complete this task is to i) filter for our genes of interest by declaring a variable named <code>gene.of.interest</code> containing a vector with the gene symbols and ii) <strong>transpose</strong> (flip columns and rows) the expression table (<code>luad_expr</code>). The function allowing this operation return a object of type <code>matrix</code> , this type is not suitable for ggplot and not convenient for easy manipulation. We need to transform it in <strong><code>data.frame</code></strong> format. iii) Create a column <code>sampleID</code> containing the sample identifiers present as <strong>row names</strong>. iv) Merge the 2 <code>data.frame</code>s.</p>
+<p>Note: In R, if possible, you can transform the type of variables using functions starting with <code>as.</code> followed by the desired format. For instance you have a character string <code>"42"</code> that you want to transform in numeric, you can run <code>as.numeric("42")</code>.</p>
+<p>i) Create <code>gene.of.interest</code> containing the genes and filter for the rows containing the expression of these genes by creating a new variable <code>expression.selected</code></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a vector of characters using c()</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>gene.of.interest <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ETV4"</span>, <span class="st">"ETV5"</span>, <span class="st">"DUSP6"</span>, <span class="st">"SPRY2"</span>,<span class="st">"DUSP4"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The gene symbols are the row names, then the gene of interest are used as indices</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>expression.selected <span class="ot">&lt;-</span> luad_expr[gene.of.interest,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Transpose the data.frame <code>expression.selected</code></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transpose the data.frame with t()</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>expression.selected <span class="ot">&lt;-</span> <span class="fu">t</span>(expression.selected)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># show the type of expression.selected</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(expression.selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "matrix" "array" </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform expression.selected as data.frame </span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>expression.selected <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(expression.selected)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># show the first lines of the table</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(expression.selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ETV4    ETV5   DUSP6   SPRY2   DUSP4
+TCGA.05.4249.01 11.3003  9.9167 13.2098 10.3430  7.7095
+TCGA.05.4250.01  9.8280  9.0018 13.8032  8.5924 10.1950
+TCGA.05.4384.01 10.0667 10.0427 11.4706  9.0349 10.5538
+TCGA.05.4389.01 11.4521  9.8325 10.1072  8.0283  9.3576
+TCGA.05.4390.01 11.4103 11.4477 12.6858  9.0837 12.1465
+TCGA.05.4395.01  9.8810  9.4884 13.7142  8.6493 11.2010</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show the type of expression.selected</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(expression.selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<p>iii) Create a column <code>sampleID</code> in the <code>data.frame</code> <code>expression.selected</code> containing the sample identifiers that are present in the row names</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>expression.selected<span class="sc">$</span>sampleID <span class="ot">&lt;-</span> <span class="fu">row.names</span>(expression.selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>iv) Merge <code>expression.selected</code> and <code>clinical</code></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>clinical <span class="ot">&lt;-</span> <span class="fu">merge</span>(clinical,expression.selected, <span class="at">by=</span><span class="st">"sampleID"</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Always verify the object you obtain </span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clinical)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         sampleID known.oncogenes Purity pathologic_stage gender
+1 TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE
+2 TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE
+3 TCGA.05.4384.01            RIT1   0.49       Stage IIIA   MALE
+4 TCGA.05.4389.01        BRAF_act   0.48         Stage IA   MALE
+5 TCGA.05.4390.01            KRAS   0.57         Stage IB FEMALE
+6 TCGA.05.4395.01            KRAS   0.61       Stage IIIB   MALE
+                      tobacco_smoking_history signature_MAPK    ETV4    ETV5
+1      Current reformed smoker for &gt; 15 years      0.9298746 11.3003  9.9167
+2 Current reformed smoker for &lt; or = 15 years      0.4811406  9.8280  9.0018
+3      Current reformed smoker for &gt; 15 years      0.5672071 10.0667 10.0427
+4      Current reformed smoker for &gt; 15 years      0.3474326 11.4521  9.8325
+5 Current reformed smoker for &lt; or = 15 years      0.8763612 11.4103 11.4477
+6      Current reformed smoker for &gt; 15 years      0.5578706  9.8810  9.4884
+    DUSP6   SPRY2   DUSP4
+1 13.2098 10.3430  7.7095
+2 13.8032  8.5924 10.1950
+3 11.4706  9.0349 10.5538
+4 10.1072  8.0283  9.3576
+5 12.6858  9.0837 12.1465
+6 13.7142  8.6493 11.2010</code></pre>
+</div>
+</div>
 </section>
-<section id="scatter-plot" class="level4">
-<h4 class="anchored" data-anchor-id="scatter-plot">Scatter plot</h4>
-<p>geom_point</p>
-<p>geom_smooth</p>
+<section id="what-are-this-plot" class="level4">
+<h4 class="anchored" data-anchor-id="what-are-this-plot">What are this plot ?</h4>
+<p>Analyse the following code chunks, comment all the layers of each plot, which plots would you expect ? What do you need to be able to run these codes. Ask the web or chatGPT !</p>
+<p><strong><em>Plot 1</em></strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(clinical, <span class="at">x=</span><span class="st">"DUSP6"</span>, <span class="at">y=</span><span class="st">"signature_MAPK"</span>, <span class="at">color=</span><span class="st">"known.oncogenes"</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">add=</span><span class="st">"reg.line"</span>) <span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) <span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>known.oncogenes,<span class="at">ncol=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_cor</span>(<span class="at">label.y =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>palette.known.onco) <span class="sc">+</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong><em>Plot 2</em></strong></p>
+<p>Comment also the lines before the plot.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>median.signature <span class="ot">&lt;-</span> <span class="fu">median</span>(clinical<span class="sc">$</span>signature_MAPK)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>high.signature <span class="ot">&lt;-</span> clinical<span class="sc">$</span>signature_MAPK <span class="sc">&gt;=</span> median.signature</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>clinical<span class="sc">$</span>signature_group <span class="ot">&lt;-</span> <span class="st">"low"</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>clinical<span class="sc">$</span>signature_group[high.signature] <span class="ot">&lt;-</span> <span class="st">"high"</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggviolin</span>(clinical, <span class="at">x =</span> <span class="st">"signature_group"</span>, <span class="at">y =</span> <span class="st">"ETV4"</span>, <span class="at">fill =</span> <span class="st">"signature_group"</span>, </span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">palette =</span> <span class="fu">c</span>(<span class="at">high=</span><span class="fu">colours</span>()[<span class="dv">124</span>],<span class="at">low=</span><span class="fu">colours</span>()[<span class="dv">144</span>]),</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">add =</span> <span class="st">"boxplot"</span>, <span class="at">add.params =</span> <span class="fu">list</span>(<span class="at">fill =</span> <span class="st">"white"</span>)) <span class="sc">+</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>known.oncogenes,<span class="at">ncol=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"high"</span>,<span class="st">"low"</span>)), <span class="at">method=</span><span class="st">"wilcox"</span>, <span class="at">label.y =</span> <span class="dv">15</span>, <span class="at">label=</span><span class="st">"p.signif"</span>) <span class="sc">+</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="correlation-plot" class="level4">
 <h4 class="anchored" data-anchor-id="correlation-plot">Correlation plot</h4>
-<p>corrplot</p>
+<p>We want to analyse the correlation between the genes of the MAPK activity signature. To this end, we need to <strong>install</strong> and <strong>load</strong> the <code>corrplot</code> package. You will use the table stored in <code>expression.selected</code>, you need to remove the column containing the sample IDs and compute the correlation between the columns and store the result in a variable.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>expression.selected<span class="sc">$</span>sampleID <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>You have a very nice introduction to this package: <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html" class="uri">https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html</a>.</p>
+<p>You want to obtain the following plot:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Here is the solution:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the package that is in CRAN repository</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"corrplot"</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the correlation, by default it compute the correlation between columns</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(expression.selected) </span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co"># the plot !</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(M, <span class="at">addCoef.col =</span> <span class="st">'black'</span>, <span class="at">order =</span> <span class="st">'AOE'</span>, <span class="at">col =</span> <span class="fu">COL2</span>(<span class="st">'PiYG'</span>), <span class="at">tl.pos =</span> <span class="st">'d'</span>, <span class="at">cl.pos =</span> <span class="st">'b'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="heatmap" class="level4">
 <h4 class="anchored" data-anchor-id="heatmap">Heatmap</h4>
