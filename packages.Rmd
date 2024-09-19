@@ -46,6 +46,16 @@ CRAN is the primary repository for R packages. It is a collection of thousands o
 install.packages("package_name")
 ```
 
+After installing a package, you need to activate it. \
+Each time you close R/RStudio, any installed packages will be preserved, but will not be active when you switch R/RStudio back on. You need to activate it either by checking the box next to the package name (see image above) or by using a simple command line.
+
+```{r activate packages}
+library(package_name)
+```
+Note that for the library function, you must enter the package name without quotation marks.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 - Bioconductor
 
 Bioconductor is a repository specifically for bioinformatics and computational biology packages. It focuses on tools for analyzing omics data.
@@ -69,6 +79,8 @@ BiocManager::install(c("package1","package2","package3"))
 Please check the Bioconductor website for more information about installation and the list of available packages.
 
 Link : [Bioconductor](https://www.bioconductor.org/install/)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 - GitHub
 
