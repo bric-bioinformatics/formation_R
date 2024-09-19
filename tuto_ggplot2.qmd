@@ -30,6 +30,7 @@ require("knitr")
 library(ggplot2)
 library(ggpubr)
 library(corrplot)
+library(pheatmap)
 ```
 
 ## Introduction
@@ -539,9 +540,8 @@ ggviolin(clinical, x = "signature_group", y = "ETV4", fill = "signature_group",
          add = "boxplot", add.params = list(fill = "white")) +
   theme_light() +
   theme(aspect.ratio = 1) +
-  facet_wrap(~known.oncogenes,ncol=4) +
-  stat_compare_means(comparisons = list(c("high","low")), method="wilcox", label.y = 15, label="p.signif") +
-  ylim(c(0,16))
+  facet_wrap(~known.oncogenes,ncol=4, scales="free_y") +
+  stat_compare_means(comparisons = list(c("high","low")), method="wilcox", label.y = 3, label="p.signif")
 ```
 
 #### Correlation plot
@@ -552,7 +552,7 @@ We want to analyse the correlation between the genes of the MAPK activity signat
 expression.selected$sampleID <- NULL
 ```
 
-You have a very nice introduction to this package: <https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html>.
+You have a very nice introduction to this package: <https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html>. All the informations are in this page but don't hesitate to search for more.
 
 You want to obtain the following plot:
 
@@ -576,7 +576,42 @@ corrplot(M, addCoef.col = 'black', order = 'AOE', col = COL2('PiYG'), tl.pos = '
 
 #### Heatmap
 
-pheatmap
+```{r, echo=F}
+## Prepare the data
+# annotation of the columns that contains sample informations
+# We want to show the oncogenes, the gender and the pathological stage and the 
+# MAPH signature groups
+# the data frame must contain row names corresponding to the sample IDs and identical to the sample IDs in the expression data.
+# We create a data.frame with the relevant columns
+anno.columns <- clinical[,c("known.oncogenes","pathologic_stage","gender","signature_group")]
+row.names(anno.columns) <- clinical$sampleID
+# For the pathological stage we want only 4 stages, we need to to remove sub categories A and B
+anno.columns$pathologic_stage <- sub("[AB]$","",anno.columns$pathologic_stage)
+# create a list containing the colors for each feature
+colors.anno <- list(known.oncogenes=palette.known.onco,
+                       pathologic_stage=c("Stage I"=colours()[404], "Stage II"=colours()[33], "Stage III"=colours()[35], "Stage IV"=colours()[24]),
+                       gender=c(FEMALE=colours()[613], MALE=colours()[290]),
+                       signature_group=c(high=colours()[124],low=colours()[144]))
+# Create annotation for the rows containing the genes: 
+# we want to indcate the genes involved in the signature
+anno.rows <- data.frame(row.names=row.names(luad_expr),in.signature=ifelse(row.names(luad_expr)%in%gene.of.interest,"yes","no"))
+colors.anno$in.signature <- c(yes="black",no="white")
+
+pheatmap(luad_expr,
+         cluster_rows = T, cluster_cols = T, # set to FALSE if you want to remove the dendograms
+         show_colnames = F, # displaying column names
+         show_rownames = T, # displaying row names
+         clustering_distance_cols = 'correlation',
+         clustering_distance_rows = 'correlation',
+         annotation_row = anno.rows, # row (gene) annotations
+         annotation_col = anno.columns, # column (sample) annotations
+         annotation_colors = colors.anno, # colours for your annotations
+         clustering_method = 'ward.D', # how to aggregate rows and columns depending on their distance
+         color = viridis::inferno(100), # choose a colour scale for your data
+         breaks = seq(-4,4,0.08),
+         main = "Super heatmap with annotations" # a title for our heatmap
+         )
+```
 
 ## Create a KM plot
 

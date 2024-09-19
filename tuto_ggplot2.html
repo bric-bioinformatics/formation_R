@@ -167,19 +167,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       TCGA.05.4249.01 TCGA.05.4250.01 TCGA.05.4384.01 TCGA.05.4389.01
-GRIN1           5.3087          5.2150          5.9420          3.1785
-PSAP           15.3157         15.1531         15.5336         16.4094
-TGFBR2         11.5473         12.1297         12.4083         11.9288
-STK40          10.4577          9.2863         10.5625         11.0288
-ITGA1           9.0958         11.0498         10.1844          9.0444
-NENF           10.6274          9.8561         10.0191         10.9955
+HLF             2.3163          2.5663          0.3256          1.2797
+SIDT1           0.2915         -0.4740         -0.8877         -0.1085
+KCNK5           2.7136         -1.2182         -1.0843          0.2549
+B3GNT1          0.2980         -0.2679         -0.3662          0.3693
+NT5E            1.9077          3.2984          0.5635         -1.1936
+ANKFN1          1.7716          1.4035         -1.1512          0.9808
        TCGA.05.4390.01 TCGA.05.4395.01
-GRIN1           4.2870          2.3296
-PSAP           14.7361         15.8842
-TGFBR2         10.8582          9.5220
-STK40          10.6675         10.3251
-ITGA1           9.3652          9.7952
-NENF           10.5253         10.8658</code></pre>
+HLF             0.7935         -3.4771
+SIDT1          -1.2468          1.2006
+KCNK5          -0.3419         -1.2818
+B3GNT1         -0.5926         -0.8827
+NT5E           -1.2197          3.5446
+ANKFN1         -0.0502         -2.9351</code></pre>
 </div>
 </div>
 </section>
@@ -727,12 +727,12 @@ Answer
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   ETV4    ETV5   DUSP6   SPRY2   DUSP4
-TCGA.05.4249.01 11.3003  9.9167 13.2098 10.3430  7.7095
-TCGA.05.4250.01  9.8280  9.0018 13.8032  8.5924 10.1950
-TCGA.05.4384.01 10.0667 10.0427 11.4706  9.0349 10.5538
-TCGA.05.4389.01 11.4521  9.8325 10.1072  8.0283  9.3576
-TCGA.05.4390.01 11.4103 11.4477 12.6858  9.0837 12.1465
-TCGA.05.4395.01  9.8810  9.4884 13.7142  8.6493 11.2010</code></pre>
+TCGA.05.4249.01  1.3836  0.1853  1.3425  1.0779 -0.8597
+TCGA.05.4250.01 -0.0887 -0.7296  1.9359 -0.6727  1.6258
+TCGA.05.4384.01  0.1500  0.3113 -0.3967 -0.2302  1.9846
+TCGA.05.4389.01  1.5354  0.1011 -1.7601 -1.2368  0.7884
+TCGA.05.4390.01  1.4936  1.7163  0.8185 -0.1814  3.5773
+TCGA.05.4395.01 -0.0357 -0.2430  1.8469 -0.6158  2.6318</code></pre>
 </div>
 <details>
 <summary>Code</summary>
@@ -767,19 +767,19 @@ TCGA.05.4395.01  9.8810  9.4884 13.7142  8.6493 11.2010</code></pre>
 5 TCGA.05.4390.01            KRAS   0.57         Stage IB FEMALE
 6 TCGA.05.4395.01            KRAS   0.61       Stage IIIB   MALE
                       tobacco_smoking_history signature_MAPK    ETV4    ETV5
-1      Current reformed smoker for &gt; 15 years      0.9298746 11.3003  9.9167
-2 Current reformed smoker for &lt; or = 15 years      0.4811406  9.8280  9.0018
-3      Current reformed smoker for &gt; 15 years      0.5672071 10.0667 10.0427
-4      Current reformed smoker for &gt; 15 years      0.3474326 11.4521  9.8325
-5 Current reformed smoker for &lt; or = 15 years      0.8763612 11.4103 11.4477
-6      Current reformed smoker for &gt; 15 years      0.5578706  9.8810  9.4884
+1      Current reformed smoker for &gt; 15 years      0.9298746  1.3836  0.1853
+2 Current reformed smoker for &lt; or = 15 years      0.4811406 -0.0887 -0.7296
+3      Current reformed smoker for &gt; 15 years      0.5672071  0.1500  0.3113
+4      Current reformed smoker for &gt; 15 years      0.3474326  1.5354  0.1011
+5 Current reformed smoker for &lt; or = 15 years      0.8763612  1.4936  1.7163
+6      Current reformed smoker for &gt; 15 years      0.5578706 -0.0357 -0.2430
     DUSP6   SPRY2   DUSP4
-1 13.2098 10.3430  7.7095
-2 13.8032  8.5924 10.1950
-3 11.4706  9.0349 10.5538
-4 10.1072  8.0283  9.3576
-5 12.6858  9.0837 12.1465
-6 13.7142  8.6493 11.2010</code></pre>
+1  1.3425  1.0779 -0.8597
+2  1.9359 -0.6727  1.6258
+3 -0.3967 -0.2302  1.9846
+4 -1.7601 -1.2368  0.7884
+5  0.8185 -0.1814  3.5773
+6  1.8469 -0.6158  2.6318</code></pre>
 </div>
 </div>
 </section>
@@ -829,7 +829,7 @@ TCGA.05.4395.01  9.8810  9.4884 13.7142  8.6493 11.2010</code></pre>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>expression.selected<span class="sc">$</span>sampleID <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>You have a very nice introduction to this package: <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html" class="uri">https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html</a>.</p>
+<p>You have a very nice introduction to this package: <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html" class="uri">https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html</a>. All the informations are in this page but don’t hesitate to search for more.</p>
 <p>You want to obtain the following plot:</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -853,7 +853,53 @@ TCGA.05.4395.01  9.8810  9.4884 13.7142  8.6493 11.2010</code></pre>
 </section>
 <section id="heatmap" class="level4">
 <h4 class="anchored" data-anchor-id="heatmap">Heatmap</h4>
-<p>pheatmap</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Prepare the data</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="co"># annotation of the columns that contains sample informations</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We want to show the oncogenes, the gender and the pathological stage and the </span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MAPH signature groups</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the data frame must contain row names corresponding to the sample IDs and identical to the sample IDs in the expression data.</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We create a data.frame with the relevant columns</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>anno.columns <span class="ot">&lt;-</span> clinical[,<span class="fu">c</span>(<span class="st">"known.oncogenes"</span>,<span class="st">"pathologic_stage"</span>,<span class="st">"gender"</span>,<span class="st">"signature_group"</span>)]</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(anno.columns) <span class="ot">&lt;-</span> clinical<span class="sc">$</span>sampleID</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="co"># For the pathological stage we want only 4 stages, we need to to remove sub categories A and B</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>anno.columns<span class="sc">$</span>pathologic_stage <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"[AB]$"</span>,<span class="st">""</span>,anno.columns<span class="sc">$</span>pathologic_stage)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list containing the colors for each feature</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>colors.anno <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">known.oncogenes=</span>palette.known.onco,</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pathologic_stage=</span><span class="fu">c</span>(<span class="st">"Stage I"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">404</span>], <span class="st">"Stage II"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">33</span>], <span class="st">"Stage III"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">35</span>], <span class="st">"Stage IV"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">24</span>]),</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>                       <span class="at">gender=</span><span class="fu">c</span>(<span class="at">FEMALE=</span><span class="fu">colours</span>()[<span class="dv">613</span>], <span class="at">MALE=</span><span class="fu">colours</span>()[<span class="dv">290</span>]),</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>                       <span class="at">signature_group=</span><span class="fu">c</span>(<span class="at">high=</span><span class="fu">colours</span>()[<span class="dv">124</span>],<span class="at">low=</span><span class="fu">colours</span>()[<span class="dv">144</span>]))</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create annotation for the rows containing the genes: </span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="co"># we want to indcate the genes involved in the signature</span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>anno.rows <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names=</span><span class="fu">row.names</span>(luad_expr),<span class="at">in.signature=</span><span class="fu">ifelse</span>(<span class="fu">row.names</span>(luad_expr)<span class="sc">%in%</span>gene.of.interest,<span class="st">"yes"</span>,<span class="st">"no"</span>))</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>colors.anno<span class="sc">$</span>in.signature <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">yes=</span><span class="st">"black"</span>,<span class="at">no=</span><span class="st">"white"</span>)</span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="co"># center by the median the expression values per genes in order to have a nicer representation</span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>luad_expr_c <span class="ot">&lt;-</span> luad_expr <span class="sc">-</span> <span class="fu">apply</span>(luad_expr,<span class="dv">1</span>,median)</span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a><span class="co"># select the top 100 highest variable genes</span></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>gene.var <span class="ot">&lt;-</span> <span class="fu">apply</span>(luad_expr_c,<span class="dv">1</span>,var)</span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>gene.var <span class="ot">&lt;-</span> <span class="fu">sort</span>(gene.var,<span class="at">decreasing=</span>T)</span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>gene.var <span class="ot">&lt;-</span> gene.var[<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>]</span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>luad_expr_c <span class="ot">&lt;-</span> luad_expr_c[<span class="fu">names</span>(gene.var),]</span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr_c,</span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="at">cluster_cols =</span> T, <span class="co"># set to FALSE if you want to remove the dendograms</span></span>
+<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_colnames =</span> F, <span class="co"># displaying column names</span></span>
+<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> F, <span class="co"># displaying row names</span></span>
+<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_cols =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb49-34"><a href="#cb49-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_rows =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb49-35"><a href="#cb49-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_row =</span> anno.rows, <span class="co"># row (gene) annotations</span></span>
+<span id="cb49-36"><a href="#cb49-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_col =</span> anno.columns, <span class="co"># column (sample) annotations</span></span>
+<span id="cb49-37"><a href="#cb49-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_colors =</span> colors.anno, <span class="co"># colours for your annotations</span></span>
+<span id="cb49-38"><a href="#cb49-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">'ward.D'</span>, <span class="co"># how to aggregate rows and columns depending on their distance</span></span>
+<span id="cb49-39"><a href="#cb49-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">color =</span> viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="dv">100</span>), <span class="co"># choose a colour scale for your data</span></span>
+<span id="cb49-40"><a href="#cb49-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="fl">0.2</span>),</span>
+<span id="cb49-41"><a href="#cb49-41" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">"Super heatmap with annotations"</span> <span class="co"># a title for our heatmap</span></span>
+<span id="cb49-42"><a href="#cb49-42" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
 <section id="create-a-km-plot" class="level2">
