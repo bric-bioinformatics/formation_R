@@ -609,6 +609,8 @@ pheatmap(luad_expr,
          clustering_method = 'ward.D', # how to aggregate rows and columns depending on their distance
          color = viridis::inferno(100), # choose a colour scale for your data
          breaks = seq(-4,4,0.08),
+         cutree_cols = 6, # display column clusters
+         cutree_rows = 4, # display row clusters
          main = "Super heatmap with annotations" # a title for our heatmap
          )
 ```
