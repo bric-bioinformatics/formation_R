@@ -173,7 +173,7 @@ Link : [Tidyverse](https://www.tidyverse.org/)
 
 ## Training dataset : "clinical_data"
 
-For the following examples, we will take a dataset composed with some clinical variables and 100 patients.
+For the following examples, we will take a dataset composed with some clinical variables and 10,000 patients.
 The dataset is named "clinical_data". \
 
 ```{r clinical_data dataset}
