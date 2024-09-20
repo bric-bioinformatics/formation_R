@@ -11,7 +11,7 @@
 
 <meta name="author" content="Elodie Darbo / Cyril Dourthe" />
 
-<meta name="date" content="2024-09-19" />
+<meta name="date" content="2024-09-20" />
 
 <title>Handle the information</title>
 
@@ -358,7 +358,7 @@ pre code {
 
 <h1 class="title toc-ignore">Handle the information</h1>
 <h4 class="author">Elodie Darbo / Cyril Dourthe</h4>
-<h4 class="date">2024-09-19</h4>
+<h4 class="date">2024-09-20</h4>
 
 </div>
 
@@ -530,7 +530,7 @@ package (see Packages sheet)</p>
 <div id="training-dataset-clinical_data" class="section level2">
 <h2>Training dataset : “clinical_data”</h2>
 <p>For the following examples, we will take a dataset composed with some
-clinical variables and 100 patients. The dataset is named
+clinical variables and 10,000 patients. The dataset is named
 “clinical_data”.<br />
 </p>
 <pre class="r"><code>head(clinical_data)</code></pre>
@@ -767,7 +767,7 @@ variables (columns). This function is often used in conjunction with
 other <em>tidyverse</em> functions.</p>
 <pre class="r"><code>?dplyr::group_by</code></pre>
 <p>One function that works perfectly with <em>group_by</em> is
-<em>summarise</em>. For example, we want to know the age mean for each
+<em>summarize</em>. For example, we want to know the age mean for each
 gender :</p>
 <pre class="r"><code>clinical_data %&gt;%
   group_by(gender) %&gt;%
@@ -786,9 +786,9 @@ result of the group_by
 using the %&gt;% symbol. The <em>group_by</em> function first groups the
 variable we’re interested in, in this case “gender”. There are only two
 possibilities for this variable, “Male” or “Female”. Secondly, the
-<em>summarise</em> function takes into account the “age” variable,
+<em>summarize</em> function takes into account the “age” variable,
 calculating the average for each possibility of the “gender” variable.
-What’s more, the <em>summarise</em> function displays the results in the
+What’s more, the <em>summarize</em> function displays the results in the
 console, rather than entering them directly into the dataframe.</p>
 <hr />
 </div>
