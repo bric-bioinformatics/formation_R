@@ -38,24 +38,27 @@ But before diving into complex data exploration. We need to define a workspace w
 
 A working directory contains all the data that will be useful to us (tables, images, graphics, etc.).
 
-
 * Create a new folder that you can called intro_R
-* In the "Session" menu, select "Choose Directory"...
+* In the "Session" menu, select "Set Working Directory" -> Choose Directory"...
 * Navigate to your intro_R folder
 * Double-click it to open
 * Click Choose
 * Observe the console and save the command in your script
+
+![](figures_practical_case/choose_directory.svg)
 
 # Create a script
 
 The working directory will also contain the code we'll be writing as we go along, in the form of a text file called script.
 The advantage of a script is that you can save your code, keep it and reuse it.
 
-
 * In the RStudio window click the "create file" button
 * Choose the R script format
 * Save your file in your intro_R folder
 * Save your script regularly
+
+![](figures_practical_case/create_script.svg)
+
 
 # Load the data in R
 
@@ -70,6 +73,8 @@ We need to load the data to be able to work. Use the directory you have created 
 * Change the name of the variable
 * Specify that the first line contains the names of the columns 
 * Specify that the first row contains the names of the rows
+
+![](figures_practical_case/load_data.svg)
 
 
 After this last step, you can see that a variable has been created and is displayed in the “Environment” panel. This variable is called TCGA_LUAD (or whatever you called it) containing the data.
