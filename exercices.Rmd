@@ -27,6 +27,8 @@ details > p {
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
+![](figures_exercices/structure_rstudio.svg)
+
 # Discovering the R console
 
 R is an interpreted language. If you write a code line in the console and validate it, you will instant see the result of your code. This is the simpliest case in computer programming : I give an instruction, this instruction is interpreted and the result is displayed.
