@@ -13,7 +13,7 @@ details > summary {
   box-shadow: 1px 1px 2px #bbbbbb;
   cursor: pointer;
 }
-​
+
 details > p {
   background-color: #E0F8EC;
   padding: 4px;
@@ -24,6 +24,8 @@ details > p {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+TCGA_LUAD <- read.delim("~/Documents/O·D·I·L/formation_R/data/TCGA_LUAD_subset.tsv", row.names = 1)
+
 ```
 
 In this section, you will learn how to manipulate data in the form of tables. 
@@ -79,7 +81,8 @@ We need to load the data to be able to work. Use the directory you have created 
 
 After this last step, you can see that a variable has been created and is displayed in the “Environment” panel. This variable is called TCGA_LUAD (or whatever you called it) containing the data.
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---
 
 With R, it is also possible to load data using the command line. For this purpose, there are functions available for loading data.
 
@@ -100,8 +103,7 @@ To see your dataset, you can click on the variable in the environment to display
 "View" is a function that takes only two arguments : the object to display and the possibility to give a title to the viewer window.
 But let's see how data can be displayed differently
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 * Print all the values
 
@@ -111,8 +113,7 @@ print(TCGA_LUAD)
 
 Like the "View" function, "print" returns all the data, with one difference. Data is not displayed in a new window, but directly in the console.
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 * Display the first rows
 
@@ -122,8 +123,7 @@ head(TCGA_LUAD)
 
 The “head” function displays only the first few lines of the table.
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 * Display a few more rows
 
@@ -133,8 +133,7 @@ head(TCGA_LUAD, n=20)
 
 The “head” function doesn't just have one argument, it also has one that sets the number of lines to be displayed (you can verify it in Help section of RStudio).
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 * Display the last rows
 
@@ -145,8 +144,7 @@ tail(TCGA_LUAD)
 It is also possible to view the last lines of our data set, using the tail function. 
 Like the “head” function, “tail” has several arguments.
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 * Dimensions of the data frame
 
@@ -158,14 +156,15 @@ ncol(TCGA_LUAD)
 <details>
   <summary>Solution</summary>
 
+```{r ncol2, echo=F,eval=T}
+ncol(TCGA_LUAD)
 ```
-[1] 6
 
-The "ncol" function displays the number of columns in the data frame.
-```
+The `ncol()` function displays the number of columns in the data frame.
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r nrow}
 nrow(TCGA_LUAD)
@@ -173,14 +172,15 @@ nrow(TCGA_LUAD)
 <details>
   <summary>Solution</summary>
 
+```{r nrow2, echo=F,eval=T}
+nrow(TCGA_LUAD)
 ```
-[1] 246
 
-The "nrow" function displays the number of rows in the data frame.
-```
+The `nrow()` function displays the number of rows in the data frame.
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r dim}
 dim(TCGA_LUAD)
@@ -188,14 +188,15 @@ dim(TCGA_LUAD)
 <details>
   <summary>Solution</summary>
 
+```{r dim2, echo=F,eval=T}
+dim(TCGA_LUAD)
 ```
-[1] 246   6
 
-The "dim" function displays the dimension of the data frame, the number of rows and columns
-```
+The `dim()` function displays the dimension of the data frame, the number of rows and columns
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r colnames}
 colnames(TCGA_LUAD)
@@ -203,60 +204,32 @@ colnames(TCGA_LUAD)
 <details>
   <summary>Solution</summary>
 
+```{r colnames2, echo=F,eval=T}
+colnames(TCGA_LUAD)
 ```
-[1] "known.oncogenes"         "Purity"                  "pathologic_stage"        "gender"                  "tobacco_smoking_history" "signature_MAPK"
 
-The "colnames" function displays the columns names (header)
-```
+The `colnames()` function displays the columns names (header)
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r rownames}
-rownames(TCGA_LUAD)
+head(rownames(TCGA_LUAD))
 ```
 <details>
   <summary>Solution</summary>
 
+```{r rownames2, echo=F,eval=T}
+head(rownames(TCGA_LUAD))
 ```
-  [1] "TCGA.05.4249.01" "TCGA.05.4250.01" "TCGA.05.4384.01" "TCGA.05.4389.01" "TCGA.05.4390.01" "TCGA.05.4395.01" "TCGA.05.4396.01" "TCGA.05.4397.01"
-  [9] "TCGA.05.4403.01" "TCGA.05.4415.01" "TCGA.05.4418.01" "TCGA.05.4420.01" "TCGA.05.4422.01" "TCGA.05.4426.01" "TCGA.05.4427.01" "TCGA.05.4433.01"
- [17] "TCGA.05.4434.01" "TCGA.05.5423.01" "TCGA.05.5428.01" "TCGA.05.5429.01" "TCGA.05.5715.01" "TCGA.35.3615.01" "TCGA.35.5375.01" "TCGA.38.4628.01"
- [25] "TCGA.38.4630.01" "TCGA.38.4631.01" "TCGA.44.2666.01" "TCGA.44.3919.01" "TCGA.44.4112.01" "TCGA.44.5643.01" "TCGA.44.5644.01" "TCGA.44.5645.01"
- [33] "TCGA.44.6146.01" "TCGA.44.6147.01" "TCGA.44.6774.01" "TCGA.44.6776.01" "TCGA.44.6779.01" "TCGA.44.7659.01" "TCGA.44.7660.01" "TCGA.44.7669.01"
- [41] "TCGA.44.7670.01" "TCGA.44.7671.01" "TCGA.44.8117.01" "TCGA.44.8119.01" "TCGA.44.8120.01" "TCGA.44.A47B.01" "TCGA.44.A4SU.01" "TCGA.49.4486.01"
- [49] "TCGA.49.4488.01" "TCGA.49.4494.01" "TCGA.49.4505.01" "TCGA.49.4510.01" "TCGA.49.6742.01" "TCGA.49.AAR9.01" "TCGA.49.AARQ.01" "TCGA.49.AARR.01"
- [57] "TCGA.4B.A93V.01" "TCGA.50.5051.01" "TCGA.50.5930.01" "TCGA.50.5931.01" "TCGA.50.5932.01" "TCGA.50.5936.01" "TCGA.50.5942.01" "TCGA.50.5944.01"
- [65] "TCGA.50.5946.01" "TCGA.50.6591.01" "TCGA.50.6594.01" "TCGA.50.6597.01" "TCGA.50.8457.01" "TCGA.53.7624.01" "TCGA.53.A4EZ.01" "TCGA.55.1592.01"
- [73] "TCGA.55.1594.01" "TCGA.55.1595.01" "TCGA.55.1596.01" "TCGA.55.5899.01" "TCGA.55.6543.01" "TCGA.55.6968.01" "TCGA.55.6970.01" "TCGA.55.6972.01"
- [81] "TCGA.55.6975.01" "TCGA.55.6984.01" "TCGA.55.7227.01" "TCGA.55.7283.01" "TCGA.55.7570.01" "TCGA.55.7576.01" "TCGA.55.7725.01" "TCGA.55.7727.01"
- [89] "TCGA.55.7903.01" "TCGA.55.7910.01" "TCGA.55.7914.01" "TCGA.55.7994.01" "TCGA.55.7995.01" "TCGA.55.8085.01" "TCGA.55.8087.01" "TCGA.55.8091.01"
- [97] "TCGA.55.8094.01" "TCGA.55.8097.01" "TCGA.55.8206.01" "TCGA.55.8207.01" "TCGA.55.8299.01" "TCGA.55.8506.01" "TCGA.55.8507.01" "TCGA.55.8513.01"
-[105] "TCGA.55.8514.01" "TCGA.55.8615.01" "TCGA.55.8620.01" "TCGA.55.A492.01" "TCGA.55.A494.01" "TCGA.62.8394.01" "TCGA.62.8395.01" "TCGA.62.8397.01"
-[113] "TCGA.62.8399.01" "TCGA.62.8402.01" "TCGA.62.A46O.01" "TCGA.62.A46P.01" "TCGA.62.A46S.01" "TCGA.62.A46V.01" "TCGA.62.A46Y.01" "TCGA.62.A470.01"
-[121] "TCGA.62.A471.01" "TCGA.64.1676.01" "TCGA.64.1678.01" "TCGA.64.1680.01" "TCGA.64.5774.01" "TCGA.64.5775.01" "TCGA.64.5778.01" "TCGA.67.3770.01"
-[129] "TCGA.67.3771.01" "TCGA.67.3772.01" "TCGA.67.3773.01" "TCGA.67.3774.01" "TCGA.67.4679.01" "TCGA.67.6215.01" "TCGA.67.6216.01" "TCGA.69.7760.01"
-[137] "TCGA.69.7764.01" "TCGA.69.7973.01" "TCGA.69.7979.01" "TCGA.69.7980.01" "TCGA.71.6725.01" "TCGA.73.4662.01" "TCGA.73.4666.01" "TCGA.73.4668.01"
-[145] "TCGA.73.4670.01" "TCGA.73.4675.01" "TCGA.73.4676.01" "TCGA.73.4677.01" "TCGA.73.7498.01" "TCGA.73.A9RS.01" "TCGA.75.5146.01" "TCGA.75.6206.01"
-[153] "TCGA.75.6207.01" "TCGA.75.6214.01" "TCGA.75.7027.01" "TCGA.75.7030.01" "TCGA.75.7031.01" "TCGA.78.7145.01" "TCGA.78.7146.01" "TCGA.78.7147.01"
-[161] "TCGA.78.7148.01" "TCGA.78.7149.01" "TCGA.78.7150.01" "TCGA.78.7152.01" "TCGA.78.7154.01" "TCGA.78.7155.01" "TCGA.78.7156.01" "TCGA.78.7158.01"
-[169] "TCGA.78.7161.01" "TCGA.78.7163.01" "TCGA.78.7166.01" "TCGA.78.7167.01" "TCGA.78.7220.01" "TCGA.78.7535.01" "TCGA.78.7536.01" "TCGA.78.7537.01"
-[177] "TCGA.78.7539.01" "TCGA.78.7540.01" "TCGA.78.7633.01" "TCGA.78.8648.01" "TCGA.78.8655.01" "TCGA.78.8662.01" "TCGA.80.5607.01" "TCGA.80.5608.01"
-[185] "TCGA.80.5611.01" "TCGA.86.6562.01" "TCGA.86.7713.01" "TCGA.86.7714.01" "TCGA.86.7955.01" "TCGA.86.8054.01" "TCGA.86.8074.01" "TCGA.86.8278.01"
-[193] "TCGA.86.8279.01" "TCGA.86.8280.01" "TCGA.86.8281.01" "TCGA.86.8358.01" "TCGA.86.8669.01" "TCGA.86.8674.01" "TCGA.86.A4P7.01" "TCGA.86.A4P8.01"
-[201] "TCGA.91.6829.01" "TCGA.91.6831.01" "TCGA.91.6836.01" "TCGA.91.6840.01" "TCGA.91.6847.01" "TCGA.91.6849.01" "TCGA.91.8496.01" "TCGA.91.8497.01"
-[209] "TCGA.91.8499.01" "TCGA.91.A4BD.01" "TCGA.93.7348.01" "TCGA.95.7043.01" "TCGA.95.7562.01" "TCGA.95.7567.01" "TCGA.95.7947.01" "TCGA.95.7948.01"
-[217] "TCGA.95.8039.01" "TCGA.95.8494.01" "TCGA.95.A4VK.01" "TCGA.97.7546.01" "TCGA.97.7547.01" "TCGA.97.7937.01" "TCGA.97.7938.01" "TCGA.97.8171.01"
-[225] "TCGA.97.8176.01" "TCGA.97.8179.01" "TCGA.97.8547.01" "TCGA.97.A4M0.01" "TCGA.97.A4M3.01" "TCGA.99.AA5R.01" "TCGA.J2.A4AD.01" "TCGA.J2.A4AE.01"
-[233] "TCGA.L4.A4E5.01" "TCGA.L9.A443.01" "TCGA.L9.A50W.01" "TCGA.L9.A5IP.01" "TCGA.L9.A7SV.01" "TCGA.MN.A4N1.01" "TCGA.MP.A4SW.01" "TCGA.MP.A4T6.01"
-[241] "TCGA.MP.A4T8.01" "TCGA.MP.A4TC.01" "TCGA.MP.A5C7.01" "TCGA.NJ.A4YF.01" "TCGA.NJ.A4YI.01" "TCGA.NJ.A7XG.01"
 
-The "rownames" function displays the rows names
-```
+
+The `rownames()` function displays the rows names. 
+
 </details>
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 # Work with the dimensions
 
@@ -267,7 +240,7 @@ This requires a knowledge of how a data frame is organized on R. The syntax for 
 dataframe[row_index, column_index]
 ```
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 * Select columns or rows by names
 
@@ -275,347 +248,89 @@ When there are few columns or rows, and we know their names, we can select them.
 IMPORTANT : Be careful to respect the case !
 
 ```{r selectnames column}
-TCGA_LUAD[,"Purity"]
+head(TCGA_LUAD[,"Purity"])
 ```
 <details>
   <summary>Solution</summary>
 
+```{r selectcolnames2, echo=F,eval=T}
+head(TCGA_LUAD[,"Purity"])
 ```
-  [1] 0.49 0.50 0.49 0.48 0.57 0.61 0.82 0.87 0.46 0.67 0.55 0.59 0.62 0.70 0.47 0.62 0.45 0.59 0.63 0.82 0.73 0.69 0.58 0.50 0.79 0.49 0.59 0.51 0.55 0.56
- [31] 0.75 0.54 0.70 0.47 0.45 0.65 0.60 0.56 0.58 0.50 0.50 0.58 0.66 0.55 0.54 0.50 0.59 0.73 0.45 0.46 0.45 0.64 0.49 0.75 0.52 0.97 0.62 0.59 0.95 0.86
- [61] 0.84 0.60 0.69 0.57 0.75 0.90 0.60 0.48 0.60 0.69 0.47 0.49 0.55 0.52 0.63 0.67 0.65 0.65 0.56 0.83 0.46 0.81 0.53 0.47 0.57 0.47 0.61 0.56 0.64 0.58
- [91] 0.56 0.51 0.49 0.56 0.82 0.60 0.79 0.64 0.46 0.57 0.49 0.45 0.64 0.50 0.54 0.57 0.62 0.54 0.81 0.53 0.65 0.69 0.50 0.50 0.82 0.70 0.45 0.52 0.48 0.59
-[121] 0.46 0.51 0.57 0.61 0.76 0.71 0.59 0.65 0.46 0.45 0.70 0.48 0.71 0.69 0.56 0.65 0.80 0.55 0.53 0.55 0.63 0.48 0.45 0.53 0.62 0.57 0.77 0.47 0.62 0.61
-[151] 0.58 0.70 0.64 0.64 0.62 0.50 0.49 0.63 0.68 0.62 0.60 0.60 0.46 0.55 0.50 0.82 0.80 0.90 0.75 0.68 0.63 0.84 0.61 0.60 0.78 0.74 0.52 0.59 0.75 0.64
-[181] 0.46 0.79 0.49 0.48 0.51 0.46 0.65 0.67 0.73 0.74 0.51 0.56 0.50 0.45 0.54 0.72 0.57 0.58 1.00 0.79 0.49 0.50 0.67 0.62 0.85 0.62 0.50 0.45 0.77 0.55
-[211] 0.45 0.76 0.55 0.53 0.66 0.71 0.47 0.53 0.57 0.67 0.55 0.59 0.61 0.82 0.53 0.48 0.48 0.55 0.69 0.96 0.57 0.52 0.66 0.48 0.76 0.53 0.83 0.48 0.46 0.59
-[241] 0.59 0.45 0.87 0.55 0.58 0.62
 
-All values for the column named "Purity".
-```
+All values for the column named "Purity". But display only the 6 firsts.
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r selectnames row}
 TCGA_LUAD["TCGA.05.4249.01",]
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r selectrownames2, eval=T,echo=F}
+TCGA_LUAD["TCGA.05.4249.01",]
 ```
-                known.oncogenes Purity pathologic_stage gender                tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE Current reformed smoker for > 15 years      0.9298746
 
 All values for the row named "TCGA.05.4249.01".
-```
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r selectnames2 column}
-TCGA_LUAD[,c("Purity","gender")]
+head(TCGA_LUAD[,c("Purity","gender")])
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r selectnames3, eval=T,echo=F}
+head(TCGA_LUAD[,c("Purity","gender")],6)
 ```
-                Purity gender
-TCGA.05.4249.01   0.49   MALE
-TCGA.05.4250.01   0.50 FEMALE
-TCGA.05.4384.01   0.49   MALE
-TCGA.05.4389.01   0.48   MALE
-TCGA.05.4390.01   0.57 FEMALE
-TCGA.05.4395.01   0.61   MALE
-TCGA.05.4396.01   0.82   MALE
-TCGA.05.4397.01   0.87   MALE
-TCGA.05.4403.01   0.46   MALE
-TCGA.05.4415.01   0.67   MALE
-TCGA.05.4418.01   0.55   MALE
-TCGA.05.4420.01   0.59   MALE
-TCGA.05.4422.01   0.62   MALE
-TCGA.05.4426.01   0.70   MALE
-TCGA.05.4427.01   0.47 FEMALE
-TCGA.05.4433.01   0.62   MALE
-TCGA.05.4434.01   0.45 FEMALE
-TCGA.05.5423.01   0.59   MALE
-TCGA.05.5428.01   0.63   MALE
-TCGA.05.5429.01   0.82   MALE
-TCGA.05.5715.01   0.73 FEMALE
-TCGA.35.3615.01   0.69   MALE
-TCGA.35.5375.01   0.58   MALE
-TCGA.38.4628.01   0.50 FEMALE
-TCGA.38.4630.01   0.79 FEMALE
-TCGA.38.4631.01   0.49 FEMALE
-TCGA.44.2666.01   0.59   MALE
-TCGA.44.3919.01   0.51 FEMALE
-TCGA.44.4112.01   0.55 FEMALE
-TCGA.44.5643.01   0.56   MALE
-TCGA.44.5644.01   0.75 FEMALE
-TCGA.44.5645.01   0.54 FEMALE
-TCGA.44.6146.01   0.70   MALE
-TCGA.44.6147.01   0.47 FEMALE
-TCGA.44.6774.01   0.45 FEMALE
-TCGA.44.6776.01   0.65 FEMALE
-TCGA.44.6779.01   0.60 FEMALE
-TCGA.44.7659.01   0.56   MALE
-TCGA.44.7660.01   0.58   MALE
-TCGA.44.7669.01   0.50   MALE
-TCGA.44.7670.01   0.50 FEMALE
-TCGA.44.7671.01   0.58   MALE
-TCGA.44.8117.01   0.66 FEMALE
-TCGA.44.8119.01   0.55   MALE
-TCGA.44.8120.01   0.54   MALE
-TCGA.44.A47B.01   0.50   MALE
-TCGA.44.A4SU.01   0.59 FEMALE
-TCGA.49.4486.01   0.73   MALE
-TCGA.49.4488.01   0.45 FEMALE
-TCGA.49.4494.01   0.46   MALE
-TCGA.49.4505.01   0.45 FEMALE
-TCGA.49.4510.01   0.64 FEMALE
-TCGA.49.6742.01   0.49   MALE
-TCGA.49.AAR9.01   0.75   MALE
-TCGA.49.AARQ.01   0.52 FEMALE
-TCGA.49.AARR.01   0.97   MALE
-TCGA.4B.A93V.01   0.62 FEMALE
-TCGA.50.5051.01   0.59 FEMALE
-TCGA.50.5930.01   0.95   MALE
-TCGA.50.5931.01   0.86 FEMALE
-TCGA.50.5932.01   0.84   MALE
-TCGA.50.5936.01   0.60   MALE
-TCGA.50.5942.01   0.69 FEMALE
-TCGA.50.5944.01   0.57 FEMALE
-TCGA.50.5946.01   0.75   MALE
-TCGA.50.6591.01   0.90 FEMALE
-TCGA.50.6594.01   0.60 FEMALE
-TCGA.50.6597.01   0.48 FEMALE
-TCGA.50.8457.01   0.60 FEMALE
-TCGA.53.7624.01   0.69 FEMALE
-TCGA.53.A4EZ.01   0.47   MALE
-TCGA.55.1592.01   0.49   MALE
-TCGA.55.1594.01   0.55   MALE
-TCGA.55.1595.01   0.52 FEMALE
-TCGA.55.1596.01   0.63   MALE
-TCGA.55.5899.01   0.67   MALE
-TCGA.55.6543.01   0.65 FEMALE
-TCGA.55.6968.01   0.65   MALE
-TCGA.55.6970.01   0.56 FEMALE
-TCGA.55.6972.01   0.83   MALE
-TCGA.55.6975.01   0.46   MALE
-TCGA.55.6984.01   0.81 FEMALE
-TCGA.55.7227.01   0.53   MALE
-TCGA.55.7283.01   0.47 FEMALE
-TCGA.55.7570.01   0.57   MALE
-TCGA.55.7576.01   0.47   MALE
-TCGA.55.7725.01   0.61 FEMALE
-TCGA.55.7727.01   0.56   MALE
-TCGA.55.7903.01   0.64   MALE
-TCGA.55.7910.01   0.58 FEMALE
-TCGA.55.7914.01   0.56 FEMALE
-TCGA.55.7994.01   0.51   MALE
-TCGA.55.7995.01   0.49 FEMALE
-TCGA.55.8085.01   0.56   MALE
-TCGA.55.8087.01   0.82 FEMALE
-TCGA.55.8091.01   0.60   MALE
-TCGA.55.8094.01   0.79   MALE
-TCGA.55.8097.01   0.64 FEMALE
-TCGA.55.8206.01   0.46   MALE
-TCGA.55.8207.01   0.57   MALE
-TCGA.55.8299.01   0.49 FEMALE
-TCGA.55.8506.01   0.45 FEMALE
-TCGA.55.8507.01   0.64   MALE
-TCGA.55.8513.01   0.50 FEMALE
-TCGA.55.8514.01   0.54 FEMALE
-TCGA.55.8615.01   0.57   MALE
-TCGA.55.8620.01   0.62   MALE
-TCGA.55.A492.01   0.54 FEMALE
-TCGA.55.A494.01   0.81 FEMALE
-TCGA.62.8394.01   0.53 FEMALE
-TCGA.62.8395.01   0.65 FEMALE
-TCGA.62.8397.01   0.69 FEMALE
-TCGA.62.8399.01   0.50   MALE
-TCGA.62.8402.01   0.50 FEMALE
-TCGA.62.A46O.01   0.82 FEMALE
-TCGA.62.A46P.01   0.70   MALE
-TCGA.62.A46S.01   0.45   MALE
-TCGA.62.A46V.01   0.52 FEMALE
-TCGA.62.A46Y.01   0.48 FEMALE
-TCGA.62.A470.01   0.59   MALE
-TCGA.62.A471.01   0.46   MALE
-TCGA.64.1676.01   0.51   MALE
-TCGA.64.1678.01   0.57 FEMALE
-TCGA.64.1680.01   0.61   MALE
-TCGA.64.5774.01   0.76   MALE
-TCGA.64.5775.01   0.71   MALE
-TCGA.64.5778.01   0.59   MALE
-TCGA.67.3770.01   0.65 FEMALE
-TCGA.67.3771.01   0.46 FEMALE
-TCGA.67.3772.01   0.45 FEMALE
-TCGA.67.3773.01   0.70 FEMALE
-TCGA.67.3774.01   0.48 FEMALE
-TCGA.67.4679.01   0.71   MALE
-TCGA.67.6215.01   0.69 FEMALE
-TCGA.67.6216.01   0.56 FEMALE
-TCGA.69.7760.01   0.65   MALE
-TCGA.69.7764.01   0.80   MALE
-TCGA.69.7973.01   0.55 FEMALE
-TCGA.69.7979.01   0.53 FEMALE
-TCGA.69.7980.01   0.55 FEMALE
-TCGA.71.6725.01   0.63 FEMALE
-TCGA.73.4662.01   0.48 FEMALE
-TCGA.73.4666.01   0.45 FEMALE
-TCGA.73.4668.01   0.53 FEMALE
-TCGA.73.4670.01   0.62 FEMALE
-TCGA.73.4675.01   0.57   MALE
-TCGA.73.4676.01   0.77   MALE
-TCGA.73.4677.01   0.47   MALE
-TCGA.73.7498.01   0.62 FEMALE
-TCGA.73.A9RS.01   0.61   MALE
-TCGA.75.5146.01   0.58   MALE
-TCGA.75.6206.01   0.70   MALE
-TCGA.75.6207.01   0.64   MALE
-TCGA.75.6214.01   0.64 FEMALE
-TCGA.75.7027.01   0.62   MALE
-TCGA.75.7030.01   0.50   MALE
-TCGA.75.7031.01   0.49 FEMALE
-TCGA.78.7145.01   0.63 FEMALE
-TCGA.78.7146.01   0.68 FEMALE
-TCGA.78.7147.01   0.62 FEMALE
-TCGA.78.7148.01   0.60   MALE
-TCGA.78.7149.01   0.60   MALE
-TCGA.78.7150.01   0.46   MALE
-TCGA.78.7152.01   0.55   MALE
-TCGA.78.7154.01   0.50   MALE
-TCGA.78.7155.01   0.82   MALE
-TCGA.78.7156.01   0.80   MALE
-TCGA.78.7158.01   0.90 FEMALE
-TCGA.78.7161.01   0.75 FEMALE
-TCGA.78.7163.01   0.68   MALE
-TCGA.78.7166.01   0.63   MALE
-TCGA.78.7167.01   0.84   MALE
-TCGA.78.7220.01   0.61 FEMALE
-TCGA.78.7535.01   0.60   MALE
-TCGA.78.7536.01   0.78   MALE
-TCGA.78.7537.01   0.74   MALE
-TCGA.78.7539.01   0.52 FEMALE
-TCGA.78.7540.01   0.59 FEMALE
-TCGA.78.7633.01   0.75   MALE
-TCGA.78.8648.01   0.64 FEMALE
-TCGA.78.8655.01   0.46 FEMALE
-TCGA.78.8662.01   0.79 FEMALE
-TCGA.80.5607.01   0.49 FEMALE
-TCGA.80.5608.01   0.48 FEMALE
-TCGA.80.5611.01   0.51   MALE
-TCGA.86.6562.01   0.46   MALE
-TCGA.86.7713.01   0.65   MALE
-TCGA.86.7714.01   0.67 FEMALE
-TCGA.86.7955.01   0.73   MALE
-TCGA.86.8054.01   0.74   MALE
-TCGA.86.8074.01   0.51 FEMALE
-TCGA.86.8278.01   0.56 FEMALE
-TCGA.86.8279.01   0.50   MALE
-TCGA.86.8280.01   0.45 FEMALE
-TCGA.86.8281.01   0.54   MALE
-TCGA.86.8358.01   0.72   MALE
-TCGA.86.8669.01   0.57   MALE
-TCGA.86.8674.01   0.58   MALE
-TCGA.86.A4P7.01   1.00 FEMALE
-TCGA.86.A4P8.01   0.79 FEMALE
-TCGA.91.6829.01   0.49   MALE
-TCGA.91.6831.01   0.50   MALE
-TCGA.91.6836.01   0.67 FEMALE
-TCGA.91.6840.01   0.62 FEMALE
-TCGA.91.6847.01   0.85 FEMALE
-TCGA.91.6849.01   0.62 FEMALE
-TCGA.91.8496.01   0.50 FEMALE
-TCGA.91.8497.01   0.45 FEMALE
-TCGA.91.8499.01   0.77 FEMALE
-TCGA.91.A4BD.01   0.55   MALE
-TCGA.93.7348.01   0.45 FEMALE
-TCGA.95.7043.01   0.76 FEMALE
-TCGA.95.7562.01   0.55   MALE
-TCGA.95.7567.01   0.53   MALE
-TCGA.95.7947.01   0.66   MALE
-TCGA.95.7948.01   0.71 FEMALE
-TCGA.95.8039.01   0.47   MALE
-TCGA.95.8494.01   0.53   MALE
-TCGA.95.A4VK.01   0.57 FEMALE
-TCGA.97.7546.01   0.67 FEMALE
-TCGA.97.7547.01   0.55 FEMALE
-TCGA.97.7937.01   0.59   MALE
-TCGA.97.7938.01   0.61 FEMALE
-TCGA.97.8171.01   0.82   MALE
-TCGA.97.8176.01   0.53   MALE
-TCGA.97.8179.01   0.48   MALE
-TCGA.97.8547.01   0.48 FEMALE
-TCGA.97.A4M0.01   0.55 FEMALE
-TCGA.97.A4M3.01   0.69 FEMALE
-TCGA.99.AA5R.01   0.96 FEMALE
-TCGA.J2.A4AD.01   0.57 FEMALE
-TCGA.J2.A4AE.01   0.52 FEMALE
-TCGA.L4.A4E5.01   0.66 FEMALE
-TCGA.L9.A443.01   0.48 FEMALE
-TCGA.L9.A50W.01   0.76   MALE
-TCGA.L9.A5IP.01   0.53 FEMALE
-TCGA.L9.A7SV.01   0.83   MALE
-TCGA.MN.A4N1.01   0.48   MALE
-TCGA.MP.A4SW.01   0.46   MALE
-TCGA.MP.A4T6.01   0.59 FEMALE
-TCGA.MP.A4T8.01   0.59   MALE
-TCGA.MP.A4TC.01   0.45   MALE
-TCGA.MP.A5C7.01   0.87 FEMALE
-TCGA.NJ.A4YF.01   0.55 FEMALE
-TCGA.NJ.A4YI.01   0.58 FEMALE
-TCGA.NJ.A7XG.01   0.62   MALE
 
-All values for columns "Purity" and "gender".
-```
+All values for columns "Purity" and "gender". But display only the 6 firsts.
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r selectnames2 row}
 TCGA_LUAD[c("TCGA.05.4249.01","TCGA.05.4250.01"),]
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r selectrownames3, eval=T,echo=F}
+TCGA_LUAD[c("TCGA.05.4249.01","TCGA.05.4250.01"),]
 ```
-                known.oncogenes Purity pathologic_stage gender                     tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE      Current reformed smoker for > 15 years      0.9298746
-TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE Current reformed smoker for < or = 15 years      0.4811406
 
 All values for rows "TCGA.05.4249.01" and "TCGA.05.4250.01".
-```
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 If you look at the Environment panel, you'll find, as we've seen, the variable containing the data frame. If you click on the little blue arrow, a drop-down list appears, showing all the columns present, their type and the first data they contain. 
 There's also a dollar sign (“$”). This symbol can be used to extract column of interest.
 
 ```{r selectnames3 col}
-TCGA_LUAD$Purity
+head(TCGA_LUAD$Purity)
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r , echo=F,eval=T}
+head(TCGA_LUAD$Purity)
 ```
-  [1] 0.49 0.50 0.49 0.48 0.57 0.61 0.82 0.87 0.46 0.67 0.55 0.59 0.62 0.70 0.47 0.62 0.45 0.59 0.63 0.82 0.73 0.69 0.58 0.50 0.79 0.49 0.59 0.51 0.55 0.56
- [31] 0.75 0.54 0.70 0.47 0.45 0.65 0.60 0.56 0.58 0.50 0.50 0.58 0.66 0.55 0.54 0.50 0.59 0.73 0.45 0.46 0.45 0.64 0.49 0.75 0.52 0.97 0.62 0.59 0.95 0.86
- [61] 0.84 0.60 0.69 0.57 0.75 0.90 0.60 0.48 0.60 0.69 0.47 0.49 0.55 0.52 0.63 0.67 0.65 0.65 0.56 0.83 0.46 0.81 0.53 0.47 0.57 0.47 0.61 0.56 0.64 0.58
- [91] 0.56 0.51 0.49 0.56 0.82 0.60 0.79 0.64 0.46 0.57 0.49 0.45 0.64 0.50 0.54 0.57 0.62 0.54 0.81 0.53 0.65 0.69 0.50 0.50 0.82 0.70 0.45 0.52 0.48 0.59
-[121] 0.46 0.51 0.57 0.61 0.76 0.71 0.59 0.65 0.46 0.45 0.70 0.48 0.71 0.69 0.56 0.65 0.80 0.55 0.53 0.55 0.63 0.48 0.45 0.53 0.62 0.57 0.77 0.47 0.62 0.61
-[151] 0.58 0.70 0.64 0.64 0.62 0.50 0.49 0.63 0.68 0.62 0.60 0.60 0.46 0.55 0.50 0.82 0.80 0.90 0.75 0.68 0.63 0.84 0.61 0.60 0.78 0.74 0.52 0.59 0.75 0.64
-[181] 0.46 0.79 0.49 0.48 0.51 0.46 0.65 0.67 0.73 0.74 0.51 0.56 0.50 0.45 0.54 0.72 0.57 0.58 1.00 0.79 0.49 0.50 0.67 0.62 0.85 0.62 0.50 0.45 0.77 0.55
-[211] 0.45 0.76 0.55 0.53 0.66 0.71 0.47 0.53 0.57 0.67 0.55 0.59 0.61 0.82 0.53 0.48 0.48 0.55 0.69 0.96 0.57 0.52 0.66 0.48 0.76 0.53 0.83 0.48 0.46 0.59
-[241] 0.59 0.45 0.87 0.55 0.58 0.62
 
-```
 </details>
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
 
 * Select the columns or rows by their indices
 
@@ -630,601 +345,102 @@ So now let's extract information from our data frame !
 ```{r extract colrow}
 TCGA_LUAD[1, 2]
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r , echo=F,eval=T}
+TCGA_LUAD[1, 2]
 ```
-[1] 0.49
 
 The value of the first row and the second column.
- 
-```
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r extract row}
 TCGA_LUAD[1,]
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r , echo=F,eval=T}
+TCGA_LUAD[1,]
 ```
-                known.oncogenes Purity pathologic_stage gender                tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE Current reformed smoker for > 15 years      0.9298746
 
 All values of the first row, with every columns.
- 
-```
+
+
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r extract column}
 TCGA_LUAD[,2]
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r, echo=F, eval=T}
+TCGA_LUAD[,2]
 ```
-  [1] 0.49 0.50 0.49 0.48 0.57 0.61 0.82 0.87 0.46 0.67 0.55 0.59 0.62 0.70 0.47 0.62 0.45 0.59 0.63 0.82 0.73 0.69 0.58 0.50 0.79 0.49 0.59 0.51 0.55 0.56
- [31] 0.75 0.54 0.70 0.47 0.45 0.65 0.60 0.56 0.58 0.50 0.50 0.58 0.66 0.55 0.54 0.50 0.59 0.73 0.45 0.46 0.45 0.64 0.49 0.75 0.52 0.97 0.62 0.59 0.95 0.86
- [61] 0.84 0.60 0.69 0.57 0.75 0.90 0.60 0.48 0.60 0.69 0.47 0.49 0.55 0.52 0.63 0.67 0.65 0.65 0.56 0.83 0.46 0.81 0.53 0.47 0.57 0.47 0.61 0.56 0.64 0.58
- [91] 0.56 0.51 0.49 0.56 0.82 0.60 0.79 0.64 0.46 0.57 0.49 0.45 0.64 0.50 0.54 0.57 0.62 0.54 0.81 0.53 0.65 0.69 0.50 0.50 0.82 0.70 0.45 0.52 0.48 0.59
-[121] 0.46 0.51 0.57 0.61 0.76 0.71 0.59 0.65 0.46 0.45 0.70 0.48 0.71 0.69 0.56 0.65 0.80 0.55 0.53 0.55 0.63 0.48 0.45 0.53 0.62 0.57 0.77 0.47 0.62 0.61
-[151] 0.58 0.70 0.64 0.64 0.62 0.50 0.49 0.63 0.68 0.62 0.60 0.60 0.46 0.55 0.50 0.82 0.80 0.90 0.75 0.68 0.63 0.84 0.61 0.60 0.78 0.74 0.52 0.59 0.75 0.64
-[181] 0.46 0.79 0.49 0.48 0.51 0.46 0.65 0.67 0.73 0.74 0.51 0.56 0.50 0.45 0.54 0.72 0.57 0.58 1.00 0.79 0.49 0.50 0.67 0.62 0.85 0.62 0.50 0.45 0.77 0.55
-[211] 0.45 0.76 0.55 0.53 0.66 0.71 0.47 0.53 0.57 0.67 0.55 0.59 0.61 0.82 0.53 0.48 0.48 0.55 0.69 0.96 0.57 0.52 0.66 0.48 0.76 0.53 0.83 0.48 0.46 0.59
-[241] 0.59 0.45 0.87 0.55 0.58 0.62
 
 All values of the second columns, with every rows.
  
-```
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r extract more column}
-TCGA_LUAD[,c(1:4)]
+head(TCGA_LUAD[,c(1:4)])
 ```
 <details>
   <summary>Solution</summary>
 
-```
-                known.oncogenes Purity pathologic_stage gender
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE
-TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE
-TCGA.05.4384.01            RIT1   0.49       Stage IIIA   MALE
-TCGA.05.4389.01        BRAF_act   0.48         Stage IA   MALE
-TCGA.05.4390.01            KRAS   0.57         Stage IB FEMALE
-TCGA.05.4395.01            KRAS   0.61       Stage IIIB   MALE
-TCGA.05.4396.01            None   0.82       Stage IIIB   MALE
-TCGA.05.4397.01            None   0.87        Stage IIB   MALE
-TCGA.05.4403.01            KRAS   0.46         Stage IB   MALE
-TCGA.05.4415.01            KRAS   0.67       Stage IIIB   MALE
-TCGA.05.4418.01            KRAS   0.55       Stage IIIA   MALE
-TCGA.05.4420.01            None   0.59         Stage IB   MALE
-TCGA.05.4422.01            None   0.62         Stage IB   MALE
-TCGA.05.4426.01            ROS1   0.70         Stage IB   MALE
-TCGA.05.4427.01            KRAS   0.47        Stage IIB FEMALE
-TCGA.05.4433.01            KRAS   0.62         Stage IB   MALE
-TCGA.05.4434.01           ERBB2   0.45         Stage IV FEMALE
-TCGA.05.5423.01            EGFR   0.59        Stage IIB   MALE
-TCGA.05.5428.01        BRAF.non   0.63        Stage IIA   MALE
-TCGA.05.5429.01            None   0.82       Stage IIIA   MALE
-TCGA.05.5715.01           ERBB2   0.73         Stage IB FEMALE
-TCGA.35.3615.01            KRAS   0.69         Stage IB   MALE
-TCGA.35.5375.01            None   0.58       Stage IIIA   MALE
-TCGA.38.4628.01            EGFR   0.50        Stage IIB FEMALE
-TCGA.38.4630.01           ERBB2   0.79         Stage IB FEMALE
-TCGA.38.4631.01             NF1   0.49         Stage IB FEMALE
-TCGA.44.2666.01        BRAF_act   0.59         Stage IB   MALE
-TCGA.44.3919.01           ERBB2   0.51         Stage IA FEMALE
-TCGA.44.4112.01            None   0.55         Stage IB FEMALE
-TCGA.44.5643.01            None   0.56       Stage IIIA   MALE
-TCGA.44.5644.01             NF1   0.75         Stage IB FEMALE
-TCGA.44.5645.01            EGFR   0.54         Stage IA FEMALE
-TCGA.44.6146.01            KRAS   0.70        Stage IIB   MALE
-TCGA.44.6147.01            EGFR   0.47         Stage IA FEMALE
-TCGA.44.6774.01        BRAF.non   0.45       Stage IIIA FEMALE
-TCGA.44.6776.01            KRAS   0.65         Stage IA FEMALE
-TCGA.44.6779.01            RIT1   0.60        Stage IIB FEMALE
-TCGA.44.7659.01            KRAS   0.56         Stage IA   MALE
-TCGA.44.7660.01            None   0.58         Stage IB   MALE
-TCGA.44.7669.01            None   0.50        Stage IIA   MALE
-TCGA.44.7670.01            None   0.50        Stage IIA FEMALE
-TCGA.44.7671.01            KRAS   0.58         Stage IB   MALE
-TCGA.44.8117.01            None   0.66         Stage IB FEMALE
-TCGA.44.8119.01             NF1   0.55        Stage IIB   MALE
-TCGA.44.8120.01            None   0.54         Stage IB   MALE
-TCGA.44.A47B.01           ERBB2   0.50         Stage IB   MALE
-TCGA.44.A4SU.01            EGFR   0.59         Stage IA FEMALE
-TCGA.49.4486.01            None   0.73         Stage IA   MALE
-TCGA.49.4488.01             NF1   0.45         Stage IA FEMALE
-TCGA.49.4494.01            EGFR   0.46       Stage IIIA   MALE
-TCGA.49.4505.01            KRAS   0.45        Stage IIB FEMALE
-TCGA.49.4510.01            KRAS   0.64        Stage IIB FEMALE
-TCGA.49.6742.01            None   0.49        Stage IIB   MALE
-TCGA.49.AAR9.01            None   0.75        Stage IIB   MALE
-TCGA.49.AARQ.01            KRAS   0.52          Stage I FEMALE
-TCGA.49.AARR.01            None   0.97         Stage IA   MALE
-TCGA.4B.A93V.01            KRAS   0.62         Stage IA FEMALE
-TCGA.50.5051.01            KRAS   0.59       Stage IIIA FEMALE
-TCGA.50.5930.01        BRAF.non   0.95       Stage IIIA   MALE
-TCGA.50.5931.01            None   0.86         Stage IB FEMALE
-TCGA.50.5932.01            KRAS   0.84        Stage IIB   MALE
-TCGA.50.5936.01            KRAS   0.60       Stage IIIA   MALE
-TCGA.50.5942.01        BRAF_act   0.69         Stage IA FEMALE
-TCGA.50.5944.01            EGFR   0.57         Stage IA FEMALE
-TCGA.50.5946.01        BRAF_act   0.75         Stage IA   MALE
-TCGA.50.6591.01            EGFR   0.90         Stage IV FEMALE
-TCGA.50.6594.01        BRAF.non   0.60       Stage IIIA FEMALE
-TCGA.50.6597.01             MET   0.48         Stage IB FEMALE
-TCGA.50.8457.01            KRAS   0.60         Stage IA FEMALE
-TCGA.53.7624.01            None   0.69         Stage IV FEMALE
-TCGA.53.A4EZ.01        BRAF.non   0.47        Stage IIA   MALE
-TCGA.55.1592.01             NF1   0.49         Stage IA   MALE
-TCGA.55.1594.01            None   0.55       Stage IIIA   MALE
-TCGA.55.1595.01            KRAS   0.52         Stage IA FEMALE
-TCGA.55.1596.01            RIT1   0.63        Stage IIB   MALE
-TCGA.55.5899.01            None   0.67         Stage IA   MALE
-TCGA.55.6543.01            None   0.65         Stage IA FEMALE
-TCGA.55.6968.01        BRAF.non   0.65         Stage IV   MALE
-TCGA.55.6970.01            KRAS   0.56       Stage IIIA FEMALE
-TCGA.55.6972.01            None   0.83         Stage IB   MALE
-TCGA.55.6975.01            KRAS   0.46        Stage IIB   MALE
-TCGA.55.6984.01            KRAS   0.81        Stage IIB FEMALE
-TCGA.55.7227.01          MAP2K1   0.53       Stage IIIA   MALE
-TCGA.55.7283.01            KRAS   0.47       Stage IIIA FEMALE
-TCGA.55.7570.01            None   0.57         Stage IA   MALE
-TCGA.55.7576.01            KRAS   0.47         Stage IB   MALE
-TCGA.55.7725.01            KRAS   0.61         Stage IA FEMALE
-TCGA.55.7727.01            None   0.56       Stage IIIA   MALE
-TCGA.55.7903.01        BRAF_act   0.64         Stage IA   MALE
-TCGA.55.7910.01            KRAS   0.58        Stage IIA FEMALE
-TCGA.55.7914.01            KRAS   0.56        Stage IIA FEMALE
-TCGA.55.7994.01             NF1   0.51        Stage IIB   MALE
-TCGA.55.7995.01             NF1   0.49         Stage IA FEMALE
-TCGA.55.8085.01            None   0.56         Stage IA   MALE
-TCGA.55.8087.01            EGFR   0.82         Stage IB FEMALE
-TCGA.55.8091.01            None   0.60         Stage IB   MALE
-TCGA.55.8094.01            KRAS   0.79         Stage IV   MALE
-TCGA.55.8097.01            KRAS   0.64         Stage IA FEMALE
-TCGA.55.8206.01            EGFR   0.46         Stage IA   MALE
-TCGA.55.8207.01            KRAS   0.57         Stage IB   MALE
-TCGA.55.8299.01            KRAS   0.49         Stage IA FEMALE
-TCGA.55.8506.01            EGFR   0.45        Stage IIB FEMALE
-TCGA.55.8507.01            None   0.64         Stage IA   MALE
-TCGA.55.8513.01            None   0.50        Stage IIB FEMALE
-TCGA.55.8514.01            KRAS   0.54         Stage IB FEMALE
-TCGA.55.8615.01            KRAS   0.57       Stage IIIA   MALE
-TCGA.55.8620.01             MET   0.62         Stage IV   MALE
-TCGA.55.A492.01            None   0.54         Stage IA FEMALE
-TCGA.55.A494.01            KRAS   0.81         Stage IB FEMALE
-TCGA.62.8394.01            EGFR   0.53       Stage IIIB FEMALE
-TCGA.62.8395.01            None   0.65        Stage IIB FEMALE
-TCGA.62.8397.01            EGFR   0.69        Stage IIB FEMALE
-TCGA.62.8399.01            None   0.50       Stage IIIA   MALE
-TCGA.62.8402.01            EGFR   0.50       Stage IIIA FEMALE
-TCGA.62.A46O.01            None   0.82         Stage IB FEMALE
-TCGA.62.A46P.01            None   0.70         Stage IB   MALE
-TCGA.62.A46S.01            KRAS   0.45         Stage IB   MALE
-TCGA.62.A46V.01        BRAF_act   0.52         Stage IB FEMALE
-TCGA.62.A46Y.01            ROS1   0.48       Stage IIIA FEMALE
-TCGA.62.A470.01            None   0.59         Stage IB   MALE
-TCGA.62.A471.01            None   0.46        Stage IIB   MALE
-TCGA.64.1676.01          MAP2K1   0.51         Stage IA   MALE
-TCGA.64.1678.01          MAP2K1   0.57        Stage IIA FEMALE
-TCGA.64.1680.01            ROS1   0.61         Stage IV   MALE
-TCGA.64.5774.01            KRAS   0.76         Stage IB   MALE
-TCGA.64.5775.01            KRAS   0.71       Stage IIIA   MALE
-TCGA.64.5778.01            KRAS   0.59         Stage IB   MALE
-TCGA.67.3770.01            EGFR   0.65         Stage IA FEMALE
-TCGA.67.3771.01            None   0.46         Stage IA FEMALE
-TCGA.67.3772.01            EGFR   0.45         Stage IB FEMALE
-TCGA.67.3773.01            KRAS   0.70         Stage IB FEMALE
-TCGA.67.3774.01            KRAS   0.48         Stage IB FEMALE
-TCGA.67.4679.01            KRAS   0.71         Stage IB   MALE
-TCGA.67.6215.01             ALK   0.69         Stage IB FEMALE
-TCGA.67.6216.01             ALK   0.56         Stage IA FEMALE
-TCGA.69.7760.01            EGFR   0.65        Stage IIB   MALE
-TCGA.69.7764.01             NF1   0.80         Stage IA   MALE
-TCGA.69.7973.01            KRAS   0.55         Stage IB FEMALE
-TCGA.69.7979.01             NF1   0.53         Stage IB FEMALE
-TCGA.69.7980.01            KRAS   0.55          Stage I FEMALE
-TCGA.71.6725.01            EGFR   0.63         Stage IB FEMALE
-TCGA.73.4662.01            KRAS   0.48         Stage IA FEMALE
-TCGA.73.4666.01            RIT1   0.45         Stage IV FEMALE
-TCGA.73.4668.01            KRAS   0.53        Stage IIB FEMALE
-TCGA.73.4670.01            None   0.62         Stage IV FEMALE
-TCGA.73.4675.01            RIT1   0.57       Stage IIIA   MALE
-TCGA.73.4676.01             NF1   0.77        Stage IIA   MALE
-TCGA.73.4677.01            KRAS   0.47         Stage IA   MALE
-TCGA.73.7498.01            KRAS   0.62         Stage IA FEMALE
-TCGA.73.A9RS.01            None   0.61        Stage IIB   MALE
-TCGA.75.5146.01        BRAF_act   0.58         Stage IB   MALE
-TCGA.75.6206.01            KRAS   0.70         Stage IB   MALE
-TCGA.75.6207.01            EGFR   0.64       Stage IIIA   MALE
-TCGA.75.6214.01            None   0.64       Stage IIIA FEMALE
-TCGA.75.7027.01            KRAS   0.62         Stage IB   MALE
-TCGA.75.7030.01            KRAS   0.50        Stage IIB   MALE
-TCGA.75.7031.01            None   0.49         Stage IB FEMALE
-TCGA.78.7145.01            KRAS   0.63         Stage IV FEMALE
-TCGA.78.7146.01             NF1   0.68       Stage IIIA FEMALE
-TCGA.78.7147.01            EGFR   0.62        Stage IIB FEMALE
-TCGA.78.7148.01            KRAS   0.60        Stage IIB   MALE
-TCGA.78.7149.01            None   0.60       Stage IIIB   MALE
-TCGA.78.7150.01            None   0.46        Stage IIB   MALE
-TCGA.78.7152.01            None   0.55         Stage IB   MALE
-TCGA.78.7154.01             MET   0.50       Stage IIIA   MALE
-TCGA.78.7155.01            None   0.82         Stage IB   MALE
-TCGA.78.7156.01            None   0.80         Stage IV   MALE
-TCGA.78.7158.01            None   0.90       Stage IIIB FEMALE
-TCGA.78.7161.01            KRAS   0.75        Stage IIB FEMALE
-TCGA.78.7163.01             ALK   0.68         Stage IB   MALE
-TCGA.78.7166.01            KRAS   0.63        Stage IIB   MALE
-TCGA.78.7167.01            KRAS   0.84         Stage IV   MALE
-TCGA.78.7220.01             MET   0.61       Stage IIIA FEMALE
-TCGA.78.7535.01             NF1   0.60         Stage IB   MALE
-TCGA.78.7536.01            None   0.78       Stage IIIA   MALE
-TCGA.78.7537.01        BRAF.non   0.74         Stage IB   MALE
-TCGA.78.7539.01            KRAS   0.52        Stage IIA FEMALE
-TCGA.78.7540.01            KRAS   0.59         Stage IB FEMALE
-TCGA.78.7633.01        BRAF.non   0.75         Stage IA   MALE
-TCGA.78.8648.01            None   0.64        Stage IIB FEMALE
-TCGA.78.8655.01            KRAS   0.46         Stage IA FEMALE
-TCGA.78.8662.01        BRAF.non   0.79         Stage IB FEMALE
-TCGA.80.5607.01        BRAF_act   0.49        Stage IIB FEMALE
-TCGA.80.5608.01            KRAS   0.48         Stage IA FEMALE
-TCGA.80.5611.01            None   0.51         Stage IB   MALE
-TCGA.86.6562.01           ERBB2   0.46        Stage IIA   MALE
-TCGA.86.7713.01            KRAS   0.65        Stage IIA   MALE
-TCGA.86.7714.01        BRAF_act   0.67       Stage IIIA FEMALE
-TCGA.86.7955.01            None   0.73         Stage IB   MALE
-TCGA.86.8054.01            KRAS   0.74        Stage IIB   MALE
-TCGA.86.8074.01            EGFR   0.51        Stage IIA FEMALE
-TCGA.86.8278.01            ROS1   0.56        Stage IIB FEMALE
-TCGA.86.8279.01             NF1   0.50        Stage IIA   MALE
-TCGA.86.8280.01            EGFR   0.45        Stage IIA FEMALE
-TCGA.86.8281.01            KRAS   0.54         Stage IA   MALE
-TCGA.86.8358.01            None   0.72         Stage IB   MALE
-TCGA.86.8669.01             NF1   0.57         Stage IA   MALE
-TCGA.86.8674.01            KRAS   0.58        Stage IIA   MALE
-TCGA.86.A4P7.01            EGFR   1.00         Stage IB FEMALE
-TCGA.86.A4P8.01             ALK   0.79       Stage IIIA FEMALE
-TCGA.91.6829.01             NF1   0.49         Stage IB   MALE
-TCGA.91.6831.01            None   0.50         Stage IB   MALE
-TCGA.91.6836.01            KRAS   0.67         Stage IB FEMALE
-TCGA.91.6840.01            None   0.62         Stage IA FEMALE
-TCGA.91.6847.01            EGFR   0.85         Stage IB FEMALE
-TCGA.91.6849.01            KRAS   0.62       Stage IIIA FEMALE
-TCGA.91.8496.01            EGFR   0.50         Stage IB FEMALE
-TCGA.91.8497.01            KRAS   0.45         Stage IA FEMALE
-TCGA.91.8499.01            None   0.77         Stage IA FEMALE
-TCGA.91.A4BD.01        BRAF_act   0.55        Stage IIA   MALE
-TCGA.93.7348.01             MET   0.45         Stage IA FEMALE
-TCGA.95.7043.01             NF1   0.76         Stage IA FEMALE
-TCGA.95.7562.01            KRAS   0.55        Stage IIA   MALE
-TCGA.95.7567.01            KRAS   0.53        Stage IIB   MALE
-TCGA.95.7947.01           ERBB2   0.66         Stage IA   MALE
-TCGA.95.7948.01            None   0.71         Stage IB FEMALE
-TCGA.95.8039.01             MET   0.47         Stage IA   MALE
-TCGA.95.8494.01            None   0.53        Stage IIA   MALE
-TCGA.95.A4VK.01            KRAS   0.57       Stage IIIA FEMALE
-TCGA.97.7546.01            None   0.67         Stage IA FEMALE
-TCGA.97.7547.01             NF1   0.55         Stage IB FEMALE
-TCGA.97.7937.01            None   0.59         Stage IB   MALE
-TCGA.97.7938.01            KRAS   0.61         Stage IA FEMALE
-TCGA.97.8171.01            EGFR   0.82         Stage IV   MALE
-TCGA.97.8176.01            KRAS   0.53       Stage IIIA   MALE
-TCGA.97.8179.01            None   0.48         Stage IA   MALE
-TCGA.97.8547.01            EGFR   0.48       Stage IIIA FEMALE
-TCGA.97.A4M0.01            KRAS   0.55         Stage IB FEMALE
-TCGA.97.A4M3.01            None   0.69         Stage IA FEMALE
-TCGA.99.AA5R.01            None   0.96         Stage IA FEMALE
-TCGA.J2.A4AD.01            None   0.57         Stage IA FEMALE
-TCGA.J2.A4AE.01             MET   0.52         Stage IA FEMALE
-TCGA.L4.A4E5.01             NF1   0.66          Stage I FEMALE
-TCGA.L9.A443.01            KRAS   0.48         Stage IA FEMALE
-TCGA.L9.A50W.01            EGFR   0.76        Stage IIA   MALE
-TCGA.L9.A5IP.01             NF1   0.53         Stage IV FEMALE
-TCGA.L9.A7SV.01            None   0.83        Stage IIA   MALE
-TCGA.MN.A4N1.01        BRAF_act   0.48        Stage IIA   MALE
-TCGA.MP.A4SW.01            EGFR   0.46        Stage IIB   MALE
-TCGA.MP.A4T6.01            EGFR   0.59       Stage IIIA FEMALE
-TCGA.MP.A4T8.01            KRAS   0.59       Stage IIIA   MALE
-TCGA.MP.A4TC.01            None   0.45       Stage IIIA   MALE
-TCGA.MP.A5C7.01            None   0.87         Stage IB FEMALE
-TCGA.NJ.A4YF.01            None   0.55         Stage IA FEMALE
-TCGA.NJ.A4YI.01            KRAS   0.58       Stage IIIA FEMALE
-TCGA.NJ.A7XG.01            ROS1   0.62       Stage IIIA   MALE
 
-All values of the column 1 to 4, with every rows.
- 
+```{r, echo=F, eval=T}
+head(TCGA_LUAD[,c(1:4)])
 ```
+
+All values of the column 1 to 4, with every rows. Display the 6 first rows.
+ 
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r extract more row}
 TCGA_LUAD[c(1:4),]
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r, echo=F, eval=T}
+TCGA_LUAD[c(1:4),]
 ```
-                known.oncogenes Purity pathologic_stage gender                     tobacco_smoking_history signature_MAPK
-TCGA.05.4249.01            KRAS   0.49         Stage IB   MALE      Current reformed smoker for > 15 years      0.9298746
-TCGA.05.4250.01            KRAS   0.50       Stage IIIA FEMALE Current reformed smoker for < or = 15 years      0.4811406
-TCGA.05.4384.01            RIT1   0.49       Stage IIIA   MALE      Current reformed smoker for > 15 years      0.5672071
-TCGA.05.4389.01        BRAF_act   0.48         Stage IA   MALE      Current reformed smoker for > 15 years      0.3474326
 
 All values of the rows 1 to 4, with every columns.
 
-```
 </details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ```{r extract invert}
-TCGA_LUAD[,c(2,1)]
+head(TCGA_LUAD[,c(2,1)])
 ```
+
 <details>
   <summary>Solution</summary>
 
+```{r, echo=F, eval=T}
+head(TCGA_LUAD[,c(2,1)])
 ```
-                Purity known.oncogenes
-TCGA.05.4249.01   0.49            KRAS
-TCGA.05.4250.01   0.50            KRAS
-TCGA.05.4384.01   0.49            RIT1
-TCGA.05.4389.01   0.48        BRAF_act
-TCGA.05.4390.01   0.57            KRAS
-TCGA.05.4395.01   0.61            KRAS
-TCGA.05.4396.01   0.82            None
-TCGA.05.4397.01   0.87            None
-TCGA.05.4403.01   0.46            KRAS
-TCGA.05.4415.01   0.67            KRAS
-TCGA.05.4418.01   0.55            KRAS
-TCGA.05.4420.01   0.59            None
-TCGA.05.4422.01   0.62            None
-TCGA.05.4426.01   0.70            ROS1
-TCGA.05.4427.01   0.47            KRAS
-TCGA.05.4433.01   0.62            KRAS
-TCGA.05.4434.01   0.45           ERBB2
-TCGA.05.5423.01   0.59            EGFR
-TCGA.05.5428.01   0.63        BRAF.non
-TCGA.05.5429.01   0.82            None
-TCGA.05.5715.01   0.73           ERBB2
-TCGA.35.3615.01   0.69            KRAS
-TCGA.35.5375.01   0.58            None
-TCGA.38.4628.01   0.50            EGFR
-TCGA.38.4630.01   0.79           ERBB2
-TCGA.38.4631.01   0.49             NF1
-TCGA.44.2666.01   0.59        BRAF_act
-TCGA.44.3919.01   0.51           ERBB2
-TCGA.44.4112.01   0.55            None
-TCGA.44.5643.01   0.56            None
-TCGA.44.5644.01   0.75             NF1
-TCGA.44.5645.01   0.54            EGFR
-TCGA.44.6146.01   0.70            KRAS
-TCGA.44.6147.01   0.47            EGFR
-TCGA.44.6774.01   0.45        BRAF.non
-TCGA.44.6776.01   0.65            KRAS
-TCGA.44.6779.01   0.60            RIT1
-TCGA.44.7659.01   0.56            KRAS
-TCGA.44.7660.01   0.58            None
-TCGA.44.7669.01   0.50            None
-TCGA.44.7670.01   0.50            None
-TCGA.44.7671.01   0.58            KRAS
-TCGA.44.8117.01   0.66            None
-TCGA.44.8119.01   0.55             NF1
-TCGA.44.8120.01   0.54            None
-TCGA.44.A47B.01   0.50           ERBB2
-TCGA.44.A4SU.01   0.59            EGFR
-TCGA.49.4486.01   0.73            None
-TCGA.49.4488.01   0.45             NF1
-TCGA.49.4494.01   0.46            EGFR
-TCGA.49.4505.01   0.45            KRAS
-TCGA.49.4510.01   0.64            KRAS
-TCGA.49.6742.01   0.49            None
-TCGA.49.AAR9.01   0.75            None
-TCGA.49.AARQ.01   0.52            KRAS
-TCGA.49.AARR.01   0.97            None
-TCGA.4B.A93V.01   0.62            KRAS
-TCGA.50.5051.01   0.59            KRAS
-TCGA.50.5930.01   0.95        BRAF.non
-TCGA.50.5931.01   0.86            None
-TCGA.50.5932.01   0.84            KRAS
-TCGA.50.5936.01   0.60            KRAS
-TCGA.50.5942.01   0.69        BRAF_act
-TCGA.50.5944.01   0.57            EGFR
-TCGA.50.5946.01   0.75        BRAF_act
-TCGA.50.6591.01   0.90            EGFR
-TCGA.50.6594.01   0.60        BRAF.non
-TCGA.50.6597.01   0.48             MET
-TCGA.50.8457.01   0.60            KRAS
-TCGA.53.7624.01   0.69            None
-TCGA.53.A4EZ.01   0.47        BRAF.non
-TCGA.55.1592.01   0.49             NF1
-TCGA.55.1594.01   0.55            None
-TCGA.55.1595.01   0.52            KRAS
-TCGA.55.1596.01   0.63            RIT1
-TCGA.55.5899.01   0.67            None
-TCGA.55.6543.01   0.65            None
-TCGA.55.6968.01   0.65        BRAF.non
-TCGA.55.6970.01   0.56            KRAS
-TCGA.55.6972.01   0.83            None
-TCGA.55.6975.01   0.46            KRAS
-TCGA.55.6984.01   0.81            KRAS
-TCGA.55.7227.01   0.53          MAP2K1
-TCGA.55.7283.01   0.47            KRAS
-TCGA.55.7570.01   0.57            None
-TCGA.55.7576.01   0.47            KRAS
-TCGA.55.7725.01   0.61            KRAS
-TCGA.55.7727.01   0.56            None
-TCGA.55.7903.01   0.64        BRAF_act
-TCGA.55.7910.01   0.58            KRAS
-TCGA.55.7914.01   0.56            KRAS
-TCGA.55.7994.01   0.51             NF1
-TCGA.55.7995.01   0.49             NF1
-TCGA.55.8085.01   0.56            None
-TCGA.55.8087.01   0.82            EGFR
-TCGA.55.8091.01   0.60            None
-TCGA.55.8094.01   0.79            KRAS
-TCGA.55.8097.01   0.64            KRAS
-TCGA.55.8206.01   0.46            EGFR
-TCGA.55.8207.01   0.57            KRAS
-TCGA.55.8299.01   0.49            KRAS
-TCGA.55.8506.01   0.45            EGFR
-TCGA.55.8507.01   0.64            None
-TCGA.55.8513.01   0.50            None
-TCGA.55.8514.01   0.54            KRAS
-TCGA.55.8615.01   0.57            KRAS
-TCGA.55.8620.01   0.62             MET
-TCGA.55.A492.01   0.54            None
-TCGA.55.A494.01   0.81            KRAS
-TCGA.62.8394.01   0.53            EGFR
-TCGA.62.8395.01   0.65            None
-TCGA.62.8397.01   0.69            EGFR
-TCGA.62.8399.01   0.50            None
-TCGA.62.8402.01   0.50            EGFR
-TCGA.62.A46O.01   0.82            None
-TCGA.62.A46P.01   0.70            None
-TCGA.62.A46S.01   0.45            KRAS
-TCGA.62.A46V.01   0.52        BRAF_act
-TCGA.62.A46Y.01   0.48            ROS1
-TCGA.62.A470.01   0.59            None
-TCGA.62.A471.01   0.46            None
-TCGA.64.1676.01   0.51          MAP2K1
-TCGA.64.1678.01   0.57          MAP2K1
-TCGA.64.1680.01   0.61            ROS1
-TCGA.64.5774.01   0.76            KRAS
-TCGA.64.5775.01   0.71            KRAS
-TCGA.64.5778.01   0.59            KRAS
-TCGA.67.3770.01   0.65            EGFR
-TCGA.67.3771.01   0.46            None
-TCGA.67.3772.01   0.45            EGFR
-TCGA.67.3773.01   0.70            KRAS
-TCGA.67.3774.01   0.48            KRAS
-TCGA.67.4679.01   0.71            KRAS
-TCGA.67.6215.01   0.69             ALK
-TCGA.67.6216.01   0.56             ALK
-TCGA.69.7760.01   0.65            EGFR
-TCGA.69.7764.01   0.80             NF1
-TCGA.69.7973.01   0.55            KRAS
-TCGA.69.7979.01   0.53             NF1
-TCGA.69.7980.01   0.55            KRAS
-TCGA.71.6725.01   0.63            EGFR
-TCGA.73.4662.01   0.48            KRAS
-TCGA.73.4666.01   0.45            RIT1
-TCGA.73.4668.01   0.53            KRAS
-TCGA.73.4670.01   0.62            None
-TCGA.73.4675.01   0.57            RIT1
-TCGA.73.4676.01   0.77             NF1
-TCGA.73.4677.01   0.47            KRAS
-TCGA.73.7498.01   0.62            KRAS
-TCGA.73.A9RS.01   0.61            None
-TCGA.75.5146.01   0.58        BRAF_act
-TCGA.75.6206.01   0.70            KRAS
-TCGA.75.6207.01   0.64            EGFR
-TCGA.75.6214.01   0.64            None
-TCGA.75.7027.01   0.62            KRAS
-TCGA.75.7030.01   0.50            KRAS
-TCGA.75.7031.01   0.49            None
-TCGA.78.7145.01   0.63            KRAS
-TCGA.78.7146.01   0.68             NF1
-TCGA.78.7147.01   0.62            EGFR
-TCGA.78.7148.01   0.60            KRAS
-TCGA.78.7149.01   0.60            None
-TCGA.78.7150.01   0.46            None
-TCGA.78.7152.01   0.55            None
-TCGA.78.7154.01   0.50             MET
-TCGA.78.7155.01   0.82            None
-TCGA.78.7156.01   0.80            None
-TCGA.78.7158.01   0.90            None
-TCGA.78.7161.01   0.75            KRAS
-TCGA.78.7163.01   0.68             ALK
-TCGA.78.7166.01   0.63            KRAS
-TCGA.78.7167.01   0.84            KRAS
-TCGA.78.7220.01   0.61             MET
-TCGA.78.7535.01   0.60             NF1
-TCGA.78.7536.01   0.78            None
-TCGA.78.7537.01   0.74        BRAF.non
-TCGA.78.7539.01   0.52            KRAS
-TCGA.78.7540.01   0.59            KRAS
-TCGA.78.7633.01   0.75        BRAF.non
-TCGA.78.8648.01   0.64            None
-TCGA.78.8655.01   0.46            KRAS
-TCGA.78.8662.01   0.79        BRAF.non
-TCGA.80.5607.01   0.49        BRAF_act
-TCGA.80.5608.01   0.48            KRAS
-TCGA.80.5611.01   0.51            None
-TCGA.86.6562.01   0.46           ERBB2
-TCGA.86.7713.01   0.65            KRAS
-TCGA.86.7714.01   0.67        BRAF_act
-TCGA.86.7955.01   0.73            None
-TCGA.86.8054.01   0.74            KRAS
-TCGA.86.8074.01   0.51            EGFR
-TCGA.86.8278.01   0.56            ROS1
-TCGA.86.8279.01   0.50             NF1
-TCGA.86.8280.01   0.45            EGFR
-TCGA.86.8281.01   0.54            KRAS
-TCGA.86.8358.01   0.72            None
-TCGA.86.8669.01   0.57             NF1
-TCGA.86.8674.01   0.58            KRAS
-TCGA.86.A4P7.01   1.00            EGFR
-TCGA.86.A4P8.01   0.79             ALK
-TCGA.91.6829.01   0.49             NF1
-TCGA.91.6831.01   0.50            None
-TCGA.91.6836.01   0.67            KRAS
-TCGA.91.6840.01   0.62            None
-TCGA.91.6847.01   0.85            EGFR
-TCGA.91.6849.01   0.62            KRAS
-TCGA.91.8496.01   0.50            EGFR
-TCGA.91.8497.01   0.45            KRAS
-TCGA.91.8499.01   0.77            None
-TCGA.91.A4BD.01   0.55        BRAF_act
-TCGA.93.7348.01   0.45             MET
-TCGA.95.7043.01   0.76             NF1
-TCGA.95.7562.01   0.55            KRAS
-TCGA.95.7567.01   0.53            KRAS
-TCGA.95.7947.01   0.66           ERBB2
-TCGA.95.7948.01   0.71            None
-TCGA.95.8039.01   0.47             MET
-TCGA.95.8494.01   0.53            None
-TCGA.95.A4VK.01   0.57            KRAS
-TCGA.97.7546.01   0.67            None
-TCGA.97.7547.01   0.55             NF1
-TCGA.97.7937.01   0.59            None
-TCGA.97.7938.01   0.61            KRAS
-TCGA.97.8171.01   0.82            EGFR
-TCGA.97.8176.01   0.53            KRAS
-TCGA.97.8179.01   0.48            None
-TCGA.97.8547.01   0.48            EGFR
-TCGA.97.A4M0.01   0.55            KRAS
-TCGA.97.A4M3.01   0.69            None
-TCGA.99.AA5R.01   0.96            None
-TCGA.J2.A4AD.01   0.57            None
-TCGA.J2.A4AE.01   0.52             MET
-TCGA.L4.A4E5.01   0.66             NF1
-TCGA.L9.A443.01   0.48            KRAS
-TCGA.L9.A50W.01   0.76            EGFR
-TCGA.L9.A5IP.01   0.53             NF1
-TCGA.L9.A7SV.01   0.83            None
-TCGA.MN.A4N1.01   0.48        BRAF_act
-TCGA.MP.A4SW.01   0.46            EGFR
-TCGA.MP.A4T6.01   0.59            EGFR
-TCGA.MP.A4T8.01   0.59            KRAS
-TCGA.MP.A4TC.01   0.45            None
-TCGA.MP.A5C7.01   0.87            None
-TCGA.NJ.A4YF.01   0.55            None
-TCGA.NJ.A4YI.01   0.58            KRAS
-TCGA.NJ.A7XG.01   0.62            ROS1
 
-All values of the columns 1 and 2, inversely, with every rows.
+All values of the columns 1 and 2, inversely, with every rows. Display the 6 first rows.
 
-```
 </details>
 
-------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------
+---
