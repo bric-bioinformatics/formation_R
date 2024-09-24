@@ -35,6 +35,8 @@ library(pheatmap)
 
 ## Introduction
 
+Describe the study and the data ... to be done
+
 ## Load the data
 
 #### You first need to load the data.
@@ -226,7 +228,7 @@ Now you have your colors, add the layer to the ggplot object and use the variabl
 
 <summary>Key words to write on your favorite browser</summary>
 
--   `R ggplot2 scaling color manually`
+-   R ggplot2 scaling color manually
 
 </details>
 
@@ -529,6 +531,13 @@ ggscatter(clinical, x="DUSP6", y="signature_MAPK", color="known.oncogenes", size
 
 Comment also the lines before the plot.
 
+```{r, echo=F}
+median.signature <- median(clinical$signature_MAPK)
+high.signature <- clinical$signature_MAPK >= median.signature
+clinical$signature_group <- "low"
+clinical$signature_group[high.signature] <- "high"
+```
+
 ```{r, eval=F}
 median.signature <- median(clinical$signature_MAPK)
 high.signature <- clinical$signature_MAPK >= median.signature
@@ -574,9 +583,28 @@ M <- cor(expression.selected)
 corrplot(M, addCoef.col = 'black', order = 'AOE', col = COL2('PiYG'), tl.pos = 'd', cl.pos = 'b')
 ```
 
-#### Heatmap
+#### Bonus: Heatmap
+
+In this section, we want to visualise the gene expression across all samples using a heatmap and highlight potential expression patterns using sample and gene clustering.
+
+<details>
+
+<summary>What is a heatmap ?</summary>
+
+In a heatmap, **each row** usually represents a **gene**. Each **column** represents a **sample**. The rectangles containing the values are also called "cells".
+
+The **colour and intensity** of the cells is used to represent values of **gene expression**. So, basically, instead of numbers, we use colours. The colour will be more **intense** the lower (or higher) the value is.
+
+To see patterns, we cluster (meaningful **reordering**) the rows and columns. This just means we **group** the samples and/or genes together based on the **similarity** of their gene expression pattern. The **dendograms** on the sides just indicate the results of clustering both genes and samples.
+
+A clustering algorithm will group genes with a similar expression across samples together: groups of genes that are highly expressed in some samples, and lowly expressed in other samples will be clustered together. In a similar way, samples with a similar expression pattern (in general having certain sets of genes highly expressed and certain sets of genes lowly expressed) will be clustered together.
+
+In summary, adding **clustering** to heatmaps can be useful for identifying genes that are commonly regulated, or biological signatures associated with a particular condition (for example, high MAPK activity).
+
+</details>
 
 ```{r, echo=F}
+#| fig.height: 10
 ## Prepare the data
 # annotation of the columns that contains sample informations
 # We want to show the oncogenes, the gender and the pathological stage and the 
@@ -611,11 +639,345 @@ pheatmap(luad_expr,
          breaks = seq(-4,4,0.08),
          cutree_cols = 6, # display column clusters
          cutree_rows = 4, # display row clusters
+         fontsize = 8, # change font size
          main = "Super heatmap with annotations" # a title for our heatmap
          )
 ```
 
-## Create a KM plot
+*Step by step*
+
+***Before starting ...***
+
+i\) We need to find a package that allow us to draw (pretty) annotated heatmaps. Lets search on the web what we could try.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+R How to draw annotated heatmap
+
+</details>
+
+<details>
+
+<summary>The package we will be using</summary>
+
+`pheatmap`
+
+</details>
+
+ii\) Install the package.
+
+```{r, eval=FALSE}
+install.packages("pheatmap")
+library(pheatmap)
+```
+
+***Step 1 : Prepare the data***
+
+To be able to annotate the heatmap we need to build the annotations for the samples (`clinical`) and the genes (`genes.of.interest`) and associate colours to the categories for each feature.
+
+i\) Annotation of the samples
+
+Using the variable `clinical`, extract the the columns known.oncogenes, pathologic_stage, gender, signature_group in a new variable `anno.columns`.
+
+```{r}
+anno.columns <- clinical[,c("known.oncogenes","pathologic_stage","gender","signature_group")]
+head(anno.columns)
+```
+
+To allow the tool to map the annotations to the samples in the expression dataset, we need to name the row with the sample identifiers that are stored in the column sampleID of `clinical`.
+
+```{r}
+row.names(anno.columns) <- clinical$sampleID
+head(anno.columns)
+```
+
+To define the colours for each feature, you need to build a list using the constructor function `list()` in which each element will be a named vector of colors as you have already made to create `palette.known.onco`. For that you have to know all possible categories for each feature. `table()` is an easy and very useful function to display all categories with the number of sample per category.
+
+`table(anno.columns$gender)`
+
+```{r, echo = FALSE}
+table(anno.columns$gender)
+```
+
+`table(anno.columns$pathologic_stage)`
+
+```{r, echo = FALSE}
+table(anno.columns$pathologic_stage)
+```
+
+etc
+
+You can see that for the pathological stages, there are subcategories A and B that we want to regroup in order to simplify the visualisation. To group the sub-categories, we will remove the A and B from the end of the words using the function `sub()`. Try to write the code, many answers are possible.
+
+Here are 2 possibilities:
+
+```{r}
+anno.columns$pathologic_stage <- sub("A","",anno.columns$pathologic_stage)
+anno.columns$pathologic_stage <- sub("B","",anno.columns$pathologic_stage)
+# The cleanest way of coding this task is
+anno.columns$pathologic_stage <- sub("[AB]$","",anno.columns$pathologic_stage)
+# [AB] indicates that at the first position you encounter
+```
+
+ii\) Annotations of the genes
+
+We want to identify the genes belonging to the MAPK activity signature. To this end, we create a `data.frame` using the constructor function `data.frame()` with the **row names** corresponding to the gene names and containing one column `in.signature` containing yes or no.
+
+Create a vector containing "yes" or "no" depending on the gene presence in the signature. Many possibilities exist but the best way is to use the function `ifelse()`. This function takes 3 arguments, an expression **comparing** the gene names (row names of the table `luad_expr`) with the genes of interest (`gene.of.interest`), what the function must return if the comparison is TRUE (the gene is in the signature, "yes"), what the function must return if the comparison is FALSE (the gene is not in the signature, "no").
+
+To know if the elements of a vector are present in an other vector we use the operator **%in%**.
+
+`genes.in.signature <- row.names(luad_expr) %in% gene.of.interest`
+
+Try to write the code that allow to obtain the yes/no vector using `ifelse()` and `genes.in.signature` and keep the results in a variable called `in.signature`.
+
+```{r}
+in.signature <- ifelse(row.names(luad_expr)%in%gene.of.interest,"yes","no")
+```
+
+Now you can create the `data.frame`.
+
+```{r}
+# Create annotation for the rows containing the genes: 
+# we want to indcate the genes involved in the signature
+anno.rows <- data.frame(row.names=row.names(luad_expr),in.signature)
+head(anno.rows)
+```
+
+Add colors for this feature to the list of colors `colors.anno`.
+
+`colors.anno$in.signature <- c(yes="black",no="white")`
+
+***Step 2 : Create a clustered heatmap***
+
+Display the heatmap with default parameters (do not change any parameters) using the function `pheatmap()` and the expression object `luad_expr`.
+
+```{r}
+#| fig.height: 10
+pheatmap(luad_expr)
+```
+
+By default, pheatmap applies hierarchical clustering to both rows and columns. The parameter names are quite explicit.
+
+By looking at the help of the function (`?pheatmap`) or online, identify the parameters and their default values that:
+
+-   Enable row or column clustering (2 parameters)
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+cluster_cols = TRUE
+cluster_rows = TRUE
+```
+
+</details>
+
+-   specify the statistics to compute the distances between rows or columns (2 parameters)
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+clustering_distance_rows = "euclidean"
+clustering_distance_cols = "euclidean"
+```
+
+</details>
+
+-   specify how to aggregate the rows and columns based on their distance (1 parameters)
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+clustering_method = "complete"
+```
+
+</details>
+
+***Step 2 : Customize your heatmap***
+
+By analysing the default heatmap, we can notice that column labels are not readable and are not adding relevant information, we want to remove them, the row names are readable but we want to decrease the size of the font. We will test different method for clustering the rows and columns. We would like to change the colors of the cells to make them more divergent using for instance the color palette from `viridis` and we want to intensify the differences by lowering the range value amplitude (between -4 and 4), meaning that values outside of this range will display the extreme colors. We then want to annotate the samples and genes with nice colors, separate the clusters and finally add a tittle.
+
+*i) Row and column names*
+
+By looking at the help of the function (`?pheatmap`) or online, identify the parameters (and adapt their values) that:
+
+-   Enable the display of the column names and disable it.
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+show_colnames = T # default
+```
+
+</details>
+
+-   Enable to decrease the font size
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+fontsize = 10 # default
+```
+
+</details>
+
+```{r}
+#| fig.height: 10
+pheatmap(luad_expr,
+         cluster_rows = T, cluster_cols = T, # set to FALSE if you want to remove the dendograms
+         show_colnames = F, # displaying column names
+         show_rownames = T, # displaying row names
+         fontsize = 8 # change font size
+         )
+```
+
+*ii) Change the colors*
+
+By looking at the help of the function (`?pheatmap`) or online, identify the parameters (and adapt their values) that:
+
+-   Enable to set the color palette. In the example we used the inferno palette from the package viridis and asked for 100 colors.
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100) # Default
+```
+
+</details>
+
+-   Enable to change the amplitude of the colors between -4 and 4
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+breaks = NA # default
+```
+
+</details>
+
+```{r, eval=F}
+pheatmap(luad_expr,
+         cluster_rows = T, cluster_cols = T, # set to FALSE if you want to remove the dendograms
+         show_colnames = F, # displaying column names
+         show_rownames = T, # displaying row names
+         clustering_distance_cols = 'correlation',
+         clustering_distance_rows = 'correlation',
+         clustering_method = 'ward.D', # how to aggregate rows and columns depending on their distance
+         color = viridis::inferno(100), # choose a colour scale for your data
+         breaks = seq(-4,4,0.08), # seq produce a vector from -4 to 4 with a step of 0.08 (100 values)
+         fontsize = 8 # change font size
+         )
+```
+
+*iii) Choose the clustering methods*
+
+Using the parameters you identified earlier for clustering methods, test several combinations to observe the impact on the results. You can find bellow the definition of the different methods. In the example, we chose to cluster following the correlation distance and the ward.D agglomeration methods.
+
+<details>
+
+<summary>Distance methods</summary>
+
+**Euclidean Distance**: This is like drawing a straight line between two points. It\'s the most intuitive way to measure distance, like the shortest path "as the crow flies" between two locations on a map.
+
+**Manhattan Distance**: Think of how you would walk in a city laid out like a grid, where you can only move horizontally or vertically. The Manhattan distance measures the total number of blocks you would walk.
+
+**Correlation Distance**: Instead of focusing on actual distance, this measures how similar the patterns or trends are between points. It\'s useful when you care about how things change together rather than how far apart they are.
+
+**Maximum Distance (Chebyshev)**: This only looks at the largest difference in any single direction (horizontal or vertical). Imagine trying to figure out how far two buildings are by only checking the longest side of the blocks between them.
+
+**Canberra Distance**: This one gives more weight to differences when values are small. It's useful when small differences matter a lot in your data.
+
+**Binary Distance**: This is used for yes/no or presence/absence type data. It simply compares if two points have the same "yes/no" values.
+
+**Minkowski Distance**: This is a general form of both Euclidean and Manhattan distances. By changing a parameter, it can behave like either Euclidean (straight line) or Manhattan (grid-based).
+
+</details>
+
+<details>
+
+<summary>Agglomeration methods</summary>
+
+**Ward's Method (ward.D, ward.D2)**: This tries to form groups that minimize the difference within each cluster. It prefers clusters where data points are very similar to each other. It\'s great for balanced, compact groups.
+
+**Single Linkage (single)**: This method focuses on the smallest distance between points in two clusters. It can create "chains" of points that are loosely connected, leading to long, stretched-out clusters.
+
+**Complete Linkage (complete)**: This method uses the largest distance between points in two clusters. It prefers tight, compact clusters, and avoids the stretched-out effect of single linkage.
+
+**Average Linkage (average/UPGMA)**: Here, we average the distances between all pairs of points in two clusters. It balances between tight and loose clusters, forming more moderate-sized groups.
+
+**McQuitty's Method (mcquitty/WPGMA)**: Similar to average linkage, but it calculates the average in a slightly different way. It\'s another method to balance between close and distant points.
+
+**Median Method (median/WPGMC)**: This method looks at the median distances between points, creating balanced clusters that can handle uneven data well.
+
+**Centroid Method (centroid/UPGMC)**: This method calculates the "center" of clusters (think of the average location of all points in the cluster) and uses that to decide how to group them.
+
+</details>
+
+```{r, eval=F}
+pheatmap(luad_expr,
+         cluster_rows = T, cluster_cols = T, # set to FALSE if you want to remove the dendograms
+         show_colnames = F, # displaying column names
+         show_rownames = T, # displaying row names
+         clustering_distance_cols = 'correlation',
+         clustering_distance_rows = 'correlation',
+         clustering_method = 'ward.D', # how to aggregate rows and columns depending on their distance
+         fontsize = 8 # change font size
+         )
+```
+
+*iv)* *Separate clusters*
+
+By looking at the help of the function (`?pheatmap`) or online, identify the parameters (and adapt their values) that:
+
+-   Enable to show distinct clusters, in the example, 6 sample clusters and 4 gene clusters (2 parameters)
+
+<details>
+
+<summary>Answer</summary>
+
+```         
+ cutree_rows = NA # Default
+ cutree_cols = NA # Default
+```
+
+</details>
+
+```{r, eval=FALSE}
+pheatmap(luad_expr,
+         cluster_rows = T, cluster_cols = T, # set to FALSE if you want to remove the dendograms
+         show_colnames = F, # displaying column names
+         show_rownames = T, # displaying row names
+         clustering_distance_cols = 'correlation',
+         clustering_distance_rows = 'correlation',
+         annotation_row = anno.rows, # row (gene) annotations
+         annotation_col = anno.columns, # column (sample) annotations
+         annotation_colors = colors.anno, # colours for your annotations
+         clustering_method = 'ward.D', # how to aggregate rows and columns depending on their distance
+         color = viridis::inferno(100), # choose a colour scale for your data
+         breaks = seq(-4,4,0.08),
+         cutree_cols = 6, # display column clusters
+         cutree_rows = 4, # display row clusters
+         fontsize = 8 # change font size
+         )
+```
+
+## Bonus: Create a KM plot
 
 survival
 

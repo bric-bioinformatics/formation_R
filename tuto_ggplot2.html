@@ -113,6 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Describe the study and the data … to be done</p>
 </section>
 <section id="load-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-the-data">Load the data</h2>
@@ -170,16 +171,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 HLF             2.3163          2.5663          0.3256          1.2797
 SIDT1           0.2915         -0.4740         -0.8877         -0.1085
 KCNK5           2.7136         -1.2182         -1.0843          0.2549
-B3GNT1          0.2980         -0.2679         -0.3662          0.3693
 NT5E            1.9077          3.2984          0.5635         -1.1936
 ANKFN1          1.7716          1.4035         -1.1512          0.9808
+OSR2           -1.8508          0.2529          0.8586         -0.6371
        TCGA.05.4390.01 TCGA.05.4395.01
 HLF             0.7935         -3.4771
 SIDT1          -1.2468          1.2006
 KCNK5          -0.3419         -1.2818
-B3GNT1         -0.5926         -0.8827
 NT5E           -1.2197          3.5446
-ANKFN1         -0.0502         -2.9351</code></pre>
+ANKFN1         -0.0502         -2.9351
+OSR2           -3.6973         -1.1070</code></pre>
 </div>
 </div>
 </section>
@@ -422,7 +423,7 @@ Key words to write on your favorite browser
 Key words to write on your favorite browser
 </summary>
 <ul>
-<li><code>R ggplot2 scaling color manually</code></li>
+<li>R ggplot2 scaling color manually</li>
 </ul>
 </details>
 <div class="cell">
@@ -814,9 +815,8 @@ TCGA.05.4395.01 -0.0357 -0.2430  1.8469 -0.6158  2.6318</code></pre>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">add =</span> <span class="st">"boxplot"</span>, <span class="at">add.params =</span> <span class="fu">list</span>(<span class="at">fill =</span> <span class="st">"white"</span>)) <span class="sc">+</span></span>
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
 <span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>known.oncogenes,<span class="at">ncol=</span><span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"high"</span>,<span class="st">"low"</span>)), <span class="at">method=</span><span class="st">"wilcox"</span>, <span class="at">label.y =</span> <span class="dv">15</span>, <span class="at">label=</span><span class="st">"p.signif"</span>) <span class="sc">+</span></span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>known.oncogenes,<span class="at">ncol=</span><span class="dv">4</span>, <span class="at">scales=</span><span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_compare_means</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"high"</span>,<span class="st">"low"</span>)), <span class="at">method=</span><span class="st">"wilcox"</span>, <span class="at">label.y =</span> <span class="dv">3</span>, <span class="at">label=</span><span class="st">"p.signif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -833,7 +833,7 @@ TCGA.05.4395.01 -0.0357 -0.2430  1.8469 -0.6158  2.6318</code></pre>
 <p>You want to obtain the following plot:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Here is the solution:</p>
@@ -851,59 +851,340 @@ TCGA.05.4395.01 -0.0357 -0.2430  1.8469 -0.6158  2.6318</code></pre>
 </details>
 </div>
 </section>
-<section id="heatmap" class="level4">
-<h4 class="anchored" data-anchor-id="heatmap">Heatmap</h4>
+<section id="bonus-heatmap" class="level4">
+<h4 class="anchored" data-anchor-id="bonus-heatmap">Bonus: Heatmap</h4>
+<p>In this section, we want to visualise the gene expression across all samples using a heatmap and highlight potential expression patterns using sample and gene clustering.</p>
+<details>
+<summary>
+What is a heatmap ?
+</summary>
+<p>In a heatmap, <strong>each row</strong> usually represents a <strong>gene</strong>. Each <strong>column</strong> represents a <strong>sample</strong>. The rectangles containing the values are also called “cells”.</p>
+<p>The <strong>colour and intensity</strong> of the cells is used to represent values of <strong>gene expression</strong>. So, basically, instead of numbers, we use colours. The colour will be more <strong>intense</strong> the lower (or higher) the value is.</p>
+<p>To see patterns, we cluster (meaningful <strong>reordering</strong>) the rows and columns. This just means we <strong>group</strong> the samples and/or genes together based on the <strong>similarity</strong> of their gene expression pattern. The <strong>dendograms</strong> on the sides just indicate the results of clustering both genes and samples.</p>
+<p>A clustering algorithm will group genes with a similar expression across samples together: groups of genes that are highly expressed in some samples, and lowly expressed in other samples will be clustered together. In a similar way, samples with a similar expression pattern (in general having certain sets of genes highly expressed and certain sets of genes lowly expressed) will be clustered together.</p>
+<p>In summary, adding <strong>clustering</strong> to heatmaps can be useful for identifying genes that are commonly regulated, or biological signatures associated with a particular condition (for example, high MAPK activity).</p>
+</details>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><em>Step by step</em></p>
+<p><strong><em>Before starting …</em></strong></p>
+<p>i) We need to find a package that allow us to draw (pretty) annotated heatmaps. Lets search on the web what we could try.</p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<p>R How to draw annotated heatmap</p>
+</details>
+<details>
+<summary>
+The package we will be using
+</summary>
+<p><code>pheatmap</code></p>
+</details>
+<p>ii) Install the package.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Prepare the data</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="co"># annotation of the columns that contains sample informations</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We want to show the oncogenes, the gender and the pathological stage and the </span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MAPH signature groups</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the data frame must contain row names corresponding to the sample IDs and identical to the sample IDs in the expression data.</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We create a data.frame with the relevant columns</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>anno.columns <span class="ot">&lt;-</span> clinical[,<span class="fu">c</span>(<span class="st">"known.oncogenes"</span>,<span class="st">"pathologic_stage"</span>,<span class="st">"gender"</span>,<span class="st">"signature_group"</span>)]</span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(anno.columns) <span class="ot">&lt;-</span> clinical<span class="sc">$</span>sampleID</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="co"># For the pathological stage we want only 4 stages, we need to to remove sub categories A and B</span></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>anno.columns<span class="sc">$</span>pathologic_stage <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"[AB]$"</span>,<span class="st">""</span>,anno.columns<span class="sc">$</span>pathologic_stage)</span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list containing the colors for each feature</span></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>colors.anno <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">known.oncogenes=</span>palette.known.onco,</span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pathologic_stage=</span><span class="fu">c</span>(<span class="st">"Stage I"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">404</span>], <span class="st">"Stage II"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">33</span>], <span class="st">"Stage III"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">35</span>], <span class="st">"Stage IV"</span><span class="ot">=</span><span class="fu">colours</span>()[<span class="dv">24</span>]),</span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>                       <span class="at">gender=</span><span class="fu">c</span>(<span class="at">FEMALE=</span><span class="fu">colours</span>()[<span class="dv">613</span>], <span class="at">MALE=</span><span class="fu">colours</span>()[<span class="dv">290</span>]),</span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>                       <span class="at">signature_group=</span><span class="fu">c</span>(<span class="at">high=</span><span class="fu">colours</span>()[<span class="dv">124</span>],<span class="at">low=</span><span class="fu">colours</span>()[<span class="dv">144</span>]))</span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create annotation for the rows containing the genes: </span></span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="co"># we want to indcate the genes involved in the signature</span></span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>anno.rows <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names=</span><span class="fu">row.names</span>(luad_expr),<span class="at">in.signature=</span><span class="fu">ifelse</span>(<span class="fu">row.names</span>(luad_expr)<span class="sc">%in%</span>gene.of.interest,<span class="st">"yes"</span>,<span class="st">"no"</span>))</span>
-<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>colors.anno<span class="sc">$</span>in.signature <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">yes=</span><span class="st">"black"</span>,<span class="at">no=</span><span class="st">"white"</span>)</span>
-<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="co"># center by the median the expression values per genes in order to have a nicer representation</span></span>
-<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>luad_expr_c <span class="ot">&lt;-</span> luad_expr <span class="sc">-</span> <span class="fu">apply</span>(luad_expr,<span class="dv">1</span>,median)</span>
-<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a><span class="co"># select the top 100 highest variable genes</span></span>
-<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>gene.var <span class="ot">&lt;-</span> <span class="fu">apply</span>(luad_expr_c,<span class="dv">1</span>,var)</span>
-<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>gene.var <span class="ot">&lt;-</span> <span class="fu">sort</span>(gene.var,<span class="at">decreasing=</span>T)</span>
-<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>gene.var <span class="ot">&lt;-</span> gene.var[<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>]</span>
-<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>luad_expr_c <span class="ot">&lt;-</span> luad_expr_c[<span class="fu">names</span>(gene.var),]</span>
-<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr_c,</span>
-<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="at">cluster_cols =</span> T, <span class="co"># set to FALSE if you want to remove the dendograms</span></span>
-<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_colnames =</span> F, <span class="co"># displaying column names</span></span>
-<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> F, <span class="co"># displaying row names</span></span>
-<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_cols =</span> <span class="st">'correlation'</span>,</span>
-<span id="cb49-34"><a href="#cb49-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_rows =</span> <span class="st">'correlation'</span>,</span>
-<span id="cb49-35"><a href="#cb49-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_row =</span> anno.rows, <span class="co"># row (gene) annotations</span></span>
-<span id="cb49-36"><a href="#cb49-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_col =</span> anno.columns, <span class="co"># column (sample) annotations</span></span>
-<span id="cb49-37"><a href="#cb49-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_colors =</span> colors.anno, <span class="co"># colours for your annotations</span></span>
-<span id="cb49-38"><a href="#cb49-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">'ward.D'</span>, <span class="co"># how to aggregate rows and columns depending on their distance</span></span>
-<span id="cb49-39"><a href="#cb49-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">color =</span> viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="dv">100</span>), <span class="co"># choose a colour scale for your data</span></span>
-<span id="cb49-40"><a href="#cb49-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="fl">0.2</span>),</span>
-<span id="cb49-41"><a href="#cb49-41" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">"Super heatmap with annotations"</span> <span class="co"># a title for our heatmap</span></span>
-<span id="cb49-42"><a href="#cb49-42" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pheatmap"</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong><em>Step 1 : Prepare the data</em></strong></p>
+<p>To be able to annotate the heatmap we need to build the annotations for the samples (<code>clinical</code>) and the genes (<code>genes.of.interest</code>) and associate colours to the categories for each feature.</p>
+<p>i) Annotation of the samples</p>
+<p>Using the variable <code>clinical</code>, extract the the columns known.oncogenes, pathologic_stage, gender, signature_group in a new variable <code>anno.columns</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>anno.columns <span class="ot">&lt;-</span> clinical[,<span class="fu">c</span>(<span class="st">"known.oncogenes"</span>,<span class="st">"pathologic_stage"</span>,<span class="st">"gender"</span>,<span class="st">"signature_group"</span>)]</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(anno.columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  known.oncogenes pathologic_stage gender signature_group
+1            KRAS         Stage IB   MALE            high
+2            KRAS       Stage IIIA FEMALE             low
+3            RIT1       Stage IIIA   MALE             low
+4        BRAF_act         Stage IA   MALE             low
+5            KRAS         Stage IB FEMALE            high
+6            KRAS       Stage IIIB   MALE             low</code></pre>
+</div>
+</div>
+<p>To allow the tool to map the annotations to the samples in the expression dataset, we need to name the row with the sample identifiers that are stored in the column sampleID of <code>clinical</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(anno.columns) <span class="ot">&lt;-</span> clinical<span class="sc">$</span>sampleID</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(anno.columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                known.oncogenes pathologic_stage gender signature_group
+TCGA.05.4249.01            KRAS         Stage IB   MALE            high
+TCGA.05.4250.01            KRAS       Stage IIIA FEMALE             low
+TCGA.05.4384.01            RIT1       Stage IIIA   MALE             low
+TCGA.05.4389.01        BRAF_act         Stage IA   MALE             low
+TCGA.05.4390.01            KRAS         Stage IB FEMALE            high
+TCGA.05.4395.01            KRAS       Stage IIIB   MALE             low</code></pre>
+</div>
+</div>
+<p>To define the colours for each feature, you need to build a list using the constructor function <code>list()</code> in which each element will be a named vector of colors as you have already made to create <code>palette.known.onco</code>. For that you have to know all possible categories for each feature. <code>table()</code> is an easy and very useful function to display all categories with the number of sample per category.</p>
+<p><code>table(anno.columns$gender)</code></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FEMALE   MALE 
+   122    124 </code></pre>
+</div>
+</div>
+<p><code>table(anno.columns$pathologic_stage)</code></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Stage I   Stage IA   Stage IB  Stage IIA  Stage IIB Stage IIIA Stage IIIB 
+         3         58         68         21         36         40          6 
+  Stage IV 
+        14 </code></pre>
+</div>
+</div>
+<p>etc</p>
+<p>You can see that for the pathological stages, there are subcategories A and B that we want to regroup in order to simplify the visualisation. To group the sub-categories, we will remove the A and B from the end of the words using the function <code>sub()</code>. Try to write the code, many answers are possible.</p>
+<p>Here are 2 possibilities:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>anno.columns<span class="sc">$</span>pathologic_stage <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"A"</span>,<span class="st">""</span>,anno.columns<span class="sc">$</span>pathologic_stage)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>anno.columns<span class="sc">$</span>pathologic_stage <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"B"</span>,<span class="st">""</span>,anno.columns<span class="sc">$</span>pathologic_stage)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The cleanest way of coding this task is</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>anno.columns<span class="sc">$</span>pathologic_stage <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"[AB]$"</span>,<span class="st">""</span>,anno.columns<span class="sc">$</span>pathologic_stage)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="co"># [AB] indicates that at the first position you encounter</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Annotations of the genes</p>
+<p>We want to identify the genes belonging to the MAPK activity signature. To this end, we create a <code>data.frame</code> using the constructor function <code>data.frame()</code> with the <strong>row names</strong> corresponding to the gene names and containing one column <code>in.signature</code> containing yes or no.</p>
+<p>Create a vector containing “yes” or “no” depending on the gene presence in the signature. Many possibilities exist but the best way is to use the function <code>ifelse()</code>. This function takes 3 arguments, an expression <strong>comparing</strong> the gene names (row names of the table <code>luad_expr</code>) with the genes of interest (<code>gene.of.interest</code>), what the function must return if the comparison is TRUE (the gene is in the signature, “yes”), what the function must return if the comparison is FALSE (the gene is not in the signature, “no”).</p>
+<p>To know if the elements of a vector are present in an other vector we use the operator <strong>%in%</strong>.</p>
+<p><code>genes.in.signature &lt;- row.names(luad_expr) %in% gene.of.interest</code></p>
+<p>Try to write the code that allow to obtain the yes/no vector using <code>ifelse()</code> and <code>genes.in.signature</code> and keep the results in a variable called <code>in.signature</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>in.signature <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">row.names</span>(luad_expr)<span class="sc">%in%</span>gene.of.interest,<span class="st">"yes"</span>,<span class="st">"no"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now you can create the <code>data.frame</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create annotation for the rows containing the genes: </span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co"># we want to indcate the genes involved in the signature</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>anno.rows <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names=</span><span class="fu">row.names</span>(luad_expr),in.signature)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(anno.rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       in.signature
+HLF              no
+SIDT1            no
+KCNK5            no
+NT5E             no
+ANKFN1           no
+OSR2             no</code></pre>
+</div>
+</div>
+<p>Add colors for this feature to the list of colors <code>colors.anno</code>.</p>
+<p><code>colors.anno$in.signature &lt;- c(yes="black",no="white")</code></p>
+<p><strong><em>Step 2 : Create a clustered heatmap</em></strong></p>
+<p>Display the heatmap with default parameters (do not change any parameters) using the function <code>pheatmap()</code> and the expression object <code>luad_expr</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>By default, pheatmap applies hierarchical clustering to both rows and columns. The parameter names are quite explicit.</p>
+<p>By looking at the help of the function (<code>?pheatmap</code>) or online, identify the parameters and their default values that:</p>
+<ul>
+<li>Enable row or column clustering (2 parameters)</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>cluster_cols = TRUE
+cluster_rows = TRUE</code></pre>
+</details>
+<ul>
+<li>specify the statistics to compute the distances between rows or columns (2 parameters)</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>clustering_distance_rows = "euclidean"
+clustering_distance_cols = "euclidean"</code></pre>
+</details>
+<ul>
+<li>specify how to aggregate the rows and columns based on their distance (1 parameters)</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>clustering_method = "complete"</code></pre>
+</details>
+<p><strong><em>Step 2 : Customize your heatmap</em></strong></p>
+<p>By analysing the default heatmap, we can notice that column labels are not readable and are not adding relevant information, we want to remove them, the row names are readable but we want to decrease the size of the font. We will test different method for clustering the rows and columns. We would like to change the colors of the cells to make them more divergent using for instance the color palette from <code>viridis</code> and we want to intensify the differences by lowering the range value amplitude (between -4 and 4), meaning that values outside of this range will display the extreme colors. We then want to annotate the samples and genes with nice colors, separate the clusters and finally add a tittle.</p>
+<p><em>i) Row and column names</em></p>
+<p>By looking at the help of the function (<code>?pheatmap</code>) or online, identify the parameters (and adapt their values) that:</p>
+<ul>
+<li>Enable the display of the column names and disable it.</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>show_colnames = T # default</code></pre>
+</details>
+<ul>
+<li>Enable to decrease the font size</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>fontsize = 10 # default</code></pre>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr,</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="at">cluster_cols =</span> T, <span class="co"># set to FALSE if you want to remove the dendograms</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_colnames =</span> F, <span class="co"># displaying column names</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> T, <span class="co"># displaying row names</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">fontsize =</span> <span class="dv">8</span> <span class="co"># change font size</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="tuto_ggplot2_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><em>ii) Change the colors</em></p>
+<p>By looking at the help of the function (<code>?pheatmap</code>) or online, identify the parameters (and adapt their values) that:</p>
+<ul>
+<li>Enable to set the color palette. In the example we used the inferno palette from the package viridis and asked for 100 colors.</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100) # Default</code></pre>
+</details>
+<ul>
+<li>Enable to change the amplitude of the colors between -4 and 4</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code>breaks = NA # default</code></pre>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr,</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="at">cluster_cols =</span> T, <span class="co"># set to FALSE if you want to remove the dendograms</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_colnames =</span> F, <span class="co"># displaying column names</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> T, <span class="co"># displaying row names</span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_cols =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_rows =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">'ward.D'</span>, <span class="co"># how to aggregate rows and columns depending on their distance</span></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">color =</span> viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="dv">100</span>), <span class="co"># choose a colour scale for your data</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="fl">0.08</span>), <span class="co"># seq produce a vector from -4 to 4 with a step of 0.08 (100 values)</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">fontsize =</span> <span class="dv">8</span> <span class="co"># change font size</span></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><em>iii) Choose the clustering methods</em></p>
+<p>Using the parameters you identified earlier for clustering methods, test several combinations to observe the impact on the results. You can find bellow the definition of the different methods. In the example, we chose to cluster following the correlation distance and the ward.D agglomeration methods.</p>
+<details>
+<summary>
+Distance methods
+</summary>
+<p><strong>Euclidean Distance</strong>: This is like drawing a straight line between two points. It's the most intuitive way to measure distance, like the shortest path “as the crow flies” between two locations on a map.</p>
+<p><strong>Manhattan Distance</strong>: Think of how you would walk in a city laid out like a grid, where you can only move horizontally or vertically. The Manhattan distance measures the total number of blocks you would walk.</p>
+<p><strong>Correlation Distance</strong>: Instead of focusing on actual distance, this measures how similar the patterns or trends are between points. It's useful when you care about how things change together rather than how far apart they are.</p>
+<p><strong>Maximum Distance (Chebyshev)</strong>: This only looks at the largest difference in any single direction (horizontal or vertical). Imagine trying to figure out how far two buildings are by only checking the longest side of the blocks between them.</p>
+<p><strong>Canberra Distance</strong>: This one gives more weight to differences when values are small. It’s useful when small differences matter a lot in your data.</p>
+<p><strong>Binary Distance</strong>: This is used for yes/no or presence/absence type data. It simply compares if two points have the same “yes/no” values.</p>
+<p><strong>Minkowski Distance</strong>: This is a general form of both Euclidean and Manhattan distances. By changing a parameter, it can behave like either Euclidean (straight line) or Manhattan (grid-based).</p>
+</details>
+<details>
+<summary>
+Agglomeration methods
+</summary>
+<p><strong>Ward’s Method (ward.D, ward.D2)</strong>: This tries to form groups that minimize the difference within each cluster. It prefers clusters where data points are very similar to each other. It's great for balanced, compact groups.</p>
+<p><strong>Single Linkage (single)</strong>: This method focuses on the smallest distance between points in two clusters. It can create “chains” of points that are loosely connected, leading to long, stretched-out clusters.</p>
+<p><strong>Complete Linkage (complete)</strong>: This method uses the largest distance between points in two clusters. It prefers tight, compact clusters, and avoids the stretched-out effect of single linkage.</p>
+<p><strong>Average Linkage (average/UPGMA)</strong>: Here, we average the distances between all pairs of points in two clusters. It balances between tight and loose clusters, forming more moderate-sized groups.</p>
+<p><strong>McQuitty’s Method (mcquitty/WPGMA)</strong>: Similar to average linkage, but it calculates the average in a slightly different way. It's another method to balance between close and distant points.</p>
+<p><strong>Median Method (median/WPGMC)</strong>: This method looks at the median distances between points, creating balanced clusters that can handle uneven data well.</p>
+<p><strong>Centroid Method (centroid/UPGMC)</strong>: This method calculates the “center” of clusters (think of the average location of all points in the cluster) and uses that to decide how to group them.</p>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr,</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="at">cluster_cols =</span> T, <span class="co"># set to FALSE if you want to remove the dendograms</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_colnames =</span> F, <span class="co"># displaying column names</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> T, <span class="co"># displaying row names</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_cols =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_rows =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">'ward.D'</span>, <span class="co"># how to aggregate rows and columns depending on their distance</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">fontsize =</span> <span class="dv">8</span> <span class="co"># change font size</span></span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><em>iv)</em> <em>Separate clusters</em></p>
+<p>By looking at the help of the function (<code>?pheatmap</code>) or online, identify the parameters (and adapt their values) that:</p>
+<ul>
+<li>Enable to show distinct clusters, in the example, 6 sample clusters and 4 gene clusters (2 parameters)</li>
+</ul>
+<details>
+<summary>
+Answer
+</summary>
+<pre><code> cutree_rows = NA # Default
+ cutree_cols = NA # Default</code></pre>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(luad_expr,</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="at">cluster_cols =</span> T, <span class="co"># set to FALSE if you want to remove the dendograms</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_colnames =</span> F, <span class="co"># displaying column names</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> T, <span class="co"># displaying row names</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_cols =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_distance_rows =</span> <span class="st">'correlation'</span>,</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_row =</span> anno.rows, <span class="co"># row (gene) annotations</span></span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_col =</span> anno.columns, <span class="co"># column (sample) annotations</span></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_colors =</span> colors.anno, <span class="co"># colours for your annotations</span></span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">'ward.D'</span>, <span class="co"># how to aggregate rows and columns depending on their distance</span></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">color =</span> viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="dv">100</span>), <span class="co"># choose a colour scale for your data</span></span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="fl">0.08</span>),</span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">cutree_cols =</span> <span class="dv">6</span>, <span class="co"># display column clusters</span></span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">cutree_rows =</span> <span class="dv">4</span>, <span class="co"># display row clusters</span></span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">fontsize =</span> <span class="dv">8</span> <span class="co"># change font size</span></span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 </section>
-<section id="create-a-km-plot" class="level2">
-<h2 class="anchored" data-anchor-id="create-a-km-plot">Create a KM plot</h2>
+<section id="bonus-create-a-km-plot" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-create-a-km-plot">Bonus: Create a KM plot</h2>
 <p>survival</p>
 <p>ggsurvfit</p>
 </section>
