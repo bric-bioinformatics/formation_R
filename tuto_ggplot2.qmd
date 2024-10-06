@@ -43,8 +43,6 @@ Describe the study and the data ... to be done
 
 Follow the procedure using the interface to load the file or try to use the function `read.table.`
 
-<!--# Describe rows and columns -->
-
 Clinical data: `TCGA_LUAD_subset.tsv`, name the variable `clinical`
 
 Survival data: `TCGA_LUAD_subset_survival.tsv`, name the variable `surv_dat`
@@ -893,11 +891,11 @@ Using the parameters you identified earlier for clustering methods, test several
 
 <summary>Distance methods</summary>
 
-**Euclidean Distance**: This is like drawing a straight line between two points. It\'s the most intuitive way to measure distance, like the shortest path "as the crow flies" between two locations on a map.
+**Euclidean Distance**: This is like drawing a straight line between two points. It's the most intuitive way to measure distance, like the shortest path "as the crow flies" between two locations on a map.
 
 **Manhattan Distance**: Think of how you would walk in a city laid out like a grid, where you can only move horizontally or vertically. The Manhattan distance measures the total number of blocks you would walk.
 
-**Correlation Distance**: Instead of focusing on actual distance, this measures how similar the patterns or trends are between points. It\'s useful when you care about how things change together rather than how far apart they are.
+**Correlation Distance**: Instead of focusing on actual distance, this measures how similar the patterns or trends are between points. It's useful when you care about how things change together rather than how far apart they are.
 
 **Maximum Distance (Chebyshev)**: This only looks at the largest difference in any single direction (horizontal or vertical). Imagine trying to figure out how far two buildings are by only checking the longest side of the blocks between them.
 
@@ -913,7 +911,7 @@ Using the parameters you identified earlier for clustering methods, test several
 
 <summary>Agglomeration methods</summary>
 
-**Ward's Method (ward.D, ward.D2)**: This tries to form groups that minimize the difference within each cluster. It prefers clusters where data points are very similar to each other. It\'s great for balanced, compact groups.
+**Ward's Method (ward.D, ward.D2)**: This tries to form groups that minimize the difference within each cluster. It prefers clusters where data points are very similar to each other. It's great for balanced, compact groups.
 
 **Single Linkage (single)**: This method focuses on the smallest distance between points in two clusters. It can create "chains" of points that are loosely connected, leading to long, stretched-out clusters.
 
@@ -921,7 +919,7 @@ Using the parameters you identified earlier for clustering methods, test several
 
 **Average Linkage (average/UPGMA)**: Here, we average the distances between all pairs of points in two clusters. It balances between tight and loose clusters, forming more moderate-sized groups.
 
-**McQuitty's Method (mcquitty/WPGMA)**: Similar to average linkage, but it calculates the average in a slightly different way. It\'s another method to balance between close and distant points.
+**McQuitty's Method (mcquitty/WPGMA)**: Similar to average linkage, but it calculates the average in a slightly different way. It's another method to balance between close and distant points.
 
 **Median Method (median/WPGMC)**: This method looks at the median distances between points, creating balanced clusters that can handle uneven data well.
 

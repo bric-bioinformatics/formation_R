@@ -13,7 +13,7 @@ details > summary {
   box-shadow: 1px 1px 2px #bbbbbb;
   cursor: pointer;
 }
-​
+
 details > p {
   background-color: #E0F8EC;
   padding: 4px;
@@ -49,8 +49,9 @@ You can see that *merge* has many arguments. For our example, we only need 3 arg
 
 This third argument is really important. This also means that to use the merge function on our two dataframes, there must be a column in common between the two. We can also have several columns in common.
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
+
+---
 
 *Example* :
 
@@ -77,7 +78,7 @@ df_1
 ```
 </details>
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 * df_2
 

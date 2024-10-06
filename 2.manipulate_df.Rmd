@@ -31,7 +31,7 @@ TCGA_LUAD <- read.delim("~/Documents/O·D·I·L/formation_R/data/TCGA_LUAD_subse
 In this section, you will learn how to manipulate data in the form of tables. 
 When we manipulate data, we use variables and functions. As you saw earlier, a variable can have several types and can contain different types of data, even an entire table with several columns and rows. Various functions can be used to dissect the table in order to retain only certain data, for example.
 
-The most commonly used and powerful table structure is the data frame. A data frame is organized into rows and columns. The rows represent observations or individual records and columns represent variables or features of the data, and each column can hold different types of data (numeric, character, logical, etc.).
+The most commonly used and powerful table structure is the `data.frame`. A data frame is organized into rows and columns. The rows represent observations or individual records and columns represent variables or features of the data, and each column can hold different types of data (numeric, character, logical, etc.).
 
 
 But before diving into complex data exploration. We need to define a workspace where we will then write our variables, functions... in other words, the code.
@@ -40,9 +40,9 @@ But before diving into complex data exploration. We need to define a workspace w
 
 A working directory contains all the data that will be useful to us (tables, images, graphics, etc.).
 
-* Create a new folder that you can called intro_R
+* Create a new folder that you can called `intro_R`
 * In the "Session" menu, select "Set Working Directory" -> Choose Directory"...
-* Navigate to your intro_R folder
+* Navigate to your `intro_R` folder
 * Double-click it to open
 * Click Choose
 * Observe the console and save the command in your script
@@ -72,36 +72,36 @@ We need to load the data to be able to work. Use the directory you have created 
 * Navigate to your intro_R folder
 * Choose TCGA_LUAD_subset.tsv
 * Double-click it to open
-* Change the name of the variable
+* Change the name of the variable: `TCGA_LUAD`
 * Specify that the first line contains the names of the columns 
 * Specify that the first row contains the names of the rows
 
 ![](figures_practical_case/load_data.svg)
 
 
-After this last step, you can see that a variable has been created and is displayed in the “Environment” panel. This variable is called TCGA_LUAD (or whatever you called it) containing the data.
-
+After this last step, you can see that a variable has been created and is displayed in the “Environment” panel. This variable is called `TCGA_LUAD` (or whatever you called it) containing the data.
 
 ---
 
 With R, it is also possible to load data using the command line. For this purpose, there are functions available for loading data.
 
-Those functions generally begin with "read".
-In our case the function is "read_delim".
+Those functions generally begin with `read()`.
+
+In our case the function is `read_delim()`.
 
 ```{r load data}
 TCGA_LUAD <- read.delim("~/Documents/intro_R/TCGA_LUAD_subset.tsv", row.names = 1)
 ```
 
 This function is built to load a .tsv files (tabulation-separated values). 
-If you search in the help section, you will see that this function can have many arguments. But here we used one. 
+If you search in the help section, you will see that this function can have many arguments with some default values. But here we specify two parameters. 
 
 # Display the data
 
-To see your dataset, you can click on the variable in the environment to display it. You can see in the console that, after the click, a command line appears with a function called "View".
+To see your dataset, you can click on the variable in the environment to display it. You can see in the console that, after the click, a command line appears with a function called `View()`.
 
-"View" is a function that takes only two arguments : the object to display and the possibility to give a title to the viewer window.
-But let's see how data can be displayed differently
+`View()` is a function that takes only two arguments : the object to display and the possibility to give a title to the viewer window.
+But let's see how data can be displayed differently.
 
 ---
 
@@ -111,7 +111,7 @@ But let's see how data can be displayed differently
 print(TCGA_LUAD)
 ```
 
-Like the "View" function, "print" returns all the data, with one difference. Data is not displayed in a new window, but directly in the console.
+Like the `View()` function, `print()` returns all the data, with one difference. Data is not displayed in a new window, but directly in the console.
 
 ---
 
@@ -121,7 +121,7 @@ Like the "View" function, "print" returns all the data, with one difference. Dat
 head(TCGA_LUAD)
 ```
 
-The “head” function displays only the first few lines of the table.
+The `head()` function displays only the first few lines of the table.
 
 ---
 
@@ -131,7 +131,7 @@ The “head” function displays only the first few lines of the table.
 head(TCGA_LUAD, n=20)
 ```
 
-The “head” function doesn't just have one argument, it also has one that sets the number of lines to be displayed (you can verify it in Help section of RStudio).
+The `head()` function doesn't just have one argument, it also has one that sets the number of lines to be displayed (you can verify it in Help section of RStudio).
 
 ---
 
@@ -142,7 +142,7 @@ tail(TCGA_LUAD)
 ```
 
 It is also possible to view the last lines of our data set, using the tail function. 
-Like the “head” function, “tail” has several arguments.
+Like the `head()` function, `tail()` has several arguments.
 
 ---
 
@@ -153,6 +153,7 @@ We can display more information about our data frame : number of columns/rows, t
 ```{r ncol}
 ncol(TCGA_LUAD)
 ```
+
 <details>
   <summary>Solution</summary>
 

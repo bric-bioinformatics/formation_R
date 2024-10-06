@@ -1,0 +1,45 @@
+---
+title: "Merging data frame tutorial"
+format:
+  html:
+    code-fold: true
+editor: visual
+---
+
+```{=html}
+<style>
+  details > summary {
+    padding: 4px;
+    width: 400px;
+    background-color: #eeeeee;
+    border: none;
+    box-shadow: 1px 1px 2px #bbbbbb;
+    cursor: pointer;
+  }
+  details > p {
+    background-color: #E0F8EC;
+    padding: 4px;
+    margin: 0;
+    box-shadow: 1px 1px 2px #bbbbbb;
+  }
+</style>
+```
+```{r, setup, echo=F, warning=FALSE,message=FALSE}
+require("knitr")
+```
+
+In many cases, the information you want to exploit is not contained in a single, perfectly readable dataset. It's important to be able to gather the information we have to optimize our operations. R offers a range of functions for carrying out operations within a single dataframe or between several data frames.
+
+## *The `merge()`* function
+
+This function is a standard feature of R and does not require you to download anything else.
+
+Identify the arguments of the function `merge()` enabling to merge two `data.frame` **by** the name of a column.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+`How to merge two data.frame in R using merge()`
+
+</details>

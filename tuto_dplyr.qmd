@@ -1,0 +1,289 @@
+---
+title: "dplyr tutorial"
+format:
+  html:
+    code-fold: true
+editor: visual
+---
+
+```{=html}
+<style>
+    details > summary {
+      padding: 4px;
+      width: 400px;      
+      background-color: #eeeeee;      
+      border: none;      
+      box-shadow: 1px 1px 2px #bbbbbb;      
+      cursor: pointer;      
+    }  
+    details > p {
+      background-color: #E0F8EC;
+      padding: 4px;
+      margin: 0;
+      box-shadow: 1px 1px 2px #bbbbbb;
+    }
+</style>
+```
+```{r, setup, echo=F, warning=FALSE,message=FALSE}
+require("knitr")
+library(tidyverse)
+clinical_data <- read.delim("~/Documents/O·D·I·L/formation_R/data/TCGA_LUAD_subset.tsv")
+```
+
+## Install and load the package
+
+#### What is `dplyr` ?
+
+`dplyr` is a data manipulation framework that offers a consistent set of functions, or "verbs", to tackle common data manipulation tasks. You'll see how `dplyr`'s shortcuts can be used to perform traditional R data manipulation more efficiently. It also provides verbs that can help to simplify complex data operations.
+
+This package is part of a larger package called `tidyverse`. So we need to install `tidyverse` and it will download automatically `dplyr` and other useful packages (see the link below).
+
+As this package is not installed by default, it must be installed and activated.
+
+```{r, eval=F}
+# Install the package
+install.packages("tidyverse")
+# Load the library to make it accessible in you working environment
+library(tidyverse)
+```
+
+Link : [Tidyverse](https://www.tidyverse.org/)
+
+## Training dataset : `clinical_data`
+
+Using the RStudio interface, load the file `TCGA_LUAD_subset.tsv` ([See Manipulate the data](./2.manipulate_df.html))
+
+For the following examples, we will take a dataset composed with some clinical variables (columns) and patients (rows).The dataset is named `clinical_data`. Display the 6 first rows.
+
+```{r}
+head(clinical_data)
+```
+
+Check the **dimensions** of the `data.frame`. How many patients are described ? How many clinical features are available ?
+
+```{r eval=F}
+dim(clinical_data)
+```
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo=F}
+dim(clinical_data)
+```
+
+The table contains `r nrow(clinical_data)` patients and `r ncol(clinical_data)` features.
+
+</details>
+
+Unlike our first example, you can see in the Environment panel that this dataset contains a large number of rows. This doesn't change the functions we will be using; on the contrary, you will see that you will be able to work on very large datasets more easily.
+
+## Manipulate `data.frame` with dplyr
+
+In this section, we introduce the pipe **`%>%`,** a syntax that allows you to read the data and pass it through a series of functions seamlessly. The first pipe takes the initial dataset, making it easy to apply successive transformations in a clear, step-by-step manner.
+
+With dplyr, you have all the tools needed to efficiently manipulate your data. You can filter, select, reorder, and modify rows and columns with simple functions like `filter()`, `slice()`, `arrange()`, `select()`, and `mutate()`. Additionally, you can rename columns, change their order, and even summarize groups of rows by their average, maximum, standard deviation etc.
+
+#### Subset your dataset
+
+We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set. We can subset rows or columns or both.
+
+![Sub-setting operations](figures_merging/subset.svg)
+
+***Select columns with the `select()` function***
+
+Use the select() function to display the columns `r colnames(clinical_data)[4]` and `r colnames(clinical_data)[6]`.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+How to select columns dplyr R
+
+</details>
+
+Or use the help provided by the package dplyr.
+
+```{r}
+# NOTE : Here, we specify the package name with a double colon (::) and then the function name, 
+# to avoid conflicts between functions that may have the same name.
+?dplyr::select
+```
+
+```{r, eval=FALSE}
+# We refer to the columns by their name, the name is here evaluated as a variable (no quote)
+clinical_data %>% 
+  select(pathologic_stage, tobacco_smoking_history)
+```
+
+This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague. Try to find the function that enable to select columns starting with, ending with or containing a particular character or string.
+
+The functions will be used as follow: `select(function("char"))`
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+select columns start with dplyr R
+
+</details>
+
+<details>
+
+<summary>Answer</summary>
+
+| Functions to combine with *select* | Description                             | Examples                                     |
+|------------------------|------------------------|------------------------|
+| *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("P"))` |
+| *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("y"))`   |
+| *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("onco"))` |
+
+These are just a few examples - there are many others, but these are the most important and widely used. It's up to you to use them, test them and change them to understand how they work !
+
+</details>
+
+Looking at the above example, which columns will be returned ?
+
+<details>
+
+<summary>Answers</summary>
+
+`clinical_data %\>% select(starts_with("P"))` returns `r paste(colnames(clinical_data)[grep("^P",colnames(clinical_data))],collapse=", ")`
+
+`clinical_data %\>% select(ends_with("y"))` returns `r paste(colnames(clinical_data)[grep("y$",colnames(clinical_data))],collapse=", ")`
+
+`clinical_data %\>% select(contains("onco"))` returns `r paste(colnames(clinical_data)[grep("onco",colnames(clinical_data))],collapse=", ")`
+
+</details>
+
+***Filter rows based on condition with the `filter()` function***
+
+To be able to filter based on values contained in columns, we need to know how to compare the content of the column with any value. In data manipulation, comparisons help you filter and select specific data based on conditions. Some common comparison operators include: `==` (equal to), `!=` (not equal to), `>` (greater than), `<` (less than), `>=` (greater than or equal to), and `<=` (less than or equal to). Additionally, `%in%` is useful for checking if a value belongs to a set of values. These comparisons allow you to create logical statements that `filter()` can use to select the rows that meet your criteria.
+
+Here is a table summarizing the most common operators:
+
+| Operator    | Description                   | Example                         |
+|-----------------|---------------------------|-----------------------------|
+| `==`        | Equal to                      | `x == "yes"` , `x == 6`         |
+| `!=`        | Not equal to                  | `x != "no"` , `x != 5`          |
+| `>` , `<`   | Greater than, Less than       | `x > 5` , `x < 5`               |
+| `>=` , `<=` | Greater/Less than or equal to | `x >= 5` , `x <= 5`             |
+| `%in%`      | Checks if value is in a set   | `x %in% c("gender", "Purity")`  |
+| `&`         | logical **AND**               | `x < 6 & x > 3`                 |
+| `|`         | logical **OR**                | `x > 6 | x < 3`                 |
+| `!`         | logical **NO**                | `!x %in% c("gender", "Purity")` |
+
+What does these codes do ?
+
+1.  `clinical_data %>%   filter(gender == "FEMALE" | Purity >= 0.8)`
+
+<details>
+
+<summary>Answer</summary>
+
+Using this command line, you are reading the object `clinical_data` with the first `%>%` and apply the `filter()` function with the second `%>%`.
+
+The expression (the code within the brackets) contains two comparisons.
+
+The first one compares all the elements in the column `gender` to the string "FEMALE", this comparison returns `TRUE` when the column `gender` contains "FEMALE".
+
+The second one compares all the elements in the column `Purity` to the numeric value `0.8`, this comparison returns `TRUE` when the column `Purity` contains values greater or equal to 0.8.
+
+The two comparisons are separated by the **logical OR** `|` , this means that either the first comparison or the second is `TRUE` . The samples come from women or contain at least 80% of tumor cell.
+
+</details>
+
+2.  `clinical_data %>% filter(gender == "FEMALE") %>% filter(Purity >= 0.8)`
+
+<details>
+
+<summary>Answer</summary>
+
+As above, the object `clinical_data` is first read then two passes of filtering are applied. The `%>%` enable to chain multiple treatments, each operation being applied to the result of the previews one.
+
+While the comparisons are identical to the first command line, the effect is different. Indeed, the first occurrence of the function `filter()` will directly filter for women and the result of this filtering is given to the second occurrence of `filter()` where samples containing at least 80% of tumor cell will be kept.
+
+In other words the two comparisons must be `TRUE` and the selected samples come from women **AND** contain at least 80% of tumor cell.
+
+</details>
+
+**Bonus**: Could you write the former line in an other way ? (There is a tip in the answer above)
+
+<details>
+
+<summary>Answer</summary>
+
+You can combine the comparisons in one expression wanting that both of them are `TRUE`, this is possible using the **logical AND** `&`.
+
+`clinical_data %>%   filter(gender == "FEMALE" & Purity >= 0.8)`
+
+</details>
+
+3.  `clinical_data %>%   filter(gender == "FEMALE") %>% filter(Purity >= 0.8) %>% select(sampleID:gender)`
+
+<details>
+
+<summary>Answer</summary>
+
+From the `clinical_data` object, you fist filter for women, then for tumor cell content of at least 80% and then extract all the columns from `sampleID` to `gender`.
+
+The `:` operator creates vector from a value (left element, `sampleID`) to another (right element, `gender`).
+
+</details>
+
+4.  Can you interpret this error ?
+
+I want display the sample ID of the samples carrying either KRAS or no mutation with tumor purity less than 0.8.
+
+`clinical_data %>% filter(known.oncogenes %in% c("KRAS","None")) %>% select(sampleID) %>% filter(Purity < 0.8)`
+
+This bring an `Error` :
+
+<div style="background-color:LemonChiffon;">
+
+i Error in `filter()`:
+
+In argument: `Purity >= 0.8`.
+
+! object 'Purity' not found
+
+Run `rlang::last_trace()` to see where the error occurred.
+
+</div>
+
+<details>
+
+<summary>Answer</summary>
+
+From the `clinical_data` object, you fist filter for women, then you select for the column `sampleID` and finally you filter for tumor cell content of at least 80%.
+
+By applying the selection of the column `sampleID` only, the column `Purity` do not exists anymore which explain the `! object 'Purity' not found` error.
+
+The order of the
+
+</details>
+
+***What have we learned ?***
+
+<div style="background-color:AliceBlue;">
+
+-   We can use the function `select()` to extract columns using their names as variable.
+
+-   We can use the function `filter()` to select rows depending on values contained in the columns that we call by their names as variable.
+
+-   We can select elements in a column by using comparison operators (*eg. `==`, `>`, `!=`*) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))
+
+-   We can combine a series of operations using `%>%`, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.
+
+-   If it is not working and returning an error, do not freak out and read carefully the error. If it is still unclear, copy paste the Error in a web browser.
+
+</div>
+
+***Filter rows based on their positions with the `slice()` function and derivatives***
+
+The `slice()` function in dplyr is used to select rows from a dataset based on their position. Unlike `filter()`, which selects rows based on conditions, `slice()` lets you specify the exact row numbers to extract. It is particularly useful for tasks like getting the first few rows, excluding specific rows, or extracting rows at regular intervals. Variants like `slice_head()`, `slice_tail()`, `slice_min()`, `slice_max()`, and `slice_sample()` provide more flexibility, allowing you to select rows based on different criteria like smallest values, random sampling, or a fixed number of rows.
+
+We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis. In R, this often involves transforming data between long (tidy) and wide formats (messy). In a wide format, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples).In a long format, each row is a single measurement, with a separate column for the variable and the value. This structure will be useful later for certain graphical representations.
+
+![Schematic view of reshape() function](figures_merging/reshape.svg)
