@@ -1,5 +1,5 @@
 ---
-title: "dplyr tutorial"
+title: "dplyr tutorial: manupulate data frames"
 format:
   html:
     code-fold: true
@@ -22,6 +22,11 @@ editor: visual
       margin: 0;
       box-shadow: 1px 1px 2px #bbbbbb;
     }
+    header h1 {
+      font-size: 70px;
+      font-weight: 600;
+      font-palette: tomato;
+    }
 </style>
 ```
 ```{r, setup, echo=F, warning=FALSE,message=FALSE}
@@ -30,9 +35,7 @@ library(tidyverse)
 clinical_data <- read.delim("~/Documents/O·D·I·L/formation_R/data/TCGA_LUAD_subset.tsv")
 ```
 
-## Install and load the package
-
-#### What is `dplyr` ?
+## What is `dplyr` ?
 
 `dplyr` is a data manipulation framework that offers a consistent set of functions, or "verbs", to tackle common data manipulation tasks. You'll see how `dplyr`'s shortcuts can be used to perform traditional R data manipulation more efficiently. It also provides verbs that can help to simplify complex data operations.
 
@@ -85,13 +88,13 @@ In this section, we introduce the pipe **`%>%`,** a syntax that allows you to re
 
 With dplyr, you have all the tools needed to efficiently manipulate your data. You can filter, select, reorder, and modify rows and columns with simple functions like `filter()`, `slice()`, `arrange()`, `select()`, and `mutate()`. Additionally, you can rename columns, change their order, and even summarize groups of rows by their average, maximum, standard deviation etc.
 
-#### Subset your dataset
+### Subset your dataset
 
-We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set. We can subset rows or columns or both.
+We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set.
 
 ![Sub-setting operations](figures_merging/subset.svg)
 
-***Select columns with the `select()` function***
+#### ***Select columns with the `select()` function***
 
 Use the select() function to display the columns `r colnames(clinical_data)[4]` and `r colnames(clinical_data)[6]`.
 
@@ -119,7 +122,7 @@ clinical_data %>%
 
 This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague. Try to find the function that enable to select columns starting with, ending with or containing a particular character or string.
 
-The functions will be used as follow: `select(function("char"))`
+The functions will be used as follow: `select(function("char"))` or `select(function(function))`
 
 <details>
 
@@ -133,13 +136,16 @@ select columns start with dplyr R
 
 <summary>Answer</summary>
 
-| Functions to combine with *select* | Description                             | Examples                                     |
+| Functions to combine with *select* | Description                             | Examples                                      |
 |------------------------|------------------------|------------------------|
-| *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("P"))` |
-| *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("y"))`   |
-| *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("onco"))` |
+| *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("P"))`  |
+| *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("y"))`    |
+| *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("onco"))`  |
+| where()                            | Contains a specific type of variable    | `clinical_data %>% select(where(is.numeric))` |
 
 These are just a few examples - there are many others, but these are the most important and widely used. It's up to you to use them, test them and change them to understand how they work !
+
+Note: We have seen that we can change the type of a variable by using functions `as.*` such as `as.numeric()` to transform a variable in numeric. In the same way you can test the type of a variable using `is.*` functions such as `is.numeric()` to test if a variable contains numeric value(s).
 
 </details>
 
@@ -155,16 +161,18 @@ Looking at the above example, which columns will be returned ?
 
 `clinical_data %\>% select(contains("onco"))` returns `r paste(colnames(clinical_data)[grep("onco",colnames(clinical_data))],collapse=", ")`
 
+`clinical_data %\>% select(where(is.numeric))` returns `r paste(colnames(clinical_data)[sapply(clinical_data,is.numeric)],collapse=", ")`
+
 </details>
 
-***Filter rows based on condition with the `filter()` function***
+#### ***Filter rows based on condition with the `filter()` function***
 
 To be able to filter based on values contained in columns, we need to know how to compare the content of the column with any value. In data manipulation, comparisons help you filter and select specific data based on conditions. Some common comparison operators include: `==` (equal to), `!=` (not equal to), `>` (greater than), `<` (less than), `>=` (greater than or equal to), and `<=` (less than or equal to). Additionally, `%in%` is useful for checking if a value belongs to a set of values. These comparisons allow you to create logical statements that `filter()` can use to select the rows that meet your criteria.
 
 Here is a table summarizing the most common operators:
 
 | Operator    | Description                   | Example                         |
-|-----------------|---------------------------|-----------------------------|
+|------------------|--------------------------|----------------------------|
 | `==`        | Equal to                      | `x == "yes"` , `x == 6`         |
 | `!=`        | Not equal to                  | `x != "no"` , `x != 5`          |
 | `>` , `<`   | Greater than, Less than       | `x > 5` , `x < 5`               |
@@ -240,8 +248,7 @@ I want display the sample ID of the samples carrying either KRAS or no mutation 
 
 This bring an `Error` :
 
-<div style="background-color:LemonChiffon;">
-
+::: {style="background-color:LemonChiffon;"}
 i Error in `filter()`:
 
 In argument: `Purity >= 0.8`.
@@ -249,8 +256,7 @@ In argument: `Purity >= 0.8`.
 ! object 'Purity' not found
 
 Run `rlang::last_trace()` to see where the error occurred.
-
-</div>
+:::
 
 <details>
 
@@ -264,25 +270,165 @@ The order of the
 
 </details>
 
-***What have we learned ?***
+#### ***Filter rows based on their positions with the `slice()` function and derivatives***
 
-<div style="background-color:AliceBlue;">
+The `slice()` function in `dplyr` is used to select rows from a dataset based on their position. Unlike `filter()`, which selects rows based on conditions, `slice()` lets you specify the exact row numbers to extract. It is particularly useful for tasks like getting the first few rows, excluding specific rows, or extracting rows at regular intervals. Variants like `slice_head()`, `slice_tail()`, `slice_min()` and `slice_max()` provide more flexibility, allowing you to select rows based on different criteria like smallest values, random sampling, or a fixed number of rows.
 
+##### Select beginning and end of the data.frame
+
+We have seen the basic R functions that allow us to display the beginning and end of a data frame. `dplyr` offers equivalent functions which can be seamlessly integrated into your data processing sequence.
+
+i\) Display the **10** **first rows** and the columns `Purity`, `gender` and `pathologic_stage` of `clinical_data` after having selected KRAS oncogene containing samples.
+
+```{r echo=F}
+clinical_data %>% filter(known.oncogenes == "KRAS") %>% select(Purity, gender, pathologic_stage) %>% slice_head(n=10)
+```
+
+Which `slice` function would you use ? Which parameters (do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.
+
+```{r, eval=FALSE}
+clinical_data %>% filter(known.oncogenes == "KRAS") %>% 
+  select(Purity, gender, pathologic_stage) %>% 
+  slice_head(n=10)
+```
+
+ii\) Display the **bottom** **5%** rows of the data frame and the column from `gender` to `signature_MAPK`
+
+```{r, echo=F}
+clinical_data %>% 
+  select(gender:signature_MAPK) %>% 
+  slice_tail(prop=0.05)
+```
+
+Which `slice` function would you use ? Which parameters do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.
+
+```{r, eval=FALSE}
+clinical_data %>% 
+  select(gender:signature_MAPK) %>% 
+  slice_tail(prop=0.05)
+```
+
+##### Select beginning and end of the ordered data.frame 
+
+`slice_max()` and `slice_min()` enables to select a defined number or proportion of rows depending on the values contained in a given column.
+
+i\) Select the 5 `sampleID` corresponding to the tumors with the highest tumor cell content (`Purity`).
+
+```{r, echo=F}
+clinical_data %>% 
+  slice_max(order_by = Purity, n = 5, with_ties = F) %>%
+  select(sampleID, Purity)
+```
+
+Note: You need to handle **ties**, these are identical values that can not be ordered between them. Either you keep them all (default) or you keep the first(s) element(s) encountered in the column among those having the same value. In this example, we chose the former solution.
+
+```{r, eval=F}
+clinical_data %>% 
+  slice_max(order_by = Purity, n = 5, with_ties = F) %>%
+  select(sampleID, Purity)
+```
+
+ii\) Which driver oncogenes are mainly harbored by the tumors with the 20% lowest MAPK activity (`signature_MAPK`).
+
+```{r, echo=F}
+lowest_onco <- clinical_data %>% 
+  slice_min(order_by = signature_MAPK, prop = 0.2) %>%
+  select(known.oncogenes)
+table(lowest_onco)
+```
+
+*Step-by-step*
+
+First, select the 20% lowest MAPK activity rows and the column `known.oncogenes` and save it it a variable named `lowest_onco` using `slice_min()`.
+
+```{r, eval=F}
+lowest_onco <- clinical_data %>% 
+  slice_min(order_by = signature_MAPK, prop = 0.2) %>%
+  select(known.oncogenes)
+```
+
+Then, use the basic function `table()` which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column `known.oncogenes`.
+
+```{r, eval=F}
+table(lowest_onco)
+```
+
+#### ***What have we learned ?***
+
+::: {style="background-color:AliceBlue;"}
 -   We can use the function `select()` to extract columns using their names as variable.
 
 -   We can use the function `filter()` to select rows depending on values contained in the columns that we call by their names as variable.
 
 -   We can select elements in a column by using comparison operators (*eg. `==`, `>`, `!=`*) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))
 
--   We can combine a series of operations using `%>%`, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.
+-   We can use `slice_*()` functions to select rows depending on their positions after ordering the table or not.
+
+-   We can combine a series of operations using **`%>%`**, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.
 
 -   If it is not working and returning an error, do not freak out and read carefully the error. If it is still unclear, copy paste the Error in a web browser.
+:::
 
-</div>
+### Create and transform columns
 
-***Filter rows based on their positions with the `slice()` function and derivatives***
+We can add columns filled with new data or with transformed values from an existing column. The new columns can be located at specific places in the data frame.
 
-The `slice()` function in dplyr is used to select rows from a dataset based on their position. Unlike `filter()`, which selects rows based on conditions, `slice()` lets you specify the exact row numbers to extract. It is particularly useful for tasks like getting the first few rows, excluding specific rows, or extracting rows at regular intervals. Variants like `slice_head()`, `slice_tail()`, `slice_min()`, `slice_max()`, and `slice_sample()` provide more flexibility, allowing you to select rows based on different criteria like smallest values, random sampling, or a fixed number of rows.
+![Modify the data frame](figures_merging/mutate.svg)
+
+#### ***Modify or create a  column in your data frame with `mutate()`***
+
+Create a column named `none.onco` containing a `TRUE` if the column `known.oncogenes` contains None and `FALSE` otherwise and display the 10 rows containing the lowest MAPK signature values and the columns `sampleID`, `known.oncogenes` , `signature_MAPK` and the new column `none.onco`.
+
+```{r, echo=F}
+clinical_data %>% 
+  mutate(none.onco = known.oncogenes == "None") %>%
+  slice_min(order_by = signature_MAPK, n=10) %>%
+  select(sampleID,known.oncogenes,signature_MAPK,none.onco)
+```
+
+*Step-by-step*
+
+i\) Define how to obtain a Boolean vector (`TRUE`/`FALSE`) depending on the `known.oncogenes` column.
+
+<details>
+
+<summary>Answer</summary>
+
+You need to use the comparison operator `==` between the name of the column (`known.oncogenes`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"None"` however needs to be surrounded by quotes.
+
+`known.oncogenes == "None"`
+
+</details>
+
+ii\) Write the `mutate()` function to add the `none.onco` column.
+
+```{r, eval=FALSE}
+mutate(none.onco = known.oncogenes == "None")
+```
+
+iii\) Write the full stream of function from reading the data.frame to selection of the selection of the columns
+
+```{r, eval=F}
+clinical_data %>% 
+  mutate(none.onco = known.oncogenes == "None") %>%
+  slice_min(order_by = signature_MAPK, n=10) %>%
+  select(sampleID,known.oncogenes,signature_MAPK,none.onco)
+```
+
+------------------------------------------------------------------------
+
+The `Purity` column contains the proportion (between `0` and `1`) of tumor cells in the sample, you want to transform the values as percentage (between `0` and `100`). To perform this task, you need to multiply the values of this column by `100`. Display the 5 firsts rows and the 3 firsts columns.
+
+```{r, echo=F}
+clinical_data %>% 
+  mutate(Purity=Purity*100) %>%
+  slice_head(n=5) %>%
+  select(1:3)
+```
+
+You need to combine the `mutate()` function with functions enabling the select rows and columns.
+
+------------------------------------------------------------------------
 
 We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis. In R, this often involves transforming data between long (tidy) and wide formats (messy). In a wide format, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples).In a long format, each row is a single measurement, with a separate column for the variable and the value. This structure will be useful later for certain graphical representations.
 

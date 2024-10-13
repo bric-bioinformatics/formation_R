@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>dplyr tutorial</title>
+<title>dplyr tutorial: manupulate data frames</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">dplyr tutorial</h1>
+<h1 class="title">dplyr tutorial: manupulate data frames</h1>
 </div>
 
 
@@ -109,11 +109,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       margin: 0;
       box-shadow: 1px 1px 2px #bbbbbb;
     }
+    header h1 {
+      font-size: 70px;
+      font-weight: 600;
+      font-palette: tomato;
+    }
 </style>
-<section id="install-and-load-the-package" class="level2">
-<h2 class="anchored" data-anchor-id="install-and-load-the-package">Install and load the package</h2>
-<section id="what-is-dplyr" class="level4">
-<h4 class="anchored" data-anchor-id="what-is-dplyr">What is <code>dplyr</code> ?</h4>
+<section id="what-is-dplyr" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-dplyr">What is <code>dplyr</code> ?</h2>
 <p><code>dplyr</code> is a data manipulation framework that offers a consistent set of functions, or “verbs”, to tackle common data manipulation tasks. You’ll see how <code>dplyr</code>’s shortcuts can be used to perform traditional R data manipulation more efficiently. It also provides verbs that can help to simplify complex data operations.</p>
 <p>This package is part of a larger package called <code>tidyverse</code>. So we need to install <code>tidyverse</code> and it will download automatically <code>dplyr</code> and other useful packages (see the link below).</p>
 <p>As this package is not installed by default, it must be installed and activated.</p>
@@ -127,7 +130,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>Link : <a href="https://www.tidyverse.org/">Tidyverse</a></p>
-</section>
 </section>
 <section id="training-dataset-clinical_data" class="level2">
 <h2 class="anchored" data-anchor-id="training-dataset-clinical_data">Training dataset : <code>clinical_data</code></h2>
@@ -177,18 +179,19 @@ Answer
 </section>
 <section id="manipulate-data.frame-with-dplyr" class="level2">
 <h2 class="anchored" data-anchor-id="manipulate-data.frame-with-dplyr">Manipulate <code>data.frame</code> with dplyr</h2>
-<p>In this section, we introduce the pipe <strong><code>%&gt;%</code></strong>, a syntax that allows you to read the data and pass it through a series of functions seamlessly. The first pipe takes the initial dataset, making it easy to apply successive transformations in a clear, step-by-step manner.</p>
+<p>In this section, we introduce the pipe <strong><code>%&gt;%</code>,</strong> a syntax that allows you to read the data and pass it through a series of functions seamlessly. The first pipe takes the initial dataset, making it easy to apply successive transformations in a clear, step-by-step manner.</p>
 <p>With dplyr, you have all the tools needed to efficiently manipulate your data. You can filter, select, reorder, and modify rows and columns with simple functions like <code>filter()</code>, <code>slice()</code>, <code>arrange()</code>, <code>select()</code>, and <code>mutate()</code>. Additionally, you can rename columns, change their order, and even summarize groups of rows by their average, maximum, standard deviation etc.</p>
-<section id="subset-your-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="subset-your-dataset">Subset your dataset</h4>
-<p>We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set. We can subset rows or columns or both.</p>
+<section id="subset-your-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="subset-your-dataset">Subset your dataset</h3>
+<p>We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures_merging/subset.svg" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">Sub-setting operations</figcaption>
 </figure>
 </div>
-<p><strong><em>Select columns with the <code>select()</code> function</em></strong></p>
+<section id="select-columns-with-the-select-function" class="level4">
+<h4 class="anchored" data-anchor-id="select-columns-with-the-select-function"><strong><em>Select columns with the <code>select()</code> function</em></strong></h4>
 <p>Use the select() function to display the columns pathologic_stage and tobacco_smoking_history.</p>
 <details>
 <summary>
@@ -214,7 +217,7 @@ Key words to write on your favorite browser
 </details>
 </div>
 <p>This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague. Try to find the function that enable to select columns starting with, ending with or containing a particular character or string.</p>
-<p>The functions will be used as follow: <code>select(function("char"))</code></p>
+<p>The functions will be used as follow: <code>select(function("char"))</code> or <code>select(function(function))</code></p>
 <details>
 <summary>
 Key words to write on your favorite browser
@@ -254,9 +257,15 @@ Answer
 <td>Contains a specific character/string</td>
 <td><code>clinical_data %&gt;% select(contains("onco"))</code></td>
 </tr>
+<tr class="even">
+<td>where()</td>
+<td>Contains a specific type of variable</td>
+<td><code>clinical_data %&gt;% select(where(is.numeric))</code></td>
+</tr>
 </tbody>
 </table>
 <p>These are just a few examples - there are many others, but these are the most important and widely used. It’s up to you to use them, test them and change them to understand how they work !</p>
+<p>Note: We have seen that we can change the type of a variable by using functions <code>as.*</code> such as <code>as.numeric()</code> to transform a variable in numeric. In the same way you can test the type of a variable using <code>is.*</code> functions such as <code>is.numeric()</code> to test if a variable contains numeric value(s).</p>
 </details>
 <p>Looking at the above example, which columns will be returned ?</p>
 <details>
@@ -266,15 +275,18 @@ Answers
 <p><code>clinical_data %\&gt;% select(starts_with("P"))</code> returns Purity</p>
 <p><code>clinical_data %\&gt;% select(ends_with("y"))</code> returns Purity, tobacco_smoking_history</p>
 <p><code>clinical_data %\&gt;% select(contains("onco"))</code> returns known.oncogenes</p>
+<p><code>clinical_data %\&gt;% select(where(is.numeric))</code> returns Purity, signature_MAPK</p>
 </details>
-<p><strong><em>Filter rows with the <code>filter()</code> function</em></strong></p>
+</section>
+<section id="filter-rows-based-on-condition-with-the-filter-function" class="level4">
+<h4 class="anchored" data-anchor-id="filter-rows-based-on-condition-with-the-filter-function"><strong><em>Filter rows based on condition with the <code>filter()</code> function</em></strong></h4>
 <p>To be able to filter based on values contained in columns, we need to know how to compare the content of the column with any value. In data manipulation, comparisons help you filter and select specific data based on conditions. Some common comparison operators include: <code>==</code> (equal to), <code>!=</code> (not equal to), <code>&gt;</code> (greater than), <code>&lt;</code> (less than), <code>&gt;=</code> (greater than or equal to), and <code>&lt;=</code> (less than or equal to). Additionally, <code>%in%</code> is useful for checking if a value belongs to a set of values. These comparisons allow you to create logical statements that <code>filter()</code> can use to select the rows that meet your criteria.</p>
 <p>Here is a table summarizing the most common operators:</p>
 <table class="table">
 <colgroup>
-<col style="width: 23%">
+<col style="width: 25%">
 <col style="width: 36%">
-<col style="width: 39%">
+<col style="width: 38%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -389,15 +401,197 @@ Answer
 <p>By applying the selection of the column <code>sampleID</code> only, the column <code>Purity</code> do not exists anymore which explain the <code>! object 'Purity' not found</code> error.</p>
 <p>The order of the</p>
 </details>
-<p><strong><em>What have we learned ?</em></strong></p>
+</section>
+<section id="filter-rows-based-on-their-positions-with-the-slice-function-and-derivatives" class="level4">
+<h4 class="anchored" data-anchor-id="filter-rows-based-on-their-positions-with-the-slice-function-and-derivatives"><strong><em>Filter rows based on their positions with the <code>slice()</code> function and derivatives</em></strong></h4>
+<p>The <code>slice()</code> function in <code>dplyr</code> is used to select rows from a dataset based on their position. Unlike <code>filter()</code>, which selects rows based on conditions, <code>slice()</code> lets you specify the exact row numbers to extract. It is particularly useful for tasks like getting the first few rows, excluding specific rows, or extracting rows at regular intervals. Variants like <code>slice_head()</code>, <code>slice_tail()</code>, <code>slice_min()</code> and <code>slice_max()</code> provide more flexibility, allowing you to select rows based on different criteria like smallest values, random sampling, or a fixed number of rows.</p>
+<section id="select-beginning-and-end-of-the-data.frame" class="level5">
+<h5 class="anchored" data-anchor-id="select-beginning-and-end-of-the-data.frame">Select beginning and end of the data.frame</h5>
+<p>We have seen the basic R functions that allow us to display the beginning and end of a data frame. <code>dplyr</code> offers equivalent functions which can be seamlessly integrated into your data processing sequence.</p>
+<p>i) Display the <strong>10</strong> <strong>first rows</strong> and the columns <code>Purity</code>, <code>gender</code> and <code>pathologic_stage</code> of <code>clinical_data</code> after having selected KRAS oncogene containing samples.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Purity gender pathologic_stage
+1    0.49   MALE         Stage IB
+2    0.50 FEMALE       Stage IIIA
+3    0.57 FEMALE         Stage IB
+4    0.61   MALE       Stage IIIB
+5    0.46   MALE         Stage IB
+6    0.67   MALE       Stage IIIB
+7    0.55   MALE       Stage IIIA
+8    0.47 FEMALE        Stage IIB
+9    0.62   MALE         Stage IB
+10   0.69   MALE         Stage IB</code></pre>
+</div>
+</div>
+<p>Which <code>slice</code> function would you use ? Which parameters (do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(known.oncogenes <span class="sc">==</span> <span class="st">"KRAS"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Purity, gender, pathologic_stage) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Display the <strong>bottom</strong> <strong>5%</strong> rows of the data frame and the column from <code>gender</code> to <code>signature_MAPK</code></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   gender                     tobacco_smoking_history signature_MAPK
+1    MALE      Current reformed smoker for &gt; 15 years     0.88659402
+2  FEMALE Current reformed smoker for &lt; or = 15 years     0.01321854
+3    MALE      Current reformed smoker for &gt; 15 years     0.20482966
+4    MALE                              Current smoker     0.40294158
+5    MALE      Current reformed smoker for &gt; 15 years     0.65727066
+6  FEMALE      Current reformed smoker for &gt; 15 years     0.61056467
+7    MALE      Current reformed smoker for &gt; 15 years     0.29172344
+8    MALE      Current reformed smoker for &gt; 15 years     0.35302189
+9  FEMALE      Current reformed smoker for &gt; 15 years     0.24914212
+10 FEMALE      Current reformed smoker for &gt; 15 years     0.29499310
+11 FEMALE      Current reformed smoker for &gt; 15 years     0.76281993
+12   MALE      Current reformed smoker for &gt; 15 years     0.75537350</code></pre>
+</div>
+</div>
+<p>Which <code>slice</code> function would you use ? Which parameters do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gender<span class="sc">:</span>signature_MAPK) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_tail</span>(<span class="at">prop=</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="select-beginning-and-end-of-the-ordered-data.frame" class="level5">
+<h5 class="anchored" data-anchor-id="select-beginning-and-end-of-the-ordered-data.frame">Select beginning and end of the ordered data.frame</h5>
+<p><code>slice_max()</code> and <code>slice_min()</code> enables to select a defined number or proportion of rows depending on the values contained in a given column.</p>
+<p>i) Select the 5 <code>sampleID</code> corresponding to the tumors with the highest tumor cell content (<code>Purity</code>).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sampleID Purity
+1 TCGA.86.A4P7.01   1.00
+2 TCGA.49.AARR.01   0.97
+3 TCGA.99.AA5R.01   0.96
+4 TCGA.50.5930.01   0.95
+5 TCGA.50.6591.01   0.90</code></pre>
+</div>
+</div>
+<p>Note: You need to handle <strong>ties</strong>, these are identical values that can not be ordered between them. Either you keep them all (default) or you keep the first(s) element(s) encountered in the column among those having the same value. In this example, we chose the former solution.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> Purity, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">with_ties =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sampleID, Purity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Which driver oncogenes are mainly harbored by the tumors with the 20% lowest MAPK activity (<code>signature_MAPK</code>).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>known.oncogenes
+BRAF.non    ERBB2     KRAS      NF1     None     RIT1 
+       3        2        5        6       31        2 </code></pre>
+</div>
+</div>
+<p><em>Step-by-step</em></p>
+<p>First, select the 20% lowest MAPK activity rows and the column <code>known.oncogenes</code> and save it it a variable named <code>lowest_onco</code> using <code>slice_min()</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lowest_onco <span class="ot">&lt;-</span> clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> signature_MAPK, <span class="at">prop =</span> <span class="fl">0.2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(known.oncogenes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Then, use the basic function <code>table()</code> which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column <code>known.oncogenes</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(lowest_onco)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="what-have-we-learned" class="level4">
+<h4 class="anchored" data-anchor-id="what-have-we-learned"><strong><em>What have we learned ?</em></strong></h4>
 <div style="background-color:AliceBlue;">
 <ul>
 <li><p>We can use the function <code>select()</code> to extract columns using their names as variable.</p></li>
 <li><p>We can use the function <code>filter()</code> to select rows depending on values contained in the columns that we call by their names as variable.</p></li>
 <li><p>We can select elements in a column by using comparison operators (<em>eg. <code>==</code>, <code>&gt;</code>, <code>!=</code></em>) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))</p></li>
-<li><p>We can combine a series of operations using <code>%&gt;%</code>, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.</p></li>
+<li><p>We can use <code>slice_*()</code> functions to select rows depending on their positions after ordering the table or not.</p></li>
+<li><p>We can combine a series of operations using <strong><code>%&gt;%</code></strong>, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.</p></li>
+<li><p>If it is not working and returning an error, do not freak out and read carefully the error. If it is still unclear, copy paste the Error in a web browser.</p></li>
 </ul>
 </div>
+</section>
+</section>
+<section id="create-and-transform-columns" class="level3">
+<h3 class="anchored" data-anchor-id="create-and-transform-columns">Create and transform columns</h3>
+<p>We can add columns filled with new data or with transformed values from an existing column. The new columns can be located at specific places in the data frame.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures_merging/mutate.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Modify the data frame</figcaption>
+</figure>
+</div>
+<section id="modify-or-create-a-column-in-your-data-frame-with-mutate" class="level4">
+<h4 class="anchored" data-anchor-id="modify-or-create-a-column-in-your-data-frame-with-mutate"><strong><em>Modify or create a column in your data frame with <code>mutate()</code></em></strong></h4>
+<p>Create a column named <code>none.onco</code> containing a <code>TRUE</code> if the column <code>known.oncogenes</code> contains None and <code>FALSE</code> otherwise and display the 10 rows containing the lowest MAPK signature values and the columns <code>sampleID</code>, <code>known.oncogenes</code> , <code>signature_MAPK</code> and the new column <code>none.onco</code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          sampleID known.oncogenes signature_MAPK none.onco
+1  TCGA.38.4630.01           ERBB2    0.000000000     FALSE
+2  TCGA.55.7995.01             NF1    0.000000000     FALSE
+3  TCGA.62.A46O.01            None    0.000000000      TRUE
+4  TCGA.73.A9RS.01            None    0.000000000      TRUE
+5  TCGA.78.7155.01            None    0.000000000      TRUE
+6  TCGA.86.7955.01            None    0.000000000      TRUE
+7  TCGA.86.8358.01            None    0.000000000      TRUE
+8  TCGA.91.6840.01            None    0.000000000      TRUE
+9  TCGA.95.7043.01             NF1    0.000000000     FALSE
+10 TCGA.95.7948.01            None    0.002232702      TRUE</code></pre>
+</div>
+</div>
+<p><em>Step-by-step</em></p>
+<p>i) Define how to obtain a Boolean vector (<code>TRUE</code>/<code>FALSE</code>) depending on the <code>known.oncogenes</code> column.</p>
+<details>
+<summary>
+Answer
+</summary>
+<p>You need to use the comparison operator <code>==</code> between the name of the column (<code>known.oncogenes</code>) and the value <code>None</code>. In dplyr functions, the names of the column are called as variable (no quote), the string value <code>"None"</code> however needs to be surrounded by quotes.</p>
+<p><code>known.oncogenes == "None"</code></p>
+</details>
+<p>ii) Write the <code>mutate()</code> function to add the <code>none.onco</code> column.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">none.onco =</span> known.oncogenes <span class="sc">==</span> <span class="st">"None"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>iii) Write the full stream of function from reading the data.frame to selection of the selection of the columns</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">none.onco =</span> known.oncogenes <span class="sc">==</span> <span class="st">"None"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> signature_MAPK, <span class="at">n=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sampleID,known.oncogenes,signature_MAPK,none.onco)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<hr>
+<p>The <code>Purity</code> column contains the proportion (between <code>0</code> and <code>1</code>) of tumor cells in the sample, you want to transform the values as percentage (between <code>0</code> and <code>100</code>). To perform this task, you need to multiply the values of this column by <code>100</code>. Display the 5 firsts rows and the 3 firsts columns.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sampleID known.oncogenes Purity
+1 TCGA.05.4249.01            KRAS     49
+2 TCGA.05.4250.01            KRAS     50
+3 TCGA.05.4384.01            RIT1     49
+4 TCGA.05.4389.01        BRAF_act     48
+5 TCGA.05.4390.01            KRAS     57</code></pre>
+</div>
+</div>
+<p>You need to combine the <code>mutate()</code> function with functions enabling the select rows and columns.</p>
+<hr>
 <p>We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis. In R, this often involves transforming data between long (tidy) and wide formats (messy). In a wide format, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples).In a long format, each row is a single measurement, with a separate column for the variable and the value. This structure will be useful later for certain graphical representations.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -405,6 +599,7 @@ Answer
 <figcaption class="figure-caption">Schematic view of reshape() function</figcaption>
 </figure>
 </div>
+</section>
 </section>
 </section>
 
