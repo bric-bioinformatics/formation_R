@@ -28,9 +28,13 @@ editor: visual
 require("knitr")
 ```
 
+```{r, echo = F}
+load(file = "~/Documents/formation_R/datasets/environment.RData")
+```
+
 In many cases, the information you want to exploit is not contained in a single, perfectly readable dataset. It's important to be able to gather the information we have to optimize our operations. R offers a range of functions for carrying out operations within a single dataframe or between several data frames.
 
-## *The `merge()`* function
+## The *`merge()`* function
 
 This function is a standard feature of R and does not require you to download anything else.
 
@@ -38,8 +42,121 @@ Identify the arguments of the function `merge()` enabling to merge two `data.fra
 
 <details>
 
-<summary>Key words to write on your favorite browser</summary>
+  <summary>Key words to write on your favorite browser</summary>
 
 `How to merge two data.frame in R using merge()`
 
 </details>
+
+**You can also use AI chatbot to help you like ChatGPT.**
+
+You can see that `merge()` has many arguments. For our example, we only need 3 arguments.
+
+<details>
+
+  <summary>Basic arguments for merge() function</summary>
+
+-   "x" : it will take the first dataframe
+-   "y" : it will take the second dataframe
+-   "by" : this argument is used to specify the column from which the dataframes are to be assembled.
+
+This third argument is really important. This means that to use the merge function on our two dataframes, there must be a column in common between the two. We can also have several columns in common.
+
+</details>
+
+*Example:*
+
+For our example, we will take two dataframes (df_1 and df_2) with the following structure:
+
+-   df_1
+
+<details>
+
+  <summary>Structure of df_1</summary>
+
+```
+  id   name month_salary
+1  1 Andrew         1560
+2  2  Susan         1263
+3  3   John         1576
+4  4    Joe         1502
+5  5   Jack         1684
+6  6  Jacob         1774
+7  7   Mary         1715
+8  8   Kate         1564
+```
+</details>
+
+-   df_2
+
+<details>
+
+  <summary>Structure of df_2</summary>
+
+```
+  id       name age       position
+1  1     Andrew  59            CTO
+2  2      Susan  59            CFO
+3  3       John  54 Administrative
+4  4        Joe  50     Technician
+5  6      Jacob  62     Technician
+6  7       Mary  53     Technician
+7  8       Kate  58     Technician
+8  9 Jacqueline  39     Technician
+9 10        Ivy  61     Technician
+```
+</details>
+
+Looking at these two dataframes, the first thing we notice is that there are two common columns, “id” and “name”. Then each dataframe has its own columns.\
+The second observation we can make is that there are not the same number of lines between the two dataframes.\
+We will merge our dataframes by "id" and "name". Let's see what happens.
+
+```{r}
+df_3 <- merge(df_1, df_2, by = c("id","name"))
+```
+<details>
+  <summary>Structure of df_3</summary>
+
+```
+  id   name month_salary age       position
+1  1 Andrew         1560  59            CTO
+2  2  Susan         1263  59            CFO
+3  3   John         1576  54 Administrative
+4  4    Joe         1502  50     Technician
+5  6  Jacob         1774  62     Technician
+6  7   Mary         1715  53     Technician
+7  8   Kate         1564  58     Technician
+```
+</details>
+
+We have created a new variable called “df_3” which contains the result of the merge of the two dataframes “df_1” and “df_2”. What's most striking is the number of lines in this new dataframe. There are 7 lines, compared with 8 in df_1 and 10 in df_2.
+
+In df_1, we have a line with an id/name combination that is `5/"Jack"`. This combination does not exist in df_2. This line is then ignored by the `merge()` function.\
+Why doesn't `merge()` take different lines into account?
+
+Remember, when searching for function help, there are many other arguments than the ones we've used, including an argument called `all`.
+This argument allows you to specify whether you wish to keep all rows that is not common. By default, this argument is set to FALSE, so that only rows with data from both x and y are included in the output. So we need, to keep all rows, to set the argument to TRUE.
+
+```{r}
+df_4 <- merge(df_1, df_2, by = c("id","name"), all = TRUE)
+```
+
+<details>
+  <summary>Structure of df_4</summary>
+
+```
+   id       name month_salary age       position
+1   1     Andrew         1560  59            CTO
+2   2      Susan         1263  59            CFO
+3   3       John         1576  54 Administrative
+4   4        Joe         1502  50     Technician
+5   5       Jack         1684  NA           <NA>
+6   6      Jacob         1774  62     Technician
+7   7       Mary         1715  53     Technician
+8   8       Kate         1564  58     Technician
+9   9 Jacqueline           NA  39     Technician
+10 10        Ivy           NA  61     Technician
+```
+</details>
+
+Now we have all the rows of the two dataframes df_1 and df_2. To compensate for the fact that some rows are not common and therefore lack information, NAs (Not Available) have been introduced. 
