@@ -1,7 +1,6 @@
 ---
 title: "Introduction to the R language"
 author: "Elodie Darbo / Cyril Dourthe"
-date: "`r Sys.Date()`"
 output: html_document
 ---
 <style>
@@ -25,17 +24,6 @@ details > p {
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-# Presentation
-
-## Goal of this course
-
-During this course, you'll get an introduction to the R language and its graphical interface named RStudio.
-You'll learn how to use the language and its interface through various exercises.
-
-The aim is to enable you to acquire basic programming skills in R, so that you can manipulate data tables, dissect them and extract the relevant information you need.
-
-In this course, you'll also learn how to make simple but important graphical representations in biology. You'll see how to make them aesthetically pleasing and easy to read, so that you can use them in your publications.
 
 ## What is a programming language ?
 
