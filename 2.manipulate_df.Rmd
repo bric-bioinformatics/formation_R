@@ -1,7 +1,6 @@
 ---
 title: "Manipulate the data"
 author: "Elodie Darbo / Cyril Dourthe"
-date: "`r Sys.Date()`"
 output: html_document
 ---
 <style>
