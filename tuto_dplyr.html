@@ -524,7 +524,7 @@ Answer
 </div>
 </div>
 <p><em>Step-by-step</em></p>
-<p>First, select the 20% lowest heart rate rows and the column <code>diagnosis</code> and save it it a variable named <code>lowest_hr</code> using <code>slice_min()</code>.</p>
+<p>First, select the 20% lowest heart rate rows and the column <code>diagnosis</code> and save it in a variable named <code>lowest_hr</code> using <code>slice_min()</code>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -540,7 +540,38 @@ Answer
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(lowest_hr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<hr>
 </section>
+</section>
+<section id="order-rows-with-the-arrange-function" class="level4">
+<h4 class="anchored" data-anchor-id="order-rows-with-the-arrange-function"><strong><em>Order rows with the <code>arrange()</code> function</em></strong></h4>
+<p>The <code>arrange()</code> function in R’s dplyr package is used to reorder rows in a data frame based on the values of one or more columns. It allows you to arrange the rows in ascending or descending order depending on the values in the specified column(s).</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>arrange</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li>Ascending order</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li>Descending order</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="what-have-we-learned" class="level4">
 <h4 class="anchored" data-anchor-id="what-have-we-learned"><strong><em>What have we learned ?</em></strong></h4>
@@ -550,6 +581,7 @@ Answer
 <li><p>We can use the function <code>filter()</code> to select rows depending on values contained in the columns that we call by their names as variable.</p></li>
 <li><p>We can select elements in a column by using comparison operators (<em>eg. <code>==</code>, <code>&gt;</code>, <code>!=</code></em>) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))</p></li>
 <li><p>We can use <code>slice_*()</code> functions to select rows depending on their positions after ordering the table or not.</p></li>
+<li><p>We can order rows using <code>arrange()</code> function</p></li>
 <li><p>We can combine a series of operations using <strong><code>%&gt;%</code></strong>, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.</p></li>
 <li><p>If it is not working and returning an error, do not freak out and read carefully the error. If it is still unclear, copy paste the Error in a web browser.</p></li>
 </ul>
@@ -596,20 +628,21 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">none.diag =</span> diagnosis <span class="sc">==</span> <span class="st">"None"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">none.diag =</span> diagnosis <span class="sc">==</span> <span class="st">"None"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>iii) Write the full stream of function from reading the data.frame to selection of the selection of the columns</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">none.diag =</span> diagnosis <span class="sc">==</span> <span class="st">"None"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> heart_rate, <span class="at">n=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id,diagnosis,heart_rate,none.diag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">none.diag =</span> diagnosis <span class="sc">==</span> <span class="st">"None"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> heart_rate, <span class="at">n=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id,diagnosis,heart_rate,none.diag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>With the columns <code>height</code> and <code>weight</code> we can calculate the BMI. We will create a new column named <code>BMI</code> and display it with <code>patient_id</code>.</p>
+<p>You need to combine the <code>mutate()</code> function with functions enabling the select rows and columns.</p>
+<p>iv) With the columns <code>height</code> and <code>weight</code> we can calculate the BMI. We will create a new column named <code>BMI</code> and display it with <code>patient_id</code>.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
@@ -622,7 +655,15 @@ Answer
 5          5  48.4</code></pre>
 </div>
 </div>
-<p>You need to combine the <code>mutate()</code> function with functions enabling the select rows and columns.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI =</span> weight <span class="sc">/</span> height) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n=</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, BMI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <hr>
 </section>
 <section id="modulate-position-of-columns-with-relocate" class="level4">
@@ -653,8 +694,8 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>ii) Move the <code>glucose</code> column just after <code>height</code> column.</p>
@@ -682,8 +723,8 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(glucose, <span class="at">.after =</span> height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(glucose, <span class="at">.after =</span> height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>NOTE : To move a column before, just replace <code>.after</code> argument by <code>.before</code>.</p>
@@ -695,10 +736,33 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>group_by</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>group_by</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>One function that works perfectly with <code>group_by()</code> is <code>summarise()</code>. For example, we want to know the age mean for each gender :</p>
+<p>One function that works perfectly with <code>group_by()</code> is <code>summarise()</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>summarise</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can, for example, know the age mean of all patients. Indeed, <code>summarise()</code> can take in account basic functions like <code>mean()</code>, <code>median()</code>, <code>max()</code>…</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  mean_age
+     &lt;dbl&gt;
+1     55.0</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>But combined with <code>group_by()</code>, we can be more precise and obtain the average <code>age</code> by <code>gender</code>.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
@@ -717,9 +781,9 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <hr>
@@ -735,7 +799,7 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>?tidyr<span class="sc">::</span>gather</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>?tidyr<span class="sc">::</span>gather</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ul>
@@ -744,7 +808,7 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>?tidyr<span class="sc">::</span>spread</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>?tidyr<span class="sc">::</span>spread</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>If we look at the <code>gather()</code> and <code>spread()</code> parameters, there are arguments in particular that will interest us :</p>
@@ -756,16 +820,16 @@ Answer
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tidy_data <span class="ot">&lt;-</span> messy_data <span class="sc">%&gt;%</span> </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gather</span>(var, value, var1<span class="sc">:</span>var4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>tidy_data <span class="ot">&lt;-</span> messy_data <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gather</span>(var, value, var1<span class="sc">:</span>var4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>ii) Tidy to messy</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>messy_data <span class="ot">&lt;-</span> tidy_data <span class="sc">%&gt;%</span> </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">spread</span>(var, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>messy_data <span class="ot">&lt;-</span> tidy_data <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">spread</span>(var, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -780,6 +844,359 @@ Answer
 </ul>
 </div>
 </section>
+</section>
+<section id="practice-tcga_luad" class="level2">
+<h2 class="anchored" data-anchor-id="practice-tcga_luad">Practice : <code>TCGA_LUAD</code></h2>
+<p>You will work on extracted data from the TCGA public database, and now you will browse it to understand it better !</p>
+<ol type="1">
+<li>What are the samples with at least 70% of purity ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sample_id
+1  TCGA.05.4396.01
+2  TCGA.05.4397.01
+3  TCGA.05.4426.01
+4  TCGA.05.5429.01
+5  TCGA.05.5715.01
+6  TCGA.38.4630.01
+7  TCGA.44.5644.01
+8  TCGA.44.6146.01
+9  TCGA.49.4486.01
+10 TCGA.49.AAR9.01
+11 TCGA.49.AARR.01
+12 TCGA.50.5930.01
+13 TCGA.50.5931.01
+14 TCGA.50.5932.01
+15 TCGA.50.5946.01
+16 TCGA.50.6591.01
+17 TCGA.55.6972.01
+18 TCGA.55.6984.01
+19 TCGA.55.8087.01
+20 TCGA.55.8094.01
+21 TCGA.55.A494.01
+22 TCGA.62.A46O.01
+23 TCGA.62.A46P.01
+24 TCGA.64.5774.01
+25 TCGA.64.5775.01
+26 TCGA.67.3773.01
+27 TCGA.67.4679.01
+28 TCGA.69.7764.01
+29 TCGA.73.4676.01
+30 TCGA.75.6206.01
+31 TCGA.78.7155.01
+32 TCGA.78.7156.01
+33 TCGA.78.7158.01
+34 TCGA.78.7161.01
+35 TCGA.78.7167.01
+36 TCGA.78.7536.01
+37 TCGA.78.7537.01
+38 TCGA.78.7633.01
+39 TCGA.78.8662.01
+40 TCGA.86.7955.01
+41 TCGA.86.8054.01
+42 TCGA.86.8358.01
+43 TCGA.86.A4P7.01
+44 TCGA.86.A4P8.01
+45 TCGA.91.6847.01
+46 TCGA.91.8499.01
+47 TCGA.95.7043.01
+48 TCGA.95.7948.01
+49 TCGA.97.8171.01
+50 TCGA.99.AA5R.01
+51 TCGA.L9.A50W.01
+52 TCGA.L9.A7SV.01
+53 TCGA.MP.A5C7.01</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Purity <span class="sc">&gt;=</span> <span class="fl">0.7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="2" type="1">
+<li>What is the total purity median ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  median_Purity
+1          0.59</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_Purity =</span> <span class="fu">median</span>(Purity))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="3" type="1">
+<li>What is the mean and standard deviation of purity for each stages ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 3
+  pathologic_stage mean_purity sd_purity
+  &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;
+1 Stage I                0.577    0.0737
+2 Stage IA               0.590    0.118 
+3 Stage IB               0.633    0.125 
+4 Stage IIA              0.569    0.105 
+5 Stage IIB              0.594    0.117 
+6 Stage IIIA             0.587    0.107 
+7 Stage IIIB             0.688    0.142 
+8 Stage IV               0.671    0.142 </code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pathologic_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_purity =</span> <span class="fu">mean</span>(Purity, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_purity =</span> <span class="fu">sd</span>(Purity, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="4" type="1">
+<li>Which samples are in the top 20% of MAPK expression ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sample_id signature_MAPK
+1  TCGA.55.8207.01      0.9612172
+2  TCGA.64.1680.01      0.9596072
+3  TCGA.69.7760.01      0.9580315
+4  TCGA.78.7158.01      0.9579475
+5  TCGA.38.4628.01      0.9520071
+6  TCGA.55.7914.01      0.9495374
+7  TCGA.50.6591.01      0.9489357
+8  TCGA.91.6836.01      0.9458304
+9  TCGA.69.7980.01      0.9393414
+10 TCGA.05.4249.01      0.9298746
+11 TCGA.55.1595.01      0.9224339
+12 TCGA.50.5942.01      0.9224102
+13 TCGA.86.7713.01      0.9210721
+14 TCGA.91.A4BD.01      0.9058053
+15 TCGA.73.4662.01      0.8991331
+16 TCGA.73.4668.01      0.8970708
+17 TCGA.L9.A50W.01      0.8865940
+18 TCGA.78.7163.01      0.8859368
+19 TCGA.91.8496.01      0.8842351
+20 TCGA.44.7659.01      0.8809789
+21 TCGA.50.5051.01      0.8796467
+22 TCGA.05.4390.01      0.8763612
+23 TCGA.64.5775.01      0.8675626
+24 TCGA.80.5608.01      0.8626194
+25 TCGA.55.7570.01      0.8624813
+26 TCGA.62.8397.01      0.8606748
+27 TCGA.50.5944.01      0.8509310
+28 TCGA.67.3773.01      0.8504866
+29 TCGA.55.8097.01      0.8483321
+30 TCGA.78.7145.01      0.8464395
+31 TCGA.91.6847.01      0.8334299
+32 TCGA.50.8457.01      0.8330630
+33 TCGA.62.8394.01      0.8306887
+34 TCGA.50.5932.01      0.8292485
+35 TCGA.L9.A443.01      0.8287184
+36 TCGA.05.5715.01      0.8286057
+37 TCGA.69.7973.01      0.8227336
+38 TCGA.55.8087.01      0.8206848
+39 TCGA.78.7147.01      0.8197464
+40 TCGA.05.4427.01      0.8186530
+41 TCGA.55.7283.01      0.8149257
+42 TCGA.50.5946.01      0.8125286
+43 TCGA.78.7167.01      0.8120508
+44 TCGA.44.8117.01      0.8050348
+45 TCGA.78.7161.01      0.8050126
+46 TCGA.44.4112.01      0.7968219
+47 TCGA.67.6215.01      0.7929747
+48 TCGA.55.7725.01      0.7904477
+49 TCGA.55.8206.01      0.7853667</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_max</span>(<span class="at">order_by =</span> signature_MAPK, <span class="at">prop =</span> <span class="fl">0.2</span>, <span class="at">with_ties =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sample_id, signature_MAPK)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="5" type="1">
+<li>Extract MAPK expression for each samples with KRAS and present it by descending order.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sample_id known.oncogenes signature_MAPK
+1  TCGA.55.8207.01            KRAS      0.9612172
+2  TCGA.55.7914.01            KRAS      0.9495374
+3  TCGA.91.6836.01            KRAS      0.9458304
+4  TCGA.69.7980.01            KRAS      0.9393414
+5  TCGA.05.4249.01            KRAS      0.9298746
+6  TCGA.55.1595.01            KRAS      0.9224339
+7  TCGA.86.7713.01            KRAS      0.9210721
+8  TCGA.73.4662.01            KRAS      0.8991331
+9  TCGA.73.4668.01            KRAS      0.8970708
+10 TCGA.44.7659.01            KRAS      0.8809789
+11 TCGA.50.5051.01            KRAS      0.8796467
+12 TCGA.05.4390.01            KRAS      0.8763612
+13 TCGA.64.5775.01            KRAS      0.8675626
+14 TCGA.80.5608.01            KRAS      0.8626194
+15 TCGA.67.3773.01            KRAS      0.8504866
+16 TCGA.55.8097.01            KRAS      0.8483321
+17 TCGA.78.7145.01            KRAS      0.8464395
+18 TCGA.50.8457.01            KRAS      0.8330630
+19 TCGA.50.5932.01            KRAS      0.8292485
+20 TCGA.L9.A443.01            KRAS      0.8287184
+21 TCGA.69.7973.01            KRAS      0.8227336
+22 TCGA.05.4427.01            KRAS      0.8186530
+23 TCGA.55.7283.01            KRAS      0.8149257
+24 TCGA.78.7167.01            KRAS      0.8120508
+25 TCGA.78.7161.01            KRAS      0.8050126
+26 TCGA.55.7725.01            KRAS      0.7904477
+27 TCGA.64.5778.01            KRAS      0.7851112
+28 TCGA.64.5774.01            KRAS      0.7812835
+29 TCGA.05.4415.01            KRAS      0.7694772
+30 TCGA.67.3774.01            KRAS      0.7675273
+31 TCGA.67.4679.01            KRAS      0.7643734
+32 TCGA.NJ.A4YI.01            KRAS      0.7628199
+33 TCGA.73.7498.01            KRAS      0.7604873
+34 TCGA.55.8094.01            KRAS      0.7374347
+35 TCGA.97.7938.01            KRAS      0.7325512
+36 TCGA.86.8054.01            KRAS      0.7292614
+37 TCGA.95.7567.01            KRAS      0.7261443
+38 TCGA.78.8655.01            KRAS      0.7248454
+39 TCGA.55.A494.01            KRAS      0.7216151
+40 TCGA.05.4433.01            KRAS      0.6885834
+41 TCGA.49.4505.01            KRAS      0.6795376
+42 TCGA.73.4677.01            KRAS      0.6723025
+43 TCGA.49.4510.01            KRAS      0.6651147
+44 TCGA.49.AARQ.01            KRAS      0.6647472
+45 TCGA.78.7539.01            KRAS      0.6630700
+46 TCGA.62.A46S.01            KRAS      0.6600295
+47 TCGA.75.7030.01            KRAS      0.6592348
+48 TCGA.97.A4M0.01            KRAS      0.6567620
+49 TCGA.86.8281.01            KRAS      0.6417078
+50 TCGA.91.8497.01            KRAS      0.6388438
+51 TCGA.05.4403.01            KRAS      0.6313164
+52 TCGA.35.3615.01            KRAS      0.6100616
+53 TCGA.91.6849.01            KRAS      0.5996117
+54 TCGA.44.7671.01            KRAS      0.5974010
+55 TCGA.50.5936.01            KRAS      0.5872490
+56 TCGA.55.8514.01            KRAS      0.5769864
+57 TCGA.55.6984.01            KRAS      0.5728733
+58 TCGA.44.6776.01            KRAS      0.5702109
+59 TCGA.44.6146.01            KRAS      0.5589566
+60 TCGA.05.4395.01            KRAS      0.5578706
+61 TCGA.75.7027.01            KRAS      0.5494847
+62 TCGA.78.7148.01            KRAS      0.5160726
+63 TCGA.55.7576.01            KRAS      0.5139644
+64 TCGA.55.6970.01            KRAS      0.5117584
+65 TCGA.75.6206.01            KRAS      0.4972637
+66 TCGA.55.8615.01            KRAS      0.4952499
+67 TCGA.05.4250.01            KRAS      0.4811406
+68 TCGA.95.7562.01            KRAS      0.4658260
+69 TCGA.55.7910.01            KRAS      0.4629788
+70 TCGA.05.4418.01            KRAS      0.4378646
+71 TCGA.95.A4VK.01            KRAS      0.4040509
+72 TCGA.78.7540.01            KRAS      0.3998440
+73 TCGA.86.8674.01            KRAS      0.3929826
+74 TCGA.97.8176.01            KRAS      0.3599364
+75 TCGA.55.6975.01            KRAS      0.3026009
+76 TCGA.55.8299.01            KRAS      0.2971146
+77 TCGA.MP.A4T8.01            KRAS      0.2917234
+78 TCGA.4B.A93V.01            KRAS      0.2688583
+79 TCGA.78.7166.01            KRAS      0.2303336</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(known.oncogenes <span class="sc">==</span> <span class="st">"KRAS"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sample_id, known.oncogenes, signature_MAPK) <span class="sc">%&gt;%</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(signature_MAPK))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>BONUS : Considering purity higher than 0.6 is high, lower than 0.4 is low and between 0.4 and 0.6 is medium. Calculate the percentage of individuals in each category by stages. Find help on internet or with chatbot !</p>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'pathologic_stage'. You can override using
+the `.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 4
+# Groups:   pathologic_stage [8]
+   pathologic_stage Purity_perf Count Percentage
+   &lt;chr&gt;            &lt;chr&gt;       &lt;int&gt;      &lt;dbl&gt;
+ 1 Stage I          High            1       33.3
+ 2 Stage I          Medium          2       66.7
+ 3 Stage IA         High           24       41.4
+ 4 Stage IA         Medium         34       58.6
+ 5 Stage IB         High           32       47.1
+ 6 Stage IB         Medium         36       52.9
+ 7 Stage IIA        High            5       23.8
+ 8 Stage IIA        Medium         16       76.2
+ 9 Stage IIB        High           16       44.4
+10 Stage IIB        Medium         20       55.6
+11 Stage IIIA       High           12       30  
+12 Stage IIIA       Medium         28       70  
+13 Stage IIIB       High            4       66.7
+14 Stage IIIB       Medium          2       33.3
+15 Stage IV         High           11       78.6
+16 Stage IV         Medium          3       21.4</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Purity_perf =</span> <span class="fu">case_when</span>(</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    Purity <span class="sc">&gt;</span> <span class="fl">0.6</span> <span class="sc">~</span> <span class="st">"High"</span>,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    Purity <span class="sc">&gt;=</span> <span class="fl">0.4</span> <span class="sc">&amp;</span> Purity <span class="sc">&lt;=</span> <span class="fl">0.6</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    Purity <span class="sc">&lt;</span> <span class="fl">0.4</span> <span class="sc">~</span> <span class="st">"Low"</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">%&gt;%</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(pathologic_stage, Purity_perf) <span class="sc">%&gt;%</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(pathologic_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Percentage =</span> Count <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 
 </main>
