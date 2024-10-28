@@ -30,6 +30,8 @@ require("knitr")
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
+[\<\<\< Back to Index](./0.course_index.qmd)
+
 ![RStudio Interface](./img/structure_rstudio.svg){width="20cm"}
 
 # Discovering the R console
@@ -525,3 +527,5 @@ log2(10)
 The result is the same!
 
 </details>
+
+[\<\<\< Back to Index](./0.course_index.qmd)

@@ -38,6 +38,8 @@ clinical_data <- read_csv("datasets/clinical_data.csv")
 TCGA_LUAD <- read.delim("datasets/TCGA_LUAD_subset.tsv", stringsAsFactors=FALSE)
 ```
 
+[<<< Back to Index](./0.course_index.html)
+
 ## What is `dplyr` ?
 
 `dplyr` is a data manipulation framework that offers a consistent set of functions, or "verbs", to tackle common data manipulation tasks. You'll see how `dplyr`'s shortcuts can be used to perform traditional R data manipulation more efficiently. It also provides verbs that can help to simplify complex data operations.
@@ -703,3 +705,7 @@ TCGA_LUAD %>%
     mutate(Percentage = Count / sum(Count) * 100)
     
 ```
+
+---
+
+[<<< Back to Index](./0.course_index.html)

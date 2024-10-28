@@ -27,6 +27,8 @@ TCGA_LUAD <- read.delim("./datasets//TCGA_LUAD_subset.tsv", row.names = 1)
 
 ```
 
+[<<< Back to Index](./0.course_index.html)
+
 In this section, you will learn how to manipulate data in the form of tables. 
 When we manipulate data, we use variables and functions. As you saw earlier, a variable can have several types and can contain different types of data, even an entire table with several columns and rows. Various functions can be used to dissect the table in order to retain only certain data, for example.
 
@@ -444,3 +446,5 @@ All values of the columns 1 and 2, inversely, with every rows. Display the 6 fir
 </details>
 
 ---
+
+[<<< Back to Index](./0.course_index.html)

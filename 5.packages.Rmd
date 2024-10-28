@@ -26,6 +26,8 @@ details > p {
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
+[<<< Back to Index](./0.course_index.html)
+
 # What is a package ?
 
 In R, packages are collections of functions, data sets, and documentation that extend the functionality of base R. They are like add-ons or plugins that provide additional tools for performing specific tasks (data analysis, visualization, machine learning...).
@@ -103,3 +105,4 @@ Note that here we don't use install_packages but install_github to fetch the pac
 
 Link : [GitHub](https://github.com/dashboard)
 
+[<<< Back to Index](./0.course_index.html)

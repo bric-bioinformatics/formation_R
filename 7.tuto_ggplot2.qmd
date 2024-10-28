@@ -36,9 +36,7 @@ library(tidyverse)
 library(data.table)
 ```
 
-## Introduction
-
-Describe the study and the data ... to be done
+[\<\<\< Back to Index](./0.course_index.html)
 
 ## Load the data
 
@@ -1375,7 +1373,7 @@ pheatmap(luad_expr,
          )
 ```
 
-## 
+\-\--
 
 ## Some useful links
 
@@ -1404,3 +1402,7 @@ Multivariate survival analysis with ggforest: <https://rpkgs.datanovia.com/survm
 <https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html>
 
 <https://biostatsquid.com/step-by-step-heatmap-tutorial-with-pheatmap/>
+
+\--
+
+[\<\<\< Back to Index](./0.course_index.html)
