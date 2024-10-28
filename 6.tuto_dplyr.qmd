@@ -3,6 +3,7 @@ title: "dplyr tutorial: manupulate data frames"
 format:
   html:
     code-fold: true
+    embed-resources: true 
 editor: visual
 ---
 
@@ -29,13 +30,12 @@ editor: visual
     }
 </style>
 ```
+
 ```{r, setup, echo=F, warning=FALSE,message=FALSE}
 require("knitr")
 library(tidyverse)
 clinical_data <- read_csv("datasets/clinical_data.csv")
-tidy_data <- read_csv("datasets/tidy_data.csv")
-messy_data <- read_csv("datasets/messy_data.csv")
-TCGA_LUAD <- read.delim("datasets/TCGA_LUAD.tsv", stringsAsFactors=FALSE)
+TCGA_LUAD <- read.delim("datasets/TCGA_LUAD_subset.tsv", stringsAsFactors=FALSE)
 ```
 
 ## What is `dplyr` ?
@@ -57,7 +57,7 @@ Link : [Tidyverse](https://www.tidyverse.org/)
 
 ## Training dataset : `clinical_data`
 
-Using the RStudio interface, load the file `clinical_data.csv` ([See Manipulate the data](./2.manipulate_df.html))
+Using the RStudio interface, load the file `clinical_data.csv` ([See Manipulate the data](./3.manipulate_df.html))
 
 For the following examples, we will take a dataset composed with some clinical variables (columns) and patients (rows).The dataset is named `clinical_data`. Display the 6 first rows.
 
@@ -95,8 +95,7 @@ With dplyr, you have all the tools needed to efficiently manipulate your data. Y
 
 We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set.
 
-![Sub-setting operations](figures_merging/subset.svg)
-------------------------------------------------------------------------
+## ![Sub-setting operations](./img/subset.svg)
 
 #### ***Select columns with the `select()` function***
 
@@ -140,12 +139,12 @@ select columns start with dplyr R
 
 <summary>Answer</summary>
 
-| Functions to combine with *select* | Description                             | Examples                                      |
+| Functions to combine with *select* | Description                             | Examples                                             |
 |------------------------|------------------------|------------------------|
-| *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("treatment"))`  |
-| *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("lic"))`    |
-| *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("blood"))`  |
-| where()                            | Contains a specific type of variable    | `clinical_data %>% select(where(is.numeric))` |
+| *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("treatment"))` |
+| *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("lic"))`         |
+| *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("blood"))`        |
+| where()                            | Contains a specific type of variable    | `clinical_data %>% select(where(is.numeric))`        |
 
 These are just a few examples - there are many others, but these are the most important and widely used. It's up to you to use them, test them and change them to understand how they work !
 
@@ -177,15 +176,15 @@ To be able to filter based on values contained in columns, we need to know how t
 
 Here is a table summarizing the most common operators:
 
-| Operator    | Description                   | Example                         |
-|------------------|--------------------------|----------------------------|
-| `==`        | Equal to                      | `x == "yes"` , `x == 6`         |
-| `!=`        | Not equal to                  | `x != "no"` , `x != 5`          |
-| `>` , `<`   | Greater than, Less than       | `x > 5` , `x < 5`               |
-| `>=` , `<=` | Greater/Less than or equal to | `x >= 5` , `x <= 5`             |
+| Operator    | Description                   | Example                             |
+|-------------------|--------------------------|----------------------------|
+| `==`        | Equal to                      | `x == "yes"` , `x == 6`             |
+| `!=`        | Not equal to                  | `x != "no"` , `x != 5`              |
+| `>` , `<`   | Greater than, Less than       | `x > 5` , `x < 5`                   |
+| `>=` , `<=` | Greater/Less than or equal to | `x >= 5` , `x <= 5`                 |
 | `%in%`      | Checks if value is in a set   | `x %in% c("gender", "heart_rate")`  |
-| `&`         | logical **AND**               | `x < 6 & x > 3`                 |
-| `|`         | logical **OR**                | `x > 6 | x < 3`                 |
+| `&`         | logical **AND**               | `x < 6 & x > 3`                     |
+| `|`         | logical **OR**                | `x > 6 | x < 3`                     |
 | `!`         | logical **NO**                | `!x %in% c("gender", "heart_rate")` |
 
 What does these codes do ?
@@ -254,7 +253,7 @@ I want display the patient ID of the samples treated with either drug A or drug 
 
 This bring an `Error` :
 
-::: {style="background-color:LemonChiffon;"}
+::: {style="background-color:LemonChiffon;line-height:0.6;"}
 i Error in `filter()`:
 
 In argument: `heart_rate >= 80`.
@@ -371,20 +370,19 @@ The `arrange()` function in R's dplyr package is used to reorder rows in a data 
 ?dplyr::arrange
 ```
 
-* Ascending order
+-   Ascending order
 
 ```{r, eval=F}
 clinical_data %>%
   arrange(age)
 ```
 
-* Descending order
+-   Descending order
 
 ```{r, eval=F}
 clinical_data %>%
   arrange(desc(age))
 ```
-
 
 #### ***What have we learned ?***
 
@@ -408,8 +406,7 @@ clinical_data %>%
 
 We can add columns filled with new data or with transformed values from an existing column. The new columns can be located at specific places in the data frame.
 
-![Modify the data frame](figures_merging/mutate.svg)
-------------------------------------------------------------------------
+## ![Modify the data frame](./img/mutate.svg)
 
 #### ***Modify or create a column in your data frame with `mutate()`***
 
@@ -462,15 +459,12 @@ clinical_data %>%
   select(patient_id, BMI)
 ```
 
-
 ```{r, eval=F}
 clinical_data %>% 
   mutate(BMI = weight / height) %>%
   slice_head(n=5) %>%
   select(patient_id, BMI)
 ```
-
-
 
 ------------------------------------------------------------------------
 
@@ -542,8 +536,7 @@ clinical_data %>%
 
 <summary>Answer</summary>
 
-To carry out this operation, we put two functions in a row, always using the `%>%` symbol. 
-The `group_by()` function first groups the variable we're interested in, in this case `gender`. There are only two possibilities for this variable, `Male` or `Female.` Secondly, the `summarise()` function takes into account the `age` variable, calculating the average for each possibility of the `gender` variable. What's more, the `summarise()` function displays the results in the console, rather than entering them directly into the dataframe.
+To carry out this operation, we put two functions in a row, always using the `%>%` symbol. The `group_by()` function first groups the variable we're interested in, in this case `gender`. There are only two possibilities for this variable, `Male` or `Female.` Secondly, the `summarise()` function takes into account the `age` variable, calculating the average for each possibility of the `gender` variable. What's more, the `summarise()` function displays the results in the console, rather than entering them directly into the dataframe.
 
 </details>
 
@@ -553,49 +546,7 @@ clinical_data %>%
   summarise(mean_age = mean(age))
 ```
 
-
 ------------------------------------------------------------------------
-
-#### ***Modify dataset layout with `gather()` and `spread()`***
-
-We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis.
-
-In R, this often involves transforming data between `long format (tidy)` and `wide format (messy)`. In a `wide format`, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples). **In a `long format`, each row is a single measurement, with a separate column for the variable and the value**. This structure will be useful later for certain graphical representations.
-
-![Schematic view of wide and long formats](figures_merging/tidy_messy.svg)
-To switch from one shape to another, there are two functions called `gather()` and `spread()`.
-`gather()` function enables to gather columns into rows, and `spread()` function allows to spread rows into columns.
-We say that `gather()` reshapes wide format to long format and `spread()` do the invert.
-Wide format is sometimes called messy and long format is named tidy.
-
-- `gather()` help
-```{r}
-?tidyr::gather
-```
-
-- `spread()` help
-```{r}
-?tidyr::spread
-```
-
-If we look at the `gather()` and `spread()` parameters, there are arguments in particular that will interest us :
-
-  * ***key*** : this argument specifies the name of the new column that will contain the names of the existing columns being collapsed.                 It represents the variable names in the long format
-  * ***value*** : this argument specifies the name of the new column that will contain the values from the gathered columns.
-  
-i\) Messy to tidy
-
-```{r}
-tidy_data <- messy_data %>% 
-                  gather(var, value, var1:var4)
-```
-
-ii\) Tidy to messy
-
-```{r}
-messy_data <- tidy_data %>% 
-                  spread(var, value)
-```
 
 #### ***What have we learned ?***
 
@@ -605,16 +556,13 @@ messy_data <- tidy_data %>%
 -   We can use the function `relocate()` to move columns as required in the dataset.
 
 -   We can use the function `group_by()` to group data based on one or several columns (variables). This function is combined with other like `summarise()` to display a summary of result based on data.
-
--   We can modify the layout of a dataset with `gather()` and `spread()` to navigate between formats (long and wide).
-
 :::
 
 ## Practice : `TCGA_LUAD`
 
 You will work on extracted data from the TCGA public database, and now you will browse it to understand it better !
 
-1) What are the samples with at least 70% of purity ?
+1)  What are the samples with at least 70% of purity ?
 
 <details>
 
@@ -623,17 +571,18 @@ You will work on extracted data from the TCGA public database, and now you will 
 ```{r, echo = F}
 TCGA_LUAD %>%
   filter(Purity >= 0.7)%>%
-  select(sample_id)
+  select(sampleID)
 ```
+
 </details>
 
 ```{r, eval = F}
 TCGA_LUAD %>%
   filter(Purity >= 0.7) %>%
-  select(sample_id)
+  select(sampleID)
 ```
 
-2) What is the total purity median ?
+2)  What is the total purity median ?
 
 <details>
 
@@ -643,6 +592,7 @@ TCGA_LUAD %>%
 TCGA_LUAD %>%
   summarise(median_Purity = median(Purity))
 ```
+
 </details>
 
 ```{r, eval = F}
@@ -650,7 +600,7 @@ TCGA_LUAD %>%
   summarise(median_Purity = median(Purity))
 ```
 
-3) What is the mean and standard deviation of purity for each stages ?
+3)  What is the mean and standard deviation of purity for each stages ?
 
 <details>
 
@@ -676,7 +626,7 @@ TCGA_LUAD %>%
   )
 ```
 
-4) Which samples are in the top 20% of MAPK expression ?
+4)  Which samples are in the top 20% of MAPK expression ?
 
 <details>
 
@@ -685,17 +635,18 @@ TCGA_LUAD %>%
 ```{r, echo = F}
 TCGA_LUAD %>% 
     slice_max(order_by = signature_MAPK, prop = 0.2, with_ties = F) %>%
-    select(sample_id, signature_MAPK)
+    select(sampleID, signature_MAPK)
 ```
+
 </details>
 
 ```{r, eval = F}
 TCGA_LUAD %>% 
     slice_max(order_by = signature_MAPK, prop = 0.2, with_ties = F) %>%
-    select(sample_id, signature_MAPK)
+    select(sampleID, signature_MAPK)
 ```
 
-5) Extract MAPK expression for each samples with KRAS and present it by descending order.
+5)  Extract MAPK expression for each samples with KRAS and present it by descending order.
 
 <details>
 
@@ -704,21 +655,20 @@ TCGA_LUAD %>%
 ```{r, echo = F}
 TCGA_LUAD %>%
     filter(known.oncogenes == "KRAS") %>%
-    select(sample_id, known.oncogenes, signature_MAPK) %>%
+    select(sampleID, known.oncogenes, signature_MAPK) %>%
     arrange(desc(signature_MAPK))
 ```
+
 </details>
 
 ```{r, eval = F}
 TCGA_LUAD %>%
     filter(known.oncogenes == "KRAS") %>%
-    select(sample_id, known.oncogenes, signature_MAPK) %>%
+    select(sampleID, known.oncogenes, signature_MAPK) %>%
     arrange(desc(signature_MAPK))
 ```
 
-
-BONUS : Considering purity higher than 0.6 is high, lower than 0.4 is low and between 0.4 and 0.6 is medium. Calculate the percentage of individuals in each category by stages.
-Find help on Google or with chatbot !
+BONUS : Considering purity higher than 0.6 is high, lower than 0.4 is low and between 0.4 and 0.6 is medium. Calculate the percentage of individuals in each category by stages. Find help on Google or with chatbot !
 
 <details>
 
@@ -737,8 +687,8 @@ TCGA_LUAD %>%
     mutate(Percentage = Count / sum(Count) * 100)
     
 ```
-</details>
 
+</details>
 
 ```{r, eval = F}
 TCGA_LUAD %>% 
@@ -753,4 +703,3 @@ TCGA_LUAD %>%
     mutate(Percentage = Count / sum(Count) * 100)
     
 ```
-
