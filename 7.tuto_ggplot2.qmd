@@ -50,7 +50,7 @@ Clinical data: `clinical_data.csv`, name the variable `clinical`
 
 ```{r}
 # or you can try to adapt this code
-clinical <- read.table("data/smoking_imbalance_treatment_response_data_v2.csv",sep=",",head=T)
+clinical <- read.table("datasets/clinical_data.csv",sep=",",head=T)
 head(clinical)
 ```
 
@@ -587,7 +587,7 @@ In R, this often involves transforming data between long and wide format. In a *
 
 To switch from one shape to another, there are two functions called `pivot_longer()` and `pivot_wider()`. ``` pivot_longer``() ``` function enables to convert multiple columns into key-value pairs, where column names become variable names, and their corresponding values are stacked. `pivot_wider()` function allows to spread key-value pairs across multiple columns. We say that ``` pivot_longer``() ``` reshapes wide format to long format and `pivot_wider()` do the invert.
 
-![Schematic view of wide and long formats](figures_merging/pivot_tidyr_1.png)
+![Schematic view of wide and long formats](./img/pivot_tidyr_1.png)
 
 ```{r, eval=F}
 #| code-fold: false
@@ -757,7 +757,7 @@ Using `dplyr` functions, **select** columns containing **numeric** values in `cl
 quant.features <- clinical %>% select(where(is.numeric) & !patient_id) 
 ```
 
-You have a very nice introduction to this package: <https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html>. All the informations are in this page but don't hesitate to search for more.
+You have a very nice introduction to this package: [here](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html). All the information are in this page but don't hesitate to search for more.
 
 You want to obtain the following plot:
 
@@ -794,14 +794,16 @@ Differential Expression Gene in KRAS tumors between high and low MAPK signature 
 ```{r}
 #| code-fold: false
 # or you can use R command
-luad_clinical <- read.table("data/TCGA_LUAD_subset.tsv",sep="\t",head=T)
-luad_expr <- read.table("data/TCGA_LUAD_expression.tsv",sep="\t",head=T,row=1)
-KRAS_DEG <- read.table("data/TCGA_KRAS_DEG_MAPK.tsv",sep="\t",head=T)
+luad_clinical <- read.table("datasets/TCGA_LUAD_subset.tsv",sep="\t",head=T)
+luad_expr <- read.table("datasets/TCGA_LUAD_expression.tsv",sep="\t",head=T,row=1)
+KRAS_DEG <- read.table("datasets/TCGA_KRAS_DEG_MAPK.tsv",sep="\t",head=T)
 ```
 
-#### Questions (*all answers are plots*)
+#### Questions
 
-The solutions we provide are not the unique possibilities to represent the data in order to evaluate or show tendencies.
+***All answers are plots with sometimes some preliminary data formating***
+
+The answers we provide are not the unique solutions rather just examples, you can find multiple ways to show tendencies in your data.
 
 <details>
 
