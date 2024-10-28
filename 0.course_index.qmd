@@ -1,0 +1,48 @@
+---
+title: "Course : Introduction to R for data analysis and representation"
+format: 
+  html:
+    code-fold: true
+    embed-resources: true 
+editor: visual
+---
+
+```{=html}
+<style>
+  details > summary {  
+    padding: 4px;  
+    width: 400px;  
+    background-color: #eeeeee;  
+    border: none;  
+    box-shadow: 1px 1px 2px #bbbbbb;  
+    cursor: pointer;
+  }
+  details > p {  
+    background-color: #E0F8EC;  
+    padding: 4px;  
+    margin: 0;  
+    box-shadow: 1px 1px 2px #bbbbbb;
+  }
+</style>
+```
+```{r, setup, echo=F, warning=FALSE,message=FALSE}
+require("knitr")
+```
+
+# Goal of this course
+
+During this course, you'll get an introduction to the R language and its graphical interface named RStudio. You'll learn how to use the language and its interface through various exercises.
+
+The aim is to enable you to acquire basic programming skills in R, so that you can manipulate data tables, dissect them and extract the relevant information you need.
+
+In this course, you'll also learn how to make simple but important graphical representations in biology. You'll see how to make them aesthetically pleasing and easy to read, so that you can use them in your publications.
+
+## Course sheets
+
+-   [Discover R and RStudio : installation and presentation](./1.intro.html)
+-   [Notion of packages](./packages.html)
+-   [Interpret simple code and create variables](./exercices.html)
+-   [First data manipulations](./2.manipulate_df.html)
+-   [Gather information simply: `merge()` function](./tuto_merge.html)
+-   [Manipulate dataframes : `dplyr` package](./tuto_dplyr.html)
+-   [Represent data : `ggplot2` package](./tuto_ggplot2.html)
