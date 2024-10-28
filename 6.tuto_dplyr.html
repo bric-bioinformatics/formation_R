@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dplyr tutorial: manupulate data frames</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="tuto_dplyr_files/libs/clipboard/clipboard.min.js"></script>
+<script src="tuto_dplyr_files/libs/quarto-html/quarto.js"></script>
+<script src="tuto_dplyr_files/libs/quarto-html/popper.min.js"></script>
+<script src="tuto_dplyr_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="tuto_dplyr_files/libs/quarto-html/anchor.min.js"></script>
+<link href="tuto_dplyr_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="tuto_dplyr_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="tuto_dplyr_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="tuto_dplyr_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="tuto_dplyr_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">dplyr tutorial: manupulate data frames</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<style>
+    details > summary {
+      padding: 4px;
+      width: 400px;      
+      background-color: #eeeeee;      
+      border: none;      
+      box-shadow: 1px 1px 2px #bbbbbb;      
+      cursor: pointer;      
+    }  
+    details > p {
+      background-color: #E0F8EC;
+      padding: 4px;
+      margin: 0;
+      box-shadow: 1px 1px 2px #bbbbbb;
+    }
+    header h1 {
+      font-size: 70px;
+      font-weight: 600;
+      font-palette: tomato;
+    }
+</style>
+<div class="cell">
+
+</div>
+<section id="what-is-dplyr" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-dplyr">What is <code>dplyr</code> ?</h2>
+<p><code>dplyr</code> is a data manipulation framework that offers a consistent set of functions, or “verbs”, to tackle common data manipulation tasks. You’ll see how <code>dplyr</code>’s shortcuts can be used to perform traditional R data manipulation more efficiently. It also provides verbs that can help to simplify complex data operations.</p>
+<p>This package is part of a larger package called <code>tidyverse</code>. So we need to install <code>tidyverse</code> and it will download automatically <code>dplyr</code> and other useful packages (see the link below).</p>
+<p>As this package is not installed by default, it must be installed and activated.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the package</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the library to make it accessible in you working environment</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Link : <a href="https://www.tidyverse.org/">Tidyverse</a></p>
+</section>
+<section id="training-dataset-clinical_data" class="level2">
+<h2 class="anchored" data-anchor-id="training-dataset-clinical_data">Training dataset : <code>clinical_data</code></h2>
+<p>Using the RStudio interface, load the file <code>clinical_data.csv</code> (<a href="./2.manipulate_df.html">See Manipulate the data</a>)</p>
+<p>For the following examples, we will take a dataset composed with some clinical variables (columns) and patients (rows).The dataset is named <code>clinical_data</code>. Display the 6 first rows.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clinical_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 15
+  patient_id   age gender weight height blood_pressure_systolic
+       &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;                   &lt;dbl&gt;
+1          1    50 Female     86   1.8                       98
+2          2    70 Male       88   1.77                     125
+3          3    33 Male       89   1.82                     119
+4          4    86 Male       58   1.88                     119
+5          5    61 Female     75   1.55                     135
+6          6    69 Female     88   1.78                     128
+# ℹ 9 more variables: blood_pressure_diastolic &lt;dbl&gt;, cholesterol &lt;dbl&gt;,
+#   glucose &lt;dbl&gt;, heart_rate &lt;dbl&gt;, smoking_status &lt;chr&gt;,
+#   treatment_group &lt;chr&gt;, treatment_response &lt;chr&gt;,
+#   hospital_visits_last_year &lt;dbl&gt;, diagnosis &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Check the <strong>dimensions</strong> of the <code>data.frame</code>. How many patients are described ? How many clinical features are available ?</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(clinical_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10000    15</code></pre>
+</div>
+</div>
+<p>The table contains 10000 patients and 15 features.</p>
+</details>
+<p>Unlike our first example, you can see in the Environment panel that this dataset contains a large number of rows. This doesn’t change the functions we will be using; on the contrary, you will see that you will be able to work on very large datasets more easily.</p>
+</section>
+<section id="manipulate-data.frame-with-dplyr" class="level2">
+<h2 class="anchored" data-anchor-id="manipulate-data.frame-with-dplyr">Manipulate <code>data.frame</code> with dplyr</h2>
+<p>In this section, we introduce the pipe <strong><code>%&gt;%</code>,</strong> a syntax that allows you to read the data and pass it through a series of functions seamlessly. The first pipe takes the initial dataset, making it easy to apply successive transformations in a clear, step-by-step manner.</p>
+<p>With dplyr, you have all the tools needed to efficiently manipulate your data. You can filter, select, reorder, and modify rows and columns with simple functions like <code>filter()</code>, <code>slice()</code>, <code>arrange()</code>, <code>select()</code>, and <code>mutate()</code>. Additionally, you can rename columns, change their order, and even summarize groups of rows by their average, maximum, standard deviation etc.</p>
+<section id="subset-your-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="subset-your-dataset">Subset your dataset</h3>
+<p>We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set.</p>
+</section>
+</section>
+<section id="sub-setting-operations" class="level2">
+<h2 class="anchored" data-anchor-id="sub-setting-operations"><img src="figures_merging/subset.svg" class="img-fluid" alt="Sub-setting operations"></h2>
+<section id="select-columns-with-the-select-function" class="level4">
+<h4 class="anchored" data-anchor-id="select-columns-with-the-select-function"><strong><em>Select columns with the <code>select()</code> function</em></strong></h4>
+<p>Use the select() function to display the columns blood_pressure_systolic and blood_pressure_diastolic.</p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<p>How to select columns dplyr R</p>
+</details>
+<p>Or use the help provided by the package dplyr.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co"> : Here, we specify the package name with a double colon (::) and then the function name, </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># to avoid conflicts between functions that may have the same name.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>select</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We refer to the columns by their name, the name is here evaluated as a variable (no quote)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(blood_pressure_systolic, blood_pressure_diastolic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague. Try to find the function that enable to select columns starting with, ending with or containing a particular character or string.</p>
+<p>The functions will be used as follow: <code>select(function("char"))</code> or <code>select(function(function))</code></p>
+<details>
+<summary>
+Key words to write on your favorite browser
+</summary>
+<p>select columns start with dplyr R</p>
+</details>
+<details>
+<summary>
+Answer
+</summary>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Functions to combine with <em>select</em></th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>starts_with()</em></td>
+<td>Starts with a specific character/string</td>
+<td><code>clinical_data %&gt;% select(starts_with("treatment"))</code></td>
+</tr>
+<tr class="even">
+<td><em>ends_with()</em></td>
+<td>Ends with a specific character/string</td>
+<td><code>clinical_data %&gt;% select(ends_with("lic"))</code></td>
+</tr>
+<tr class="odd">
+<td><em>contains()</em></td>
+<td>Contains a specific character/string</td>
+<td><code>clinical_data %&gt;% select(contains("blood"))</code></td>
+</tr>
+<tr class="even">
+<td>where()</td>
+<td>Contains a specific type of variable</td>
+<td><code>clinical_data %&gt;% select(where(is.numeric))</code></td>
+</tr>
+</tbody>
+</table>
+<p>These are just a few examples - there are many others, but these are the most important and widely used. It’s up to you to use them, test them and change them to understand how they work !</p>
+<p>Note: We have seen that we can change the type of a variable by using functions <code>as.*</code> such as <code>as.numeric()</code> to transform a variable in numeric. In the same way you can test the type of a variable using <code>is.*</code> functions such as <code>is.numeric()</code> to test if a variable contains numeric value(s).</p>
+</details>
+<p>Looking at the above example, which columns will be returned ?</p>
+<details>
+<summary>
+Answers
+</summary>
+<p><code>clinical_data %&gt;% select(starts_with("treatment"))</code> returns treatment_group, treatment_response</p>
+<p><code>clinical_data %&gt;% select(ends_with("lic"))</code> returns blood_pressure_systolic, blood_pressure_diastolic</p>
+<p><code>clinical_data %&gt;% select(contains("blood"))</code> returns blood_pressure_systolic, blood_pressure_diastolic</p>
+<p><code>clinical_data %&gt;% select(where(is.numeric))</code> returns patient_id, age, weight, height, blood_pressure_systolic, blood_pressure_diastolic, cholesterol, glucose, heart_rate, hospital_visits_last_year</p>
+</details>
+<hr>
+</section>
+<section id="filter-rows-based-on-condition-with-the-filter-function" class="level4">
+<h4 class="anchored" data-anchor-id="filter-rows-based-on-condition-with-the-filter-function"><strong><em>Filter rows based on condition with the <code>filter()</code> function</em></strong></h4>
+<p>To be able to filter based on values contained in columns, we need to know how to compare the content of the column with any value. In data manipulation, comparisons help you filter and select specific data based on conditions. Some common comparison operators include: <code>==</code> (equal to), <code>!=</code> (not equal to), <code>&gt;</code> (greater than), <code>&lt;</code> (less than), <code>&gt;=</code> (greater than or equal to), and <code>&lt;=</code> (less than or equal to). Additionally, <code>%in%</code> is useful for checking if a value belongs to a set of values. These comparisons allow you to create logical statements that <code>filter()</code> can use to select the rows that meet your criteria.</p>
+<p>Here is a table summarizing the most common operators:</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 36%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>==</code></td>
+<td>Equal to</td>
+<td><code>x == "yes"</code> , <code>x == 6</code></td>
+</tr>
+<tr class="even">
+<td><code>!=</code></td>
+<td>Not equal to</td>
+<td><code>x != "no"</code> , <code>x != 5</code></td>
+</tr>
+<tr class="odd">
+<td><code>&gt;</code> , <code>&lt;</code></td>
+<td>Greater than, Less than</td>
+<td><code>x &gt; 5</code> , <code>x &lt; 5</code></td>
+</tr>
+<tr class="even">
+<td><code>&gt;=</code> , <code>&lt;=</code></td>
+<td>Greater/Less than or equal to</td>
+<td><code>x &gt;= 5</code> , <code>x &lt;= 5</code></td>
+</tr>
+<tr class="odd">
+<td><code>%in%</code></td>
+<td>Checks if value is in a set</td>
+<td><code>x %in% c("gender", "heart_rate")</code></td>
+</tr>
+<tr class="even">
+<td><code>&amp;</code></td>
+<td>logical <strong>AND</strong></td>
+<td><code>x &lt; 6 &amp; x &gt; 3</code></td>
+</tr>
+<tr class="odd">
+<td><code>|</code></td>
+<td>logical <strong>OR</strong></td>
+<td><code>x &gt; 6 | x &lt; 3</code></td>
+</tr>
+<tr class="even">
+<td><code>!</code></td>
+<td>logical <strong>NO</strong></td>
+<td><code>!x %in% c("gender", "heart_rate")</code></td>
+</tr>
+</tbody>
+</table>
+<p>What does these codes do ?</p>
+<ol type="1">
+<li><code>clinical_data %&gt;%   filter(gender == "FEMALE" | heart_rate &gt;= 70)</code></li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p>Using this command line, you are reading the object <code>clinical_data</code> with the first <code>%&gt;%</code> and apply the <code>filter()</code> function with the second <code>%&gt;%</code>.</p>
+<p>The expression (the code within the brackets) contains two comparisons.</p>
+<p>The first one compares all the elements in the column <code>gender</code> to the string “FEMALE”, this comparison returns <code>TRUE</code> when the column <code>gender</code> contains “FEMALE”.</p>
+<p>The second one compares all the elements in the column <code>heart_rate</code> to the numeric value <code>70</code>, this comparison returns <code>TRUE</code> when the column <code>heart_rate</code> contains values greater or equal to 70.</p>
+<p>The two comparisons are separated by the <strong>logical OR</strong> <code>|</code> , this means that either the first comparison or the second is <code>TRUE</code> . The samples come from women or have at least 70 of heart rate</p>
+</details>
+<ol start="2" type="1">
+<li><code>clinical_data %&gt;% filter(gender == "FEMALE") %&gt;% filter(heart_rate &gt;= 70)</code></li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p>As above, the object <code>clinical_data</code> is first read then two passes of filtering are applied. The <code>%&gt;%</code> enable to chain multiple treatments, each operation being applied to the result of the previews one.</p>
+<p>While the comparisons are identical to the first command line, the effect is different. Indeed, the first occurrence of the function <code>filter()</code> will directly filter for women and the result of this filtering is given to the second occurrence of <code>filter()</code> where samples having at least 70 of heart rate will be kept.</p>
+<p>In other words the two comparisons must be <code>TRUE</code> and the selected samples come from women <strong>AND</strong> have at least 70 of heart rate.</p>
+</details>
+<p><strong>Bonus</strong>: Could you write the former line in an other way ? (There is a tip in the answer above)</p>
+<details>
+<summary>
+Answer
+</summary>
+<p>You can combine the comparisons in one expression wanting that both of them are <code>TRUE</code>, this is possible using the <strong>logical AND</strong> <code>&amp;</code>.</p>
+<p><code>clinical_data %&gt;%   filter(gender == "FEMALE" &amp; heart_rate &gt;= 70)</code></p>
+</details>
+<ol start="3" type="1">
+<li><code>clinical_data %&gt;%   filter(gender == "FEMALE") %&gt;% filter(heart_rate &gt;= 70) %&gt;% select(patient_id:gender)</code></li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p>From the <code>clinical_data</code> object, you fist filter for women, then for heart rate value of at least 70 and then extract all the columns from <code>patient_id</code> to <code>gender</code>.</p>
+<p>The <code>:</code> operator creates vector from a value (left element, <code>patient_id</code>) to another (right element, <code>gender</code>).</p>
+</details>
+<ol start="4" type="1">
+<li>Can you interpret this error ?</li>
+</ol>
+<p>I want display the patient ID of the samples treated with either drug A or drug B with heart rate less than 80.</p>
+<p><code>clinical_data %&gt;% filter(treatment_group %in% c("Drug A","Drug B")) %&gt;% select(patient_id) %&gt;% filter(heart_rate &gt;= 80)</code></p>
+<p>This bring an <code>Error</code> :</p>
+<div style="background-color:LemonChiffon;">
+<p>i Error in <code>filter()</code>:</p>
+<p>In argument: <code>heart_rate &gt;= 80</code>.</p>
+<p>! object ‘heart_rate’ not found</p>
+<p>Run <code>rlang::last_trace()</code> to see where the error occurred.</p>
+</div>
+<details>
+<summary>
+Answer
+</summary>
+<p>From the <code>clinical_data</code> object, you fist filter for women, then you select for the column <code>patient_id</code> and finally you filter for heart rate of at least 80.</p>
+<p>By applying the selection of the column <code>patient_id</code> only, the column <code>heart_rate</code> do not exists anymore which explain the <code>! object 'heart_rate' not found</code> error.</p>
+</details>
+<hr>
+</section>
+<section id="filter-rows-based-on-their-positions-with-the-slice-function-and-derivatives" class="level4">
+<h4 class="anchored" data-anchor-id="filter-rows-based-on-their-positions-with-the-slice-function-and-derivatives"><strong><em>Filter rows based on their positions with the <code>slice()</code> function and derivatives</em></strong></h4>
+<p>The <code>slice()</code> function in <code>dplyr</code> is used to select rows from a dataset based on their position. Unlike <code>filter()</code>, which selects rows based on conditions, <code>slice()</code> lets you specify the exact row numbers to extract. It is particularly useful for tasks like getting the first few rows, excluding specific rows, or extracting rows at regular intervals. Variants like <code>slice_head()</code>, <code>slice_tail()</code>, <code>slice_min()</code> and <code>slice_max()</code> provide more flexibility, allowing you to select rows based on different criteria like smallest values, random sampling, or a fixed number of rows.</p>
+<section id="select-beginning-and-end-of-the-data.frame" class="level5">
+<h5 class="anchored" data-anchor-id="select-beginning-and-end-of-the-data.frame">Select beginning and end of the data.frame</h5>
+<p>We have seen the basic R functions that allow us to display the beginning and end of a data frame. <code>dplyr</code> offers equivalent functions which can be seamlessly integrated into your data processing sequence.</p>
+<p>i) Display the <strong>10</strong> <strong>first rows</strong> and the columns <code>heart_rate</code>, <code>gender</code> and <code>diagnosis</code> of <code>clinical_data</code> after having selected the treatment A.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   heart_rate gender diagnosis    
+        &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        
+ 1         68 Female None         
+ 2         76 Male   Diabetes     
+ 3         62 Male   None         
+ 4         62 Female Diabetes     
+ 5         87 Female Hypertension 
+ 6         64 Female Diabetes     
+ 7         69 Female Hypertension 
+ 8         69 Female Diabetes     
+ 9         76 Female Heart Disease
+10         76 Female Hypertension </code></pre>
+</div>
+</div>
+<p>Which <code>slice</code> function would you use ? Which parameters (do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(treatment_group <span class="sc">==</span> <span class="st">"Drug A"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(heart_rate, gender, diagnosis) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Display the <strong>bottom</strong> <strong>5%</strong> rows of the data frame and the column from <code>gender</code> to <code>treatment_group</code></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 500 × 10
+   gender weight height blood_pressure_systolic blood_pressure_diastolic
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;                   &lt;dbl&gt;                    &lt;dbl&gt;
+ 1 Female     62   1.58                     131                       76
+ 2 Female     94   1.84                     106                       89
+ 3 Male       68   1.52                     125                       70
+ 4 Male       80   1.85                     105                       70
+ 5 Female     68   1.63                     133                       86
+ 6 Female     61   1.6                      138                       87
+ 7 Male       55   1.82                     108                       79
+ 8 Male       58   1.64                     119                       71
+ 9 Female     58   1.61                     152                       86
+10 Female     91   1.8                      124                       98
+# ℹ 490 more rows
+# ℹ 5 more variables: cholesterol &lt;dbl&gt;, glucose &lt;dbl&gt;, heart_rate &lt;dbl&gt;,
+#   smoking_status &lt;chr&gt;, treatment_group &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Which <code>slice</code> function would you use ? Which parameters do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gender<span class="sc">:</span>treatment_group) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_tail</span>(<span class="at">prop=</span><span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="select-beginning-and-end-of-the-ordered-data.frame" class="level5">
+<h5 class="anchored" data-anchor-id="select-beginning-and-end-of-the-ordered-data.frame">Select beginning and end of the ordered data.frame</h5>
+<p><code>slice_max()</code> and <code>slice_min()</code> enables to select a defined number or proportion of rows depending on the values contained in a given column.</p>
+<p>i) Select the 5 <code>patient_id</code> corresponding to the highest heart rate (<code>heart_rate</code>).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  patient_id heart_rate
+       &lt;dbl&gt;      &lt;dbl&gt;
+1       1306        106
+2       4599        105
+3       3106        103
+4       3651        103
+5       1941        102</code></pre>
+</div>
+</div>
+<p>Note: You need to handle <strong>ties</strong>, these are identical values that can not be ordered between them. Either you keep them all (default) or you keep the first(s) element(s) encountered in the column among those having the same value. In this example, we chose the former solution.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> heart_rate, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">with_ties =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, heart_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Which diagnosis are mainly harbored by the patients with the 20% lowest heart rates (<code>tr</code>).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>diagnosis
+     Diabetes Heart Disease  Hypertension          None 
+          480           529           503           502 </code></pre>
+</div>
+</div>
+<p><em>Step-by-step</em></p>
+<p>First, select the 20% lowest heart rate rows and the column <code>diagnosis</code> and save it in a variable named <code>lowest_hr</code> using <code>slice_min()</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lowest_hr <span class="ot">&lt;-</span> clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> heart_rate, <span class="at">prop =</span> <span class="fl">0.2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(diagnosis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Then, use the basic function <code>table()</code> which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column <code>known.oncogenes</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(lowest_hr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="order-rows-with-the-arrange-function" class="level4">
+<h4 class="anchored" data-anchor-id="order-rows-with-the-arrange-function"><strong><em>Order rows with the <code>arrange()</code> function</em></strong></h4>
+<p>The <code>arrange()</code> function in R’s dplyr package is used to reorder rows in a data frame based on the values of one or more columns. It allows you to arrange the rows in ascending or descending order depending on the values in the specified column(s).</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>arrange</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li>Ascending order</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li>Descending order</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="what-have-we-learned" class="level4">
+<h4 class="anchored" data-anchor-id="what-have-we-learned"><strong><em>What have we learned ?</em></strong></h4>
+<div style="background-color:AliceBlue;">
+<ul>
+<li><p>We can use the function <code>select()</code> to extract columns using their names as variable.</p></li>
+<li><p>We can use the function <code>filter()</code> to select rows depending on values contained in the columns that we call by their names as variable.</p></li>
+<li><p>We can select elements in a column by using comparison operators (<em>eg. <code>==</code>, <code>&gt;</code>, <code>!=</code></em>) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))</p></li>
+<li><p>We can use <code>slice_*()</code> functions to select rows depending on their positions after ordering the table or not.</p></li>
+<li><p>We can order rows using <code>arrange()</code> function</p></li>
+<li><p>We can combine a series of operations using <strong><code>%&gt;%</code></strong>, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.</p></li>
+<li><p>If it is not working and returning an error, do not freak out and read carefully the error. If it is still unclear, copy paste the Error in a web browser.</p></li>
+</ul>
+</div>
+</section>
+<section id="create-and-transform-columns" class="level3">
+<h3 class="anchored" data-anchor-id="create-and-transform-columns">Create and transform columns</h3>
+<p>We can add columns filled with new data or with transformed values from an existing column. The new columns can be located at specific places in the data frame.</p>
+</section>
+</section>
+<section id="modify-the-data-frame" class="level2">
+<h2 class="anchored" data-anchor-id="modify-the-data-frame"><img src="figures_merging/mutate.svg" class="img-fluid" alt="Modify the data frame"></h2>
+<section id="modify-or-create-a-column-in-your-data-frame-with-mutate" class="level4">
+<h4 class="anchored" data-anchor-id="modify-or-create-a-column-in-your-data-frame-with-mutate"><strong><em>Modify or create a column in your data frame with <code>mutate()</code></em></strong></h4>
+<p>Create a column named <code>none.diag</code> containing a <code>TRUE</code> if the column <code>diagnosis</code> contains None and <code>FALSE</code> otherwise and display the 10 rows containing the lowest MAPK signature values and the columns <code>patient_id</code>, <code>diagnosis</code> , <code>heart_rate</code> and the new column <code>none.diag</code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 4
+   patient_id diagnosis     heart_rate none.diag
+        &lt;dbl&gt; &lt;chr&gt;              &lt;dbl&gt; &lt;lgl&gt;    
+ 1       9855 None                  27 TRUE     
+ 2        527 Heart Disease         34 FALSE    
+ 3       8512 Heart Disease         34 FALSE    
+ 4       3563 None                  36 TRUE     
+ 5       5308 None                  36 TRUE     
+ 6       7304 Hypertension          36 FALSE    
+ 7       5455 Diabetes              37 FALSE    
+ 8       4994 Heart Disease         38 FALSE    
+ 9       2850 Heart Disease         39 FALSE    
+10       5158 Hypertension          39 FALSE    
+11       9191 None                  39 TRUE     </code></pre>
+</div>
+</div>
+<p><em>Step-by-step</em></p>
+<p>i) Define how to obtain a Boolean vector (<code>TRUE</code>/<code>FALSE</code>) depending on the <code>diagnosis</code> column.</p>
+<details>
+<summary>
+Answer
+</summary>
+<p>You need to use the comparison operator <code>==</code> between the name of the column (<code>diagnosis</code>) and the value <code>None</code>. In dplyr functions, the names of the column are called as variable (no quote), the string value <code>"None"</code> however needs to be surrounded by quotes.</p>
+<p><code>diagnosis == "None"</code></p>
+</details>
+<p>ii) Write the <code>mutate()</code> function to add the <code>none.diag</code> column.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">none.diag =</span> diagnosis <span class="sc">==</span> <span class="st">"None"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>iii) Write the full stream of function from reading the data.frame to selection of the selection of the columns</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">none.diag =</span> diagnosis <span class="sc">==</span> <span class="st">"None"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> heart_rate, <span class="at">n=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id,diagnosis,heart_rate,none.diag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>You need to combine the <code>mutate()</code> function with functions enabling the select rows and columns.</p>
+<p>iv) With the columns <code>height</code> and <code>weight</code> we can calculate the BMI. We will create a new column named <code>BMI</code> and display it with <code>patient_id</code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  patient_id   BMI
+       &lt;dbl&gt; &lt;dbl&gt;
+1          1  47.8
+2          2  49.7
+3          3  48.9
+4          4  30.9
+5          5  48.4</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI =</span> weight <span class="sc">/</span> height) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n=</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, BMI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<hr>
+</section>
+<section id="modulate-position-of-columns-with-relocate" class="level4">
+<h4 class="anchored" data-anchor-id="modulate-position-of-columns-with-relocate"><strong><em>Modulate position of columns with <code>relocate()</code></em></strong></h4>
+<p>i) Move the <code>gender</code> column to the first position in the dataset.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10,000 × 15
+   gender patient_id   age weight height blood_pressure_systolic
+   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;                   &lt;dbl&gt;
+ 1 Female          1    50     86   1.8                       98
+ 2 Male            2    70     88   1.77                     125
+ 3 Male            3    33     89   1.82                     119
+ 4 Male            4    86     58   1.88                     119
+ 5 Female          5    61     75   1.55                     135
+ 6 Female          6    69     88   1.78                     128
+ 7 Male            7    62     86   1.79                     154
+ 8 Male            8    33     61   1.57                     125
+ 9 Male            9    44     93   1.77                     123
+10 Male           10    88     84   1.86                     130
+# ℹ 9,990 more rows
+# ℹ 9 more variables: blood_pressure_diastolic &lt;dbl&gt;, cholesterol &lt;dbl&gt;,
+#   glucose &lt;dbl&gt;, heart_rate &lt;dbl&gt;, smoking_status &lt;chr&gt;,
+#   treatment_group &lt;chr&gt;, treatment_response &lt;chr&gt;,
+#   hospital_visits_last_year &lt;dbl&gt;, diagnosis &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Move the <code>glucose</code> column just after <code>height</code> column.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10,000 × 15
+   patient_id   age gender weight height glucose blood_pressure_systolic
+        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;                   &lt;dbl&gt;
+ 1          1    50 Female     86   1.8      112                      98
+ 2          2    70 Male       88   1.77      79                     125
+ 3          3    33 Male       89   1.82     126                     119
+ 4          4    86 Male       58   1.88     120                     119
+ 5          5    61 Female     75   1.55      98                     135
+ 6          6    69 Female     88   1.78     125                     128
+ 7          7    62 Male       86   1.79      98                     154
+ 8          8    33 Male       61   1.57      54                     125
+ 9          9    44 Male       93   1.77     122                     123
+10         10    88 Male       84   1.86      99                     130
+# ℹ 9,990 more rows
+# ℹ 8 more variables: blood_pressure_diastolic &lt;dbl&gt;, cholesterol &lt;dbl&gt;,
+#   heart_rate &lt;dbl&gt;, smoking_status &lt;chr&gt;, treatment_group &lt;chr&gt;,
+#   treatment_response &lt;chr&gt;, hospital_visits_last_year &lt;dbl&gt;, diagnosis &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(glucose, <span class="at">.after =</span> height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>NOTE : To move a column before, just replace <code>.after</code> argument by <code>.before</code>.</p>
+<hr>
+</section>
+<section id="group-and-summarise-the-information-with-group_by-and-summarise" class="level4">
+<h4 class="anchored" data-anchor-id="group-and-summarise-the-information-with-group_by-and-summarise"><strong><em>Group and summarise the information with <code>group_by()</code> and <code>summarise()</code></em></strong></h4>
+<p><code>group_by()</code> is used to group data based on one or more variables (columns). This function is often used in conjunction with other <code>tidyverse</code> functions.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>group_by</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>One function that works perfectly with <code>group_by()</code> is <code>summarise()</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>?dplyr<span class="sc">::</span>summarise</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can, for example, know the age mean of all patients. Indeed, <code>summarise()</code> can take in account basic functions like <code>mean()</code>, <code>median()</code>, <code>max()</code>…</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  mean_age
+     &lt;dbl&gt;
+1     55.0</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>But combined with <code>group_by()</code>, we can be more precise and obtain the average <code>age</code> by <code>gender</code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  gender mean_age
+  &lt;chr&gt;     &lt;dbl&gt;
+1 Female     54.8
+2 Male       55.1</code></pre>
+</div>
+</div>
+<details>
+<summary>
+Answer
+</summary>
+<p>To carry out this operation, we put two functions in a row, always using the <code>%&gt;%</code> symbol. The <code>group_by()</code> function first groups the variable we’re interested in, in this case <code>gender</code>. There are only two possibilities for this variable, <code>Male</code> or <code>Female.</code> Secondly, the <code>summarise()</code> function takes into account the <code>age</code> variable, calculating the average for each possibility of the <code>gender</code> variable. What’s more, the <code>summarise()</code> function displays the results in the console, rather than entering them directly into the dataframe.</p>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<hr>
+</section>
+<section id="modify-dataset-layout-with-gather-and-spread" class="level4">
+<h4 class="anchored" data-anchor-id="modify-dataset-layout-with-gather-and-spread"><strong><em>Modify dataset layout with <code>gather()</code> and <code>spread()</code></em></strong></h4>
+<p>We can change the layout of a dataset. It means, for example, transform columns into rows or the invert. This is a common task in data analysis, particularly when you need to organize data in a structure that is best suited for your analysis.</p>
+<p>In R, this often involves transforming data between <code>long format (tidy)</code> and <code>wide format (messy)</code>. In a <code>wide format</code>, each row represent a single observation, and columns represent variables (like in our df_1 or df_2 examples). <strong>In a <code>long format</code>, each row is a single measurement, with a separate column for the variable and the value</strong>. This structure will be useful later for certain graphical representations.</p>
+<p><img src="figures_merging/tidy_messy.svg" class="img-fluid" alt="Schematic view of wide and long formats"> To switch from one shape to another, there are two functions called <code>gather()</code> and <code>spread()</code>. <code>gather()</code> function enables to gather columns into rows, and <code>spread()</code> function allows to spread rows into columns. We say that <code>gather()</code> reshapes wide format to long format and <code>spread()</code> do the invert. Wide format is sometimes called messy and long format is named tidy.</p>
+<ul>
+<li><code>gather()</code> help</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>?tidyr<span class="sc">::</span>gather</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><code>spread()</code> help</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>?tidyr<span class="sc">::</span>spread</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>If we look at the <code>gather()</code> and <code>spread()</code> parameters, there are arguments in particular that will interest us :</p>
+<ul>
+<li><strong><em>key</em></strong> : this argument specifies the name of the new column that will contain the names of the existing columns being collapsed. It represents the variable names in the long format</li>
+<li><strong><em>value</em></strong> : this argument specifies the name of the new column that will contain the values from the gathered columns.</li>
+</ul>
+<p>i) Messy to tidy</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>tidy_data <span class="ot">&lt;-</span> messy_data <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">gather</span>(var, value, var1<span class="sc">:</span>var4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>ii) Tidy to messy</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>messy_data <span class="ot">&lt;-</span> tidy_data <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">spread</span>(var, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="what-have-we-learned-1" class="level4">
+<h4 class="anchored" data-anchor-id="what-have-we-learned-1"><strong><em>What have we learned ?</em></strong></h4>
+<div style="background-color:AliceBlue;">
+<ul>
+<li><p>We can use the function <code>mutate()</code> to create new columns based on existing ones.</p></li>
+<li><p>We can use the function <code>relocate()</code> to move columns as required in the dataset.</p></li>
+<li><p>We can use the function <code>group_by()</code> to group data based on one or several columns (variables). This function is combined with other like <code>summarise()</code> to display a summary of result based on data.</p></li>
+<li><p>We can modify the layout of a dataset with <code>gather()</code> and <code>spread()</code> to navigate between formats (long and wide).</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="practice-tcga_luad" class="level2">
+<h2 class="anchored" data-anchor-id="practice-tcga_luad">Practice : <code>TCGA_LUAD</code></h2>
+<p>You will work on extracted data from the TCGA public database, and now you will browse it to understand it better !</p>
+<ol type="1">
+<li>What are the samples with at least 70% of purity ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sample_id
+1  TCGA.05.4396.01
+2  TCGA.05.4397.01
+3  TCGA.05.4426.01
+4  TCGA.05.5429.01
+5  TCGA.05.5715.01
+6  TCGA.38.4630.01
+7  TCGA.44.5644.01
+8  TCGA.44.6146.01
+9  TCGA.49.4486.01
+10 TCGA.49.AAR9.01
+11 TCGA.49.AARR.01
+12 TCGA.50.5930.01
+13 TCGA.50.5931.01
+14 TCGA.50.5932.01
+15 TCGA.50.5946.01
+16 TCGA.50.6591.01
+17 TCGA.55.6972.01
+18 TCGA.55.6984.01
+19 TCGA.55.8087.01
+20 TCGA.55.8094.01
+21 TCGA.55.A494.01
+22 TCGA.62.A46O.01
+23 TCGA.62.A46P.01
+24 TCGA.64.5774.01
+25 TCGA.64.5775.01
+26 TCGA.67.3773.01
+27 TCGA.67.4679.01
+28 TCGA.69.7764.01
+29 TCGA.73.4676.01
+30 TCGA.75.6206.01
+31 TCGA.78.7155.01
+32 TCGA.78.7156.01
+33 TCGA.78.7158.01
+34 TCGA.78.7161.01
+35 TCGA.78.7167.01
+36 TCGA.78.7536.01
+37 TCGA.78.7537.01
+38 TCGA.78.7633.01
+39 TCGA.78.8662.01
+40 TCGA.86.7955.01
+41 TCGA.86.8054.01
+42 TCGA.86.8358.01
+43 TCGA.86.A4P7.01
+44 TCGA.86.A4P8.01
+45 TCGA.91.6847.01
+46 TCGA.91.8499.01
+47 TCGA.95.7043.01
+48 TCGA.95.7948.01
+49 TCGA.97.8171.01
+50 TCGA.99.AA5R.01
+51 TCGA.L9.A50W.01
+52 TCGA.L9.A7SV.01
+53 TCGA.MP.A5C7.01</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Purity <span class="sc">&gt;=</span> <span class="fl">0.7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="2" type="1">
+<li>What is the total purity median ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  median_Purity
+1          0.59</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_Purity =</span> <span class="fu">median</span>(Purity))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="3" type="1">
+<li>What is the mean and standard deviation of purity for each stages ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 3
+  pathologic_stage mean_purity sd_purity
+  &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;
+1 Stage I                0.577    0.0737
+2 Stage IA               0.590    0.118 
+3 Stage IB               0.633    0.125 
+4 Stage IIA              0.569    0.105 
+5 Stage IIB              0.594    0.117 
+6 Stage IIIA             0.587    0.107 
+7 Stage IIIB             0.688    0.142 
+8 Stage IV               0.671    0.142 </code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pathologic_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_purity =</span> <span class="fu">mean</span>(Purity, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_purity =</span> <span class="fu">sd</span>(Purity, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="4" type="1">
+<li>Which samples are in the top 20% of MAPK expression ?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sample_id signature_MAPK
+1  TCGA.55.8207.01      0.9612172
+2  TCGA.64.1680.01      0.9596072
+3  TCGA.69.7760.01      0.9580315
+4  TCGA.78.7158.01      0.9579475
+5  TCGA.38.4628.01      0.9520071
+6  TCGA.55.7914.01      0.9495374
+7  TCGA.50.6591.01      0.9489357
+8  TCGA.91.6836.01      0.9458304
+9  TCGA.69.7980.01      0.9393414
+10 TCGA.05.4249.01      0.9298746
+11 TCGA.55.1595.01      0.9224339
+12 TCGA.50.5942.01      0.9224102
+13 TCGA.86.7713.01      0.9210721
+14 TCGA.91.A4BD.01      0.9058053
+15 TCGA.73.4662.01      0.8991331
+16 TCGA.73.4668.01      0.8970708
+17 TCGA.L9.A50W.01      0.8865940
+18 TCGA.78.7163.01      0.8859368
+19 TCGA.91.8496.01      0.8842351
+20 TCGA.44.7659.01      0.8809789
+21 TCGA.50.5051.01      0.8796467
+22 TCGA.05.4390.01      0.8763612
+23 TCGA.64.5775.01      0.8675626
+24 TCGA.80.5608.01      0.8626194
+25 TCGA.55.7570.01      0.8624813
+26 TCGA.62.8397.01      0.8606748
+27 TCGA.50.5944.01      0.8509310
+28 TCGA.67.3773.01      0.8504866
+29 TCGA.55.8097.01      0.8483321
+30 TCGA.78.7145.01      0.8464395
+31 TCGA.91.6847.01      0.8334299
+32 TCGA.50.8457.01      0.8330630
+33 TCGA.62.8394.01      0.8306887
+34 TCGA.50.5932.01      0.8292485
+35 TCGA.L9.A443.01      0.8287184
+36 TCGA.05.5715.01      0.8286057
+37 TCGA.69.7973.01      0.8227336
+38 TCGA.55.8087.01      0.8206848
+39 TCGA.78.7147.01      0.8197464
+40 TCGA.05.4427.01      0.8186530
+41 TCGA.55.7283.01      0.8149257
+42 TCGA.50.5946.01      0.8125286
+43 TCGA.78.7167.01      0.8120508
+44 TCGA.44.8117.01      0.8050348
+45 TCGA.78.7161.01      0.8050126
+46 TCGA.44.4112.01      0.7968219
+47 TCGA.67.6215.01      0.7929747
+48 TCGA.55.7725.01      0.7904477
+49 TCGA.55.8206.01      0.7853667</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_max</span>(<span class="at">order_by =</span> signature_MAPK, <span class="at">prop =</span> <span class="fl">0.2</span>, <span class="at">with_ties =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sample_id, signature_MAPK)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="5" type="1">
+<li>Extract MAPK expression for each samples with KRAS and present it by descending order.</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         sample_id known.oncogenes signature_MAPK
+1  TCGA.55.8207.01            KRAS      0.9612172
+2  TCGA.55.7914.01            KRAS      0.9495374
+3  TCGA.91.6836.01            KRAS      0.9458304
+4  TCGA.69.7980.01            KRAS      0.9393414
+5  TCGA.05.4249.01            KRAS      0.9298746
+6  TCGA.55.1595.01            KRAS      0.9224339
+7  TCGA.86.7713.01            KRAS      0.9210721
+8  TCGA.73.4662.01            KRAS      0.8991331
+9  TCGA.73.4668.01            KRAS      0.8970708
+10 TCGA.44.7659.01            KRAS      0.8809789
+11 TCGA.50.5051.01            KRAS      0.8796467
+12 TCGA.05.4390.01            KRAS      0.8763612
+13 TCGA.64.5775.01            KRAS      0.8675626
+14 TCGA.80.5608.01            KRAS      0.8626194
+15 TCGA.67.3773.01            KRAS      0.8504866
+16 TCGA.55.8097.01            KRAS      0.8483321
+17 TCGA.78.7145.01            KRAS      0.8464395
+18 TCGA.50.8457.01            KRAS      0.8330630
+19 TCGA.50.5932.01            KRAS      0.8292485
+20 TCGA.L9.A443.01            KRAS      0.8287184
+21 TCGA.69.7973.01            KRAS      0.8227336
+22 TCGA.05.4427.01            KRAS      0.8186530
+23 TCGA.55.7283.01            KRAS      0.8149257
+24 TCGA.78.7167.01            KRAS      0.8120508
+25 TCGA.78.7161.01            KRAS      0.8050126
+26 TCGA.55.7725.01            KRAS      0.7904477
+27 TCGA.64.5778.01            KRAS      0.7851112
+28 TCGA.64.5774.01            KRAS      0.7812835
+29 TCGA.05.4415.01            KRAS      0.7694772
+30 TCGA.67.3774.01            KRAS      0.7675273
+31 TCGA.67.4679.01            KRAS      0.7643734
+32 TCGA.NJ.A4YI.01            KRAS      0.7628199
+33 TCGA.73.7498.01            KRAS      0.7604873
+34 TCGA.55.8094.01            KRAS      0.7374347
+35 TCGA.97.7938.01            KRAS      0.7325512
+36 TCGA.86.8054.01            KRAS      0.7292614
+37 TCGA.95.7567.01            KRAS      0.7261443
+38 TCGA.78.8655.01            KRAS      0.7248454
+39 TCGA.55.A494.01            KRAS      0.7216151
+40 TCGA.05.4433.01            KRAS      0.6885834
+41 TCGA.49.4505.01            KRAS      0.6795376
+42 TCGA.73.4677.01            KRAS      0.6723025
+43 TCGA.49.4510.01            KRAS      0.6651147
+44 TCGA.49.AARQ.01            KRAS      0.6647472
+45 TCGA.78.7539.01            KRAS      0.6630700
+46 TCGA.62.A46S.01            KRAS      0.6600295
+47 TCGA.75.7030.01            KRAS      0.6592348
+48 TCGA.97.A4M0.01            KRAS      0.6567620
+49 TCGA.86.8281.01            KRAS      0.6417078
+50 TCGA.91.8497.01            KRAS      0.6388438
+51 TCGA.05.4403.01            KRAS      0.6313164
+52 TCGA.35.3615.01            KRAS      0.6100616
+53 TCGA.91.6849.01            KRAS      0.5996117
+54 TCGA.44.7671.01            KRAS      0.5974010
+55 TCGA.50.5936.01            KRAS      0.5872490
+56 TCGA.55.8514.01            KRAS      0.5769864
+57 TCGA.55.6984.01            KRAS      0.5728733
+58 TCGA.44.6776.01            KRAS      0.5702109
+59 TCGA.44.6146.01            KRAS      0.5589566
+60 TCGA.05.4395.01            KRAS      0.5578706
+61 TCGA.75.7027.01            KRAS      0.5494847
+62 TCGA.78.7148.01            KRAS      0.5160726
+63 TCGA.55.7576.01            KRAS      0.5139644
+64 TCGA.55.6970.01            KRAS      0.5117584
+65 TCGA.75.6206.01            KRAS      0.4972637
+66 TCGA.55.8615.01            KRAS      0.4952499
+67 TCGA.05.4250.01            KRAS      0.4811406
+68 TCGA.95.7562.01            KRAS      0.4658260
+69 TCGA.55.7910.01            KRAS      0.4629788
+70 TCGA.05.4418.01            KRAS      0.4378646
+71 TCGA.95.A4VK.01            KRAS      0.4040509
+72 TCGA.78.7540.01            KRAS      0.3998440
+73 TCGA.86.8674.01            KRAS      0.3929826
+74 TCGA.97.8176.01            KRAS      0.3599364
+75 TCGA.55.6975.01            KRAS      0.3026009
+76 TCGA.55.8299.01            KRAS      0.2971146
+77 TCGA.MP.A4T8.01            KRAS      0.2917234
+78 TCGA.4B.A93V.01            KRAS      0.2688583
+79 TCGA.78.7166.01            KRAS      0.2303336</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(known.oncogenes <span class="sc">==</span> <span class="st">"KRAS"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sample_id, known.oncogenes, signature_MAPK) <span class="sc">%&gt;%</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(signature_MAPK))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>BONUS : Considering purity higher than 0.6 is high, lower than 0.4 is low and between 0.4 and 0.6 is medium. Calculate the percentage of individuals in each category by stages. Find help on internet or with chatbot !</p>
+<details>
+<summary>
+Answer
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'pathologic_stage'. You can override using
+the `.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 4
+# Groups:   pathologic_stage [8]
+   pathologic_stage Purity_perf Count Percentage
+   &lt;chr&gt;            &lt;chr&gt;       &lt;int&gt;      &lt;dbl&gt;
+ 1 Stage I          High            1       33.3
+ 2 Stage I          Medium          2       66.7
+ 3 Stage IA         High           24       41.4
+ 4 Stage IA         Medium         34       58.6
+ 5 Stage IB         High           32       47.1
+ 6 Stage IB         Medium         36       52.9
+ 7 Stage IIA        High            5       23.8
+ 8 Stage IIA        Medium         16       76.2
+ 9 Stage IIB        High           16       44.4
+10 Stage IIB        Medium         20       55.6
+11 Stage IIIA       High           12       30  
+12 Stage IIIA       Medium         28       70  
+13 Stage IIIB       High            4       66.7
+14 Stage IIIB       Medium          2       33.3
+15 Stage IV         High           11       78.6
+16 Stage IV         Medium          3       21.4</code></pre>
+</div>
+</div>
+</details>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>TCGA_LUAD <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Purity_perf =</span> <span class="fu">case_when</span>(</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    Purity <span class="sc">&gt;</span> <span class="fl">0.6</span> <span class="sc">~</span> <span class="st">"High"</span>,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    Purity <span class="sc">&gt;=</span> <span class="fl">0.4</span> <span class="sc">&amp;</span> Purity <span class="sc">&lt;=</span> <span class="fl">0.6</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    Purity <span class="sc">&lt;</span> <span class="fl">0.4</span> <span class="sc">~</span> <span class="st">"Low"</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">%&gt;%</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(pathologic_stage, Purity_perf) <span class="sc">%&gt;%</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(pathologic_stage) <span class="sc">%&gt;%</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Percentage =</span> Count <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
