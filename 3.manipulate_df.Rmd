@@ -23,7 +23,7 @@ details > p {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
-TCGA_LUAD <- read.delim("~/Documents/O·D·I·L/formation_R/data/TCGA_LUAD_subset.tsv", row.names = 1)
+TCGA_LUAD <- read.delim("./datasets//TCGA_LUAD_subset.tsv", row.names = 1)
 
 ```
 
@@ -46,7 +46,7 @@ A working directory contains all the data that will be useful to us (tables, ima
 * Click Choose
 * Observe the console and save the command in your script
 
-![](figures_practical_case/choose_directory.svg)
+![](./img/choose_directory.svg)
 
 # Create a script
 
@@ -58,7 +58,7 @@ The advantage of a script is that you can save your code, keep it and reuse it.
 * Save your file in your intro_R folder
 * Save your script regularly
 
-![](figures_practical_case/create_script.svg)
+![](./img/create_script.svg)
 
 
 # Load the data in R
@@ -69,13 +69,13 @@ We need to load the data to be able to work. Use the directory you have created 
 * In the "Environment" panel, select "Import Dataset"
 * Select "From Text (base)..."
 * Navigate to your intro_R folder
-* Choose TCGA_LUAD_subset.tsv
+* Choose `TCGA_LUAD_subset.tsv`
 * Double-click it to open
 * Change the name of the variable: `TCGA_LUAD`
 * Specify that the first line contains the names of the columns 
 * Specify that the first row contains the names of the rows
 
-![](figures_practical_case/load_data.svg)
+![](./img/load_data.svg)
 
 
 After this last step, you can see that a variable has been created and is displayed in the “Environment” panel. This variable is called `TCGA_LUAD` (or whatever you called it) containing the data.
@@ -89,7 +89,7 @@ Those functions generally begin with `read()`.
 In our case the function is `read_delim()`.
 
 ```{r load data}
-TCGA_LUAD <- read.delim("~/Documents/intro_R/TCGA_LUAD_subset.tsv", row.names = 1)
+TCGA_LUAD <- read.delim("./datasets/TCGA_LUAD_subset.tsv", row.names = 1)
 ```
 
 This function is built to load a .tsv files (tabulation-separated values). 
