@@ -34,7 +34,7 @@ TCGA_LUAD <- read.delim("datasets/TCGA_LUAD_subset.tsv", stringsAsFactors=FALSE)
 TCGA_LUAD_survival <- read.delim("datasets/TCGA_LUAD_subset_survival.tsv", stringsAsFactors=FALSE)
 ```
 
-[\<\<\< Back to Index](./0.course_index.qmd)
+[\<\<\< Back to Index](./0.course_index.html)
 
 In many cases, the information you want to exploit is not contained in a single, perfectly readable dataset. It's important to be able to gather the information we have to optimize our operations. R offers a range of functions for carrying out operations within a single dataframe or between several data frames.
 
@@ -158,4 +158,4 @@ head(TCGA_LUAD_total)
 TCGA_LUAD_total <- merge(TCGA_LUAD, TCGA_LUAD_survival, by = "sampleID", all = TRUE)
 ```
 
-[\<\<\< Back to Index](./0.course_index.qmd)
+[\<\<\< Back to Index](./0.course_index.html)
