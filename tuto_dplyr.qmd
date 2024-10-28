@@ -35,7 +35,7 @@ library(tidyverse)
 clinical_data <- read_csv("datasets/clinical_data.csv")
 tidy_data <- read_csv("datasets/tidy_data.csv")
 messy_data <- read_csv("datasets/messy_data.csv")
-
+TCGA_LUAD <- read.delim("datasets/TCGA_LUAD.tsv", stringsAsFactors=FALSE)
 ```
 
 ## What is `dplyr` ?
@@ -347,7 +347,7 @@ table(lowest_hr)
 
 *Step-by-step*
 
-First, select the 20% lowest heart rate rows and the column `diagnosis` and save it it a variable named `lowest_hr` using `slice_min()`.
+First, select the 20% lowest heart rate rows and the column `diagnosis` and save it in a variable named `lowest_hr` using `slice_min()`.
 
 ```{r, eval=F}
 lowest_hr <- clinical_data %>% 
@@ -361,6 +361,31 @@ Then, use the basic function `table()` which is an easy and very useful function
 table(lowest_hr)
 ```
 
+------------------------------------------------------------------------
+
+#### ***Order rows with the `arrange()` function***
+
+The `arrange()` function in R's dplyr package is used to reorder rows in a data frame based on the values of one or more columns. It allows you to arrange the rows in ascending or descending order depending on the values in the specified column(s).
+
+```{r, eval=F}
+?dplyr::arrange
+```
+
+* Ascending order
+
+```{r, eval=F}
+clinical_data %>%
+  arrange(age)
+```
+
+* Descending order
+
+```{r, eval=F}
+clinical_data %>%
+  arrange(desc(age))
+```
+
+
 #### ***What have we learned ?***
 
 ::: {style="background-color:AliceBlue;"}
@@ -371,6 +396,8 @@ table(lowest_hr)
 -   We can select elements in a column by using comparison operators (*eg. `==`, `>`, `!=`*) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))
 
 -   We can use `slice_*()` functions to select rows depending on their positions after ordering the table or not.
+
+-   We can order rows using `arrange()` function either in ascending or descending order.
 
 -   We can combine a series of operations using **`%>%`**, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.
 
@@ -424,8 +451,9 @@ clinical_data %>%
   select(patient_id,diagnosis,heart_rate,none.diag)
 ```
 
-With the columns `height` and `weight` we can calculate the BMI. We will create a new column named `BMI` and display it with `patient_id`.
+You need to combine the `mutate()` function with functions enabling the select rows and columns.
 
+iv\) With the columns `height` and `weight` we can calculate the BMI. We will create a new column named `BMI` and display it with `patient_id`.
 
 ```{r, echo=F}
 clinical_data %>% 
@@ -434,7 +462,15 @@ clinical_data %>%
   select(patient_id, BMI)
 ```
 
-You need to combine the `mutate()` function with functions enabling the select rows and columns.
+
+```{r, eval=F}
+clinical_data %>% 
+  mutate(BMI = weight / height) %>%
+  slice_head(n=5) %>%
+  select(patient_id, BMI)
+```
+
+
 
 ------------------------------------------------------------------------
 
@@ -477,12 +513,29 @@ NOTE : To move a column before, just replace `.after` argument by `.before`.
 ```
 
 One function that works perfectly with `group_by()` is `summarise()`.
-For example, we want to know the age mean for each gender :
+
+```{r}
+?dplyr::summarise
+```
+
+We can, for example, know the age mean of all patients. Indeed, `summarise()` can take in account basic functions like `mean()`, `median()`, `max()`...
+
+```{r, echo=F}
+clinical_data %>%
+  summarise(mean_age = mean(age))
+```
+
+```{r, eval=F}
+clinical_data %>%
+  summarise(mean_age = mean(age))
+```
+
+But combined with `group_by()`, we can be more precise and obtain the average `age` by `gender`.
 
 ```{r, echo=F}
 clinical_data %>%
   group_by(gender) %>%
-  summarize(mean_age = mean(age))
+  summarise(mean_age = mean(age))
 ```
 
 <details>
@@ -497,8 +550,9 @@ The `group_by()` function first groups the variable we're interested in, in this
 ```{r, eval = F}
 clinical_data %>%
   group_by(gender) %>%
-  summarize(mean_age = mean(age))
+  summarise(mean_age = mean(age))
 ```
+
 
 ------------------------------------------------------------------------
 
@@ -555,3 +609,148 @@ messy_data <- tidy_data %>%
 -   We can modify the layout of a dataset with `gather()` and `spread()` to navigate between formats (long and wide).
 
 :::
+
+## Practice : `TCGA_LUAD`
+
+You will work on extracted data from the TCGA public database, and now you will browse it to understand it better !
+
+1) What are the samples with at least 70% of purity ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+  filter(Purity >= 0.7)%>%
+  select(sample_id)
+```
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+  filter(Purity >= 0.7) %>%
+  select(sample_id)
+```
+
+2) What is the total purity median ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+  summarise(median_Purity = median(Purity))
+```
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+  summarise(median_Purity = median(Purity))
+```
+
+3) What is the mean and standard deviation of purity for each stages ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+  group_by(pathologic_stage) %>%
+  summarize(
+    mean_purity = mean(Purity, na.rm = TRUE),
+    sd_purity = sd(Purity, na.rm = TRUE)
+  )
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+  group_by(pathologic_stage) %>%
+  summarize(
+    mean_purity = mean(Purity, na.rm = TRUE),
+    sd_purity = sd(Purity, na.rm = TRUE)
+  )
+```
+
+4) Which samples are in the top 20% of MAPK expression ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>% 
+    slice_max(order_by = signature_MAPK, prop = 0.2, with_ties = F) %>%
+    select(sample_id, signature_MAPK)
+```
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>% 
+    slice_max(order_by = signature_MAPK, prop = 0.2, with_ties = F) %>%
+    select(sample_id, signature_MAPK)
+```
+
+5) Extract MAPK expression for each samples with KRAS and present it by descending order.
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+    filter(known.oncogenes == "KRAS") %>%
+    select(sample_id, known.oncogenes, signature_MAPK) %>%
+    arrange(desc(signature_MAPK))
+```
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+    filter(known.oncogenes == "KRAS") %>%
+    select(sample_id, known.oncogenes, signature_MAPK) %>%
+    arrange(desc(signature_MAPK))
+```
+
+
+BONUS : Considering purity higher than 0.6 is high, lower than 0.4 is low and between 0.4 and 0.6 is medium. Calculate the percentage of individuals in each category by stages.
+Find help on Google or with chatbot !
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>% 
+    mutate(Purity_perf = case_when(
+    Purity > 0.6 ~ "High",
+    Purity >= 0.4 & Purity <= 0.6 ~ "Medium",
+    Purity < 0.4 ~ "Low"
+    )) %>%
+    group_by(pathologic_stage, Purity_perf) %>%
+    summarise(Count = n()) %>%
+    group_by(pathologic_stage) %>%
+    mutate(Percentage = Count / sum(Count) * 100)
+    
+```
+</details>
+
+
+```{r, eval = F}
+TCGA_LUAD %>% 
+    mutate(Purity_perf = case_when(
+    Purity > 0.6 ~ "High",
+    Purity >= 0.4 & Purity <= 0.6 ~ "Medium",
+    Purity < 0.4 ~ "Low"
+    )) %>%
+    group_by(pathologic_stage, Purity_perf) %>%
+    summarise(Count = n()) %>%
+    group_by(pathologic_stage) %>%
+    mutate(Percentage = Count / sum(Count) * 100)
+    
+```
+
