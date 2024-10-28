@@ -13,7 +13,7 @@ details > summary {
   box-shadow: 1px 1px 2px #bbbbbb;
   cursor: pointer;
 }
-​
+
 details > p {
   background-color: #E0F8EC;
   padding: 4px;
@@ -41,7 +41,7 @@ It exists several repositories.
 
 CRAN is the primary repository for R packages. It is a collection of thousands of R packages that are contributed by developers around the world. Packages stored on CRAN go through a review process to ensure quality and compatibility. CRAN allows users to install packages directly in R either via the “Packages” panel or directly using a command line.
 
-![](figures_packages/install_packages_R.svg)
+![](./img/install_packages_R.svg)
 ```{r install package CRAN}
 install.packages("package_name")
 ```
@@ -54,7 +54,7 @@ library(package_name)
 ```
 Note that for the library function, you must enter the package name without quotation marks.
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 - Bioconductor
 
@@ -80,7 +80,7 @@ Please check the Bioconductor website for more information about installation an
 
 Link : [Bioconductor](https://www.bioconductor.org/install/)
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 - GitHub
 
@@ -93,7 +93,7 @@ Like Bioconductor, you'll need to install a package to download packages from Gi
 install.packages("devtools")
 ```
 
-Once "devtools" is installed, you can download packages from the GitHub community.
+Once `devtools` is installed, you can download packages from the GitHub community.
 
 ```{r install package with devtools}
 devtools::install_github("name_of_github_repository/package_name")
