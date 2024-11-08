@@ -39,6 +39,7 @@ In this course, you'll also learn how to make simple but important graphical rep
 
 ## Course sheets
 
+-   [Introduction to the R language](https://tinyurl.com/introR-bric) (Slides)
 -   [Discover R and RStudio : installation and presentation](./1.intro.html)
 -   [Interpret simple code and create variables](./2.exercices.html)
 -   [First data manipulations](./3.manipulate_df.html)
