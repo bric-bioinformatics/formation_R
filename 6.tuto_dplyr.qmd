@@ -411,7 +411,7 @@ We can add columns filled with new data or with transformed values from an exist
 
 #### ***Modify or create a column in your data frame with `mutate()`***
 
-Create a column named `none.diag` containing a `TRUE` if the column `diagnosis` contains `No Disease` and `FALSE` otherwise and display the 10 rows containing the lowest MAPK signature values and the columns `patient_id`, `diagnosis` , `heart_rate` and the new column `none.diag`.
+Create a column named `none.diag` containing a `TRUE` if the column `diagnosis` contains `No Disease` and `FALSE` otherwise and display the 10 rows containing the lowest heart rate values and the columns `patient_id`, `diagnosis` , `heart_rate` and the new column `none.diag`.
 
 ```{r, echo=F}
 clinical_data %>% 
