@@ -30,7 +30,6 @@ editor: visual
     }
 </style>
 ```
-
 ```{r, setup, echo=F, warning=FALSE,message=FALSE}
 require("knitr")
 library(tidyverse)
@@ -38,7 +37,7 @@ clinical_data <- read_csv("datasets/clinical_data.csv")
 TCGA_LUAD <- read.delim("datasets/TCGA_LUAD_subset.tsv", stringsAsFactors=FALSE)
 ```
 
-[<<< Back to Index](./0.course_index.html)
+[\<\<\< Back to Index](./0.course_index.html)
 
 ## What is `dplyr` ?
 
@@ -412,11 +411,11 @@ We can add columns filled with new data or with transformed values from an exist
 
 #### ***Modify or create a column in your data frame with `mutate()`***
 
-Create a column named `none.diag` containing a `TRUE` if the column `diagnosis` contains None and `FALSE` otherwise and display the 10 rows containing the lowest MAPK signature values and the columns `patient_id`, `diagnosis` , `heart_rate` and the new column `none.diag`.
+Create a column named `none.diag` containing a `TRUE` if the column `diagnosis` contains `No Disease` and `FALSE` otherwise and display the 10 rows containing the lowest MAPK signature values and the columns `patient_id`, `diagnosis` , `heart_rate` and the new column `none.diag`.
 
 ```{r, echo=F}
 clinical_data %>% 
-  mutate(none.diag = diagnosis == "None") %>%
+  mutate(none.diag = diagnosis == "No Disease") %>%
   slice_min(order_by = heart_rate, n=10) %>%
   select(patient_id,diagnosis,heart_rate,none.diag)
 ```
@@ -431,21 +430,21 @@ i\) Define how to obtain a Boolean vector (`TRUE`/`FALSE`) depending on the `dia
 
 You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"None"` however needs to be surrounded by quotes.
 
-`diagnosis == "None"`
+`diagnosis == "``No Disease``"`
 
 </details>
 
 ii\) Write the `mutate()` function to add the `none.diag` column.
 
 ```{r, eval=FALSE}
-mutate(none.diag = diagnosis == "None")
+mutate(none.diag = diagnosis == "No Disease")
 ```
 
 iii\) Write the full stream of function from reading the data.frame to selection of the selection of the columns
 
 ```{r, eval=F}
 clinical_data %>% 
-  mutate(none.diag = diagnosis == "None") %>%
+  mutate(none.diag = diagnosis == "No Disease") %>%
   slice_min(order_by = heart_rate, n=10) %>%
   select(patient_id,diagnosis,heart_rate,none.diag)
 ```
@@ -706,6 +705,6 @@ TCGA_LUAD %>%
     
 ```
 
----
+------------------------------------------------------------------------
 
-[<<< Back to Index](./0.course_index.html)
+[\<\<\< Back to Index](./0.course_index.html)
