@@ -428,9 +428,9 @@ i\) Define how to obtain a Boolean vector (`TRUE`/`FALSE`) depending on the `dia
 
 <summary>Answer</summary>
 
-You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"None"` however needs to be surrounded by quotes.
+You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"``No Disease``"` however needs to be surrounded by quotes.
 
-`diagnosis == "``No Disease``"`
+`diagnosis ==``"No Disease"`
 
 </details>
 
