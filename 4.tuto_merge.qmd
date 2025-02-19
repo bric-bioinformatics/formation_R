@@ -1,0 +1,161 @@
+---
+title: "Merging data frame tutorial"
+format:
+  html:
+    code-fold: true
+    embed-resources: true 
+editor: visual
+---
+
+```{=html}
+<style>
+  details > summary {
+    padding: 4px;
+    width: 400px;
+    background-color: #eeeeee;
+    border: none;
+    box-shadow: 1px 1px 2px #bbbbbb;
+    cursor: pointer;
+  }
+  details > p {
+    background-color: #E0F8EC;
+    padding: 4px;
+    margin: 0;
+    box-shadow: 1px 1px 2px #bbbbbb;
+  }
+</style>
+```
+```{r, setup, echo=F, warning=FALSE,message=FALSE}
+require("knitr")
+library(readr)
+df_1 <- read_csv("datasets/df_1.csv")
+df_2 <- read_csv("datasets/df_2.csv")
+TCGA_LUAD <- read.delim("datasets/TCGA_LUAD_subset.tsv", stringsAsFactors=FALSE)
+TCGA_LUAD_survival <- read.delim("datasets/TCGA_LUAD_subset_survival.tsv", stringsAsFactors=FALSE)
+```
+
+[\<\<\< Back to Index](./0.course_index.html)
+
+In many cases, the information you want to exploit is not contained in a single, perfectly readable dataset. It's important to be able to gather the information we have to optimize our operations. R offers a range of functions for carrying out operations within a single dataframe or between several data frames.
+
+## The *`merge()`* function
+
+This function is a standard feature of R and does not require you to download anything else.
+
+Identify the arguments of the function `merge()` enabling to merge two `data.frame` **by** the name of a column.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+How to merge two data.frame in R using merge()
+
+</details>
+
+**You can also use AI chatbot to help you like ChatGPT.**
+
+You can see that `merge()` has many arguments. For our example, we only need 3 arguments.
+
+<details>
+
+<summary>Basic arguments for `merge()` function</summary>
+
+-   `x` : it will take the first data frame
+-   `y` : it will take the second data frame
+-   `by` : this argument is used to specify the column from which the data frames are to be assembled.
+
+This third argument is really important. This means that to use the merge function on our two data frames, there must be a column in common between the two. We can also have several columns in common.
+
+</details>
+
+*Example:*
+
+For our example, we will take two data frames (`df_1` and `df_2`) with the following structure:
+
+-   `df_1`
+
+<details>
+
+<summary>Structure of `df_1`</summary>
+
+```{r, echo=F}
+df_1
+```
+
+</details>
+
+-   `df_2`
+
+<details>
+
+<summary>Structure of `df_2`</summary>
+
+```{r, echo=F}
+df_2
+```
+
+</details>
+
+Looking at these two data frames, the first thing we notice is that there are two common columns, `id` and `name`. Then each data frame has its own columns.\
+The second observation we can make is that there are not the same number of lines between the two data frames.\
+We will merge our data frames by `id` and `name`. Let's see what happens.
+
+```{r}
+df_3 <- merge(df_1, df_2, by = c("id","name"))
+```
+
+<details>
+
+<summary>Structure of `df_3`</summary>
+
+```{r, echo=F}
+df_3
+```
+
+</details>
+
+We have created a new variable called `df_3` which contains the result of the merge of the two data frames `df_1` and `df_2`. What's most striking is the number of lines in this new data frame. There are 7 lines, compared with 8 in `df_1` and 10 in `df_2`.
+
+In `df_1`, we have a line with an id/name combination that is `5/"Jack"`. This combination does not exist in `df_2`. This line is then ignored by the `merge()` function.
+
+\
+Why doesn't `merge()` take different lines into account?
+
+Remember, when searching for function help, there are many other arguments than the ones we've used, including an argument called `all`. This argument allows you to specify whether you wish to keep all rows that is not common. By default, this argument is set to `FALSE`, so that only rows with data from both `x` and `y` are included in the output. So we need, to keep all rows, to set the argument to `TRUE`.
+
+```{r}
+df_4 <- merge(df_1, df_2, by = c("id","name"), all = TRUE)
+```
+
+<details>
+
+<summary>Structure of `df_4`</summary>
+
+```{r, echo=F}
+df_4
+```
+
+</details>
+
+Now we have all the rows of the two data frames `df_1` and `df_2`. To compensate for the fact that some rows are not common and therefore lack information, NAs (Not Available) have been introduced.
+
+## Practice : `TCGA_LUAD`
+
+Create the `TCGA_LUAD_total` data frame by combining the two data frame `TCGA_LUAD` and `TCGA_LUAD_survival`. You need to inspect the data to identify the columns to use as keys.
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD_total <- merge(TCGA_LUAD, TCGA_LUAD_survival, by = "sampleID", all = TRUE)
+head(TCGA_LUAD_total)
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD_total <- merge(TCGA_LUAD, TCGA_LUAD_survival, by = "sampleID", all = TRUE)
+```
+
+[\<\<\< Back to Index](./0.course_index.html)

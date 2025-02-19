@@ -1,0 +1,710 @@
+---
+title: "dplyr tutorial: manupulate data frames"
+format:
+  html:
+    code-fold: true
+    embed-resources: true 
+editor: visual
+---
+
+```{=html}
+<style>
+    details > summary {
+      padding: 4px;
+      width: 400px;      
+      background-color: #eeeeee;      
+      border: none;      
+      box-shadow: 1px 1px 2px #bbbbbb;      
+      cursor: pointer;      
+    }  
+    details > p {
+      background-color: #E0F8EC;
+      padding: 4px;
+      margin: 0;
+      box-shadow: 1px 1px 2px #bbbbbb;
+    }
+    header h1 {
+      font-size: 70px;
+      font-weight: 600;
+      font-palette: tomato;
+    }
+</style>
+```
+```{r, setup, echo=F, warning=FALSE,message=FALSE}
+require("knitr")
+library(tidyverse)
+clinical_data <- read_csv("datasets/clinical_data.csv")
+TCGA_LUAD <- read.delim("datasets/TCGA_LUAD_subset.tsv", stringsAsFactors=FALSE)
+```
+
+[\<\<\< Back to Index](./0.course_index.html)
+
+## What is `dplyr` ?
+
+`dplyr` is a data manipulation framework that offers a consistent set of functions, or "verbs", to tackle common data manipulation tasks. You'll see how `dplyr`'s shortcuts can be used to perform traditional R data manipulation more efficiently. It also provides verbs that can help to simplify complex data operations.
+
+This package is part of a larger package called `tidyverse`. So we need to install `tidyverse` and it will download automatically `dplyr` and other useful packages (see the link below).
+
+As this package is not installed by default, it must be installed and activated.
+
+```{r, eval=F}
+# Install the package
+install.packages("tidyverse")
+# Load the library to make it accessible in you working environment
+library(tidyverse)
+```
+
+Link : [Tidyverse](https://www.tidyverse.org/)
+
+## Training dataset : `clinical_data`
+
+Using the RStudio interface, load the file `clinical_data.csv` ([See Manipulate the data](./3.manipulate_df.html))
+
+For the following examples, we will take a dataset composed with some clinical variables (columns) and patients (rows).The dataset is named `clinical_data`. Display the 6 first rows.
+
+```{r}
+head(clinical_data)
+```
+
+Check the **dimensions** of the `data.frame`. How many patients are described ? How many clinical features are available ?
+
+```{r eval=F}
+dim(clinical_data)
+```
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo=F}
+dim(clinical_data)
+```
+
+The table contains `r nrow(clinical_data)` patients and `r ncol(clinical_data)` features.
+
+</details>
+
+Unlike our first example, you can see in the Environment panel that this dataset contains a large number of rows. This doesn't change the functions we will be using; on the contrary, you will see that you will be able to work on very large datasets more easily.
+
+## Manipulate `data.frame` with dplyr
+
+In this section, we introduce the pipe **`%>%`,** a syntax that allows you to read the data and pass it through a series of functions seamlessly. The first pipe takes the initial dataset, making it easy to apply successive transformations in a clear, step-by-step manner.
+
+With dplyr, you have all the tools needed to efficiently manipulate your data. You can filter, select, reorder, and modify rows and columns with simple functions like `filter()`, `slice()`, `arrange()`, `select()`, and `mutate()`. Additionally, you can rename columns, change their order, and even summarize groups of rows by their average, maximum, standard deviation etc.
+
+### Subset your dataset
+
+We can select specific portions of data, such as rows, columns, or both, from a larger data set based on certain conditions. Sub-setting allows to extract meaningful data for analysis without modifying the original data set.
+
+## ![Sub-setting operations](./img/subset.svg)
+
+#### ***Select columns with the `select()` function***
+
+Use the select() function to display the columns `r colnames(clinical_data)[6]` and `r colnames(clinical_data)[7]`.
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+How to select columns dplyr R
+
+</details>
+
+Or use the help provided by the package dplyr.
+
+```{r}
+# NOTE : Here, we specify the package name with a double colon (::) and then the function name, 
+# to avoid conflicts between functions that may have the same name.
+?dplyr::select
+```
+
+```{r, eval=FALSE}
+# We refer to the columns by their name, the name is here evaluated as a variable (no quote)
+clinical_data %>% 
+  select(blood_pressure_systolic, blood_pressure_diastolic)
+```
+
+This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague. Try to find the function that enable to select columns starting with, ending with or containing a particular character or string.
+
+The functions will be used as follow: `select(function("char"))` or `select(function(function))`
+
+<details>
+
+<summary>Key words to write on your favorite browser</summary>
+
+select columns start with dplyr R
+
+</details>
+
+<details>
+
+<summary>Answer</summary>
+
+| Functions to combine with *select* | Description                             | Examples                                             |
+|------------------------|------------------------|------------------------|
+| *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("treatment"))` |
+| *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("lic"))`         |
+| *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("blood"))`        |
+| where()                            | Contains a specific type of variable    | `clinical_data %>% select(where(is.numeric))`        |
+
+These are just a few examples - there are many others, but these are the most important and widely used. It's up to you to use them, test them and change them to understand how they work !
+
+Note: We have seen that we can change the type of a variable by using functions `as.*` such as `as.numeric()` to transform a variable in numeric. In the same way you can test the type of a variable using `is.*` functions such as `is.numeric()` to test if a variable contains numeric value(s).
+
+</details>
+
+Looking at the above example, which columns will be returned ?
+
+<details>
+
+<summary>Answers</summary>
+
+`clinical_data %>% select(starts_with("treatment"))` returns `r paste(colnames(clinical_data)[grep("^treatment",colnames(clinical_data))],collapse=", ")`
+
+`clinical_data %>% select(ends_with("lic"))` returns `r paste(colnames(clinical_data)[grep("lic$",colnames(clinical_data))],collapse=", ")`
+
+`clinical_data %>% select(contains("blood"))` returns `r paste(colnames(clinical_data)[grep("blood",colnames(clinical_data))],collapse=", ")`
+
+`clinical_data %>% select(where(is.numeric))` returns `r paste(colnames(clinical_data)[sapply(clinical_data,is.numeric)],collapse=", ")`
+
+</details>
+
+------------------------------------------------------------------------
+
+#### ***Filter rows based on condition with the `filter()` function***
+
+To be able to filter based on values contained in columns, we need to know how to compare the content of the column with any value. In data manipulation, comparisons help you filter and select specific data based on conditions. Some common comparison operators include: `==` (equal to), `!=` (not equal to), `>` (greater than), `<` (less than), `>=` (greater than or equal to), and `<=` (less than or equal to). Additionally, `%in%` is useful for checking if a value belongs to a set of values. These comparisons allow you to create logical statements that `filter()` can use to select the rows that meet your criteria.
+
+Here is a table summarizing the most common operators:
+
+| Operator    | Description                   | Example                             |
+|-------------------|--------------------------|----------------------------|
+| `==`        | Equal to                      | `x == "yes"` , `x == 6`             |
+| `!=`        | Not equal to                  | `x != "no"` , `x != 5`              |
+| `>` , `<`   | Greater than, Less than       | `x > 5` , `x < 5`                   |
+| `>=` , `<=` | Greater/Less than or equal to | `x >= 5` , `x <= 5`                 |
+| `%in%`      | Checks if value is in a set   | `x %in% c("gender", "heart_rate")`  |
+| `&`         | logical **AND**               | `x < 6 & x > 3`                     |
+| `|`         | logical **OR**                | `x > 6 | x < 3`                     |
+| `!`         | logical **NO**                | `!x %in% c("gender", "heart_rate")` |
+
+What does these codes do ?
+
+1.  `clinical_data %>%   filter(gender == "FEMALE" | heart_rate >= 70)`
+
+<details>
+
+<summary>Answer</summary>
+
+Using this command line, you are reading the object `clinical_data` with the first `%>%` and apply the `filter()` function with the second `%>%`.
+
+The expression (the code within the brackets) contains two comparisons.
+
+The first one compares all the elements in the column `gender` to the string "FEMALE", this comparison returns `TRUE` when the column `gender` contains "FEMALE".
+
+The second one compares all the elements in the column `heart_rate` to the numeric value `70`, this comparison returns `TRUE` when the column `heart_rate` contains values greater or equal to 70.
+
+The two comparisons are separated by the **logical OR** `|` , this means that either the first comparison or the second is `TRUE` . The samples come from women or have at least 70 of heart rate
+
+</details>
+
+2.  `clinical_data %>% filter(gender == "FEMALE") %>% filter(heart_rate >= 70)`
+
+<details>
+
+<summary>Answer</summary>
+
+As above, the object `clinical_data` is first read then two passes of filtering are applied. The `%>%` enable to chain multiple treatments, each operation being applied to the result of the previews one.
+
+While the comparisons are identical to the first command line, the effect is different. Indeed, the first occurrence of the function `filter()` will directly filter for women and the result of this filtering is given to the second occurrence of `filter()` where samples having at least 70 of heart rate will be kept.
+
+In other words the two comparisons must be `TRUE` and the selected samples come from women **AND** have at least 70 of heart rate.
+
+</details>
+
+**Bonus**: Could you write the former line in an other way ? (There is a tip in the answer above)
+
+<details>
+
+<summary>Answer</summary>
+
+You can combine the comparisons in one expression wanting that both of them are `TRUE`, this is possible using the **logical AND** `&`.
+
+`clinical_data %>%   filter(gender == "FEMALE" & heart_rate >= 70)`
+
+</details>
+
+3.  `clinical_data %>%   filter(gender == "FEMALE") %>% filter(heart_rate >= 70) %>% select(patient_id:gender)`
+
+<details>
+
+<summary>Answer</summary>
+
+From the `clinical_data` object, you fist filter for women, then for heart rate value of at least 70 and then extract all the columns from `patient_id` to `gender`.
+
+The `:` operator creates vector from a value (left element, `patient_id`) to another (right element, `gender`).
+
+</details>
+
+4.  Can you interpret this error ?
+
+I want display the patient ID of the samples treated with either drug A or drug B with heart rate less than 80.
+
+`clinical_data %>% filter(treatment_group %in% c("Drug A","Drug B")) %>% select(patient_id) %>% filter(heart_rate >= 80)`
+
+This bring an `Error` :
+
+::: {style="background-color:LemonChiffon;line-height:0.6;"}
+i Error in `filter()`:
+
+In argument: `heart_rate >= 80`.
+
+! object 'heart_rate' not found
+
+Run `rlang::last_trace()` to see where the error occurred.
+:::
+
+<details>
+
+<summary>Answer</summary>
+
+From the `clinical_data` object, you fist filter for women, then you select for the column `patient_id` and finally you filter for heart rate of at least 80.
+
+By applying the selection of the column `patient_id` only, the column `heart_rate` do not exists anymore which explain the `! object 'heart_rate' not found` error.
+
+</details>
+
+------------------------------------------------------------------------
+
+#### ***Filter rows based on their positions with the `slice()` function and derivatives***
+
+The `slice()` function in `dplyr` is used to select rows from a dataset based on their position. Unlike `filter()`, which selects rows based on conditions, `slice()` lets you specify the exact row numbers to extract. It is particularly useful for tasks like getting the first few rows, excluding specific rows, or extracting rows at regular intervals. Variants like `slice_head()`, `slice_tail()`, `slice_min()` and `slice_max()` provide more flexibility, allowing you to select rows based on different criteria like smallest values, random sampling, or a fixed number of rows.
+
+##### Select beginning and end of the data.frame
+
+We have seen the basic R functions that allow us to display the beginning and end of a data frame. `dplyr` offers equivalent functions which can be seamlessly integrated into your data processing sequence.
+
+i\) Display the **10** **first rows** and the columns `heart_rate`, `gender` and `diagnosis` of `clinical_data` after having selected the treatment A.
+
+```{r echo=F}
+clinical_data %>% filter(treatment_group == "Drug A") %>% 
+  select(heart_rate, gender, diagnosis) %>% 
+  slice_head(n=10)
+```
+
+Which `slice` function would you use ? Which parameters (do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.
+
+```{r, eval=FALSE}
+clinical_data %>% filter(treatment_group == "Drug A") %>% 
+  select(heart_rate, gender, diagnosis) %>% 
+  slice_head(n=10)
+```
+
+ii\) Display the **bottom** **5%** rows of the data frame and the column from `gender` to `treatment_group`
+
+```{r, echo=F}
+clinical_data %>% 
+  select(gender:treatment_group) %>% 
+  slice_tail(prop=0.05)
+```
+
+Which `slice` function would you use ? Which parameters do not forget the help page or the web) ? You need to combine functions that we have seen in the previous section.
+
+```{r, eval=FALSE}
+clinical_data %>% 
+  select(gender:treatment_group) %>% 
+  slice_tail(prop=0.05)
+```
+
+##### Select beginning and end of the ordered data.frame
+
+`slice_max()` and `slice_min()` enables to select a defined number or proportion of rows depending on the values contained in a given column.
+
+i\) Select the 5 `patient_id` corresponding to the highest heart rate (`heart_rate`).
+
+```{r, echo=F}
+clinical_data %>% 
+  slice_max(order_by = heart_rate, n = 5, with_ties = F) %>%
+  select(patient_id, heart_rate)
+```
+
+Note: You need to handle **ties**, these are identical values that can not be ordered between them. Either you keep them all (default) or you keep the first(s) element(s) encountered in the column among those having the same value. In this example, we chose the former solution.
+
+```{r, eval=F}
+clinical_data %>% 
+  slice_max(order_by = heart_rate, n = 5, with_ties = F) %>%
+  select(patient_id, heart_rate)
+```
+
+ii\) Which diagnosis are mainly harbored by the patients with the 20% lowest heart rates (`tr`).
+
+```{r, echo=F}
+lowest_hr <- clinical_data %>% 
+  slice_min(order_by = heart_rate, prop = 0.2) %>%
+  select(diagnosis)
+table(lowest_hr)
+```
+
+*Step-by-step*
+
+First, select the 20% lowest heart rate rows and the column `diagnosis` and save it in a variable named `lowest_hr` using `slice_min()`.
+
+```{r, eval=F}
+lowest_hr <- clinical_data %>% 
+  slice_min(order_by = heart_rate, prop = 0.2) %>%
+  select(diagnosis)
+```
+
+Then, use the basic function `table()` which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column `known.oncogenes`.
+
+```{r, eval=F}
+table(lowest_hr)
+```
+
+------------------------------------------------------------------------
+
+#### ***Order rows with the `arrange()` function***
+
+The `arrange()` function in R's dplyr package is used to reorder rows in a data frame based on the values of one or more columns. It allows you to arrange the rows in ascending or descending order depending on the values in the specified column(s).
+
+```{r, eval=F}
+?dplyr::arrange
+```
+
+-   Ascending order
+
+```{r, eval=F}
+clinical_data %>%
+  arrange(age)
+```
+
+-   Descending order
+
+```{r, eval=F}
+clinical_data %>%
+  arrange(desc(age))
+```
+
+#### ***What have we learned ?***
+
+::: {style="background-color:AliceBlue;"}
+-   We can use the function `select()` to extract columns using their names as variable.
+
+-   We can use the function `filter()` to select rows depending on values contained in the columns that we call by their names as variable.
+
+-   We can select elements in a column by using comparison operators (*eg. `==`, `>`, `!=`*) between a column called by its name as variable and a value (or a vector of values - c(element1, element2,etc.))
+
+-   We can use `slice_*()` functions to select rows depending on their positions after ordering the table or not.
+
+-   We can order rows using `arrange()` function either in ascending or descending order.
+
+-   We can combine a series of operations using **`%>%`**, where each operation take as input the result of the preceding operation. The order of the operations is thus very important.
+
+-   If it is not working and returning an error, do not freak out and read carefully the error. If it is still unclear, copy paste the Error in a web browser.
+:::
+
+### Create and transform columns
+
+We can add columns filled with new data or with transformed values from an existing column. The new columns can be located at specific places in the data frame.
+
+## ![Modify the data frame](./img/mutate.svg)
+
+#### ***Modify or create a column in your data frame with `mutate()`***
+
+Create a column named `none.diag` containing a `TRUE` if the column `diagnosis` contains `No Disease` and `FALSE` otherwise and display the 10 rows containing the lowest heart rate values and the columns `patient_id`, `diagnosis` , `heart_rate` and the new column `none.diag`.
+
+```{r, echo=F}
+clinical_data %>% 
+  mutate(none.diag = diagnosis == "No Disease") %>%
+  slice_min(order_by = heart_rate, n=10) %>%
+  select(patient_id,diagnosis,heart_rate,none.diag)
+```
+
+*Step-by-step*
+
+i\) Define how to obtain a Boolean vector (`TRUE`/`FALSE`) depending on the `diagnosis` column.
+
+<details>
+
+<summary>Answer</summary>
+
+You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"``No Disease``"` however needs to be surrounded by quotes.
+
+`diagnosis ==``"No Disease"`
+
+</details>
+
+ii\) Write the `mutate()` function to add the `none.diag` column.
+
+```{r, eval=FALSE}
+mutate(none.diag = diagnosis == "No Disease")
+```
+
+iii\) Write the full stream of function from reading the data.frame to selection of the selection of the columns
+
+```{r, eval=F}
+clinical_data %>% 
+  mutate(none.diag = diagnosis == "No Disease") %>%
+  slice_min(order_by = heart_rate, n=10) %>%
+  select(patient_id,diagnosis,heart_rate,none.diag)
+```
+
+You need to combine the `mutate()` function with functions enabling the select rows and columns.
+
+iv\) With the columns `height` and `weight` we can calculate the BMI. We will create a new column named `BMI` and display it with `patient_id`.
+
+```{r, echo=F}
+clinical_data %>% 
+  mutate(BMI = weight / height) %>%
+  slice_head(n=5) %>%
+  select(patient_id, BMI)
+```
+
+```{r, eval=F}
+clinical_data %>% 
+  mutate(BMI = weight / height) %>%
+  slice_head(n=5) %>%
+  select(patient_id, BMI)
+```
+
+------------------------------------------------------------------------
+
+#### ***Modulate position of columns with `relocate()`***
+
+i\) Move the `gender` column to the first position in the dataset.
+
+```{r, echo=F}
+clinical_data %>% 
+  relocate(gender)
+```
+
+```{r, eval=F}
+clinical_data %>% 
+  relocate(gender)
+```
+
+ii\) Move the `glucose` column just after `height` column.
+
+```{r, echo=F}
+clinical_data %>% 
+  relocate(glucose, .after = height)
+```
+
+```{r, eval=F}
+clinical_data %>% 
+  relocate(glucose, .after = height)
+```
+
+NOTE : To move a column before, just replace `.after` argument by `.before`.
+
+------------------------------------------------------------------------
+
+#### ***Group and summarise the information with `group_by()` and `summarise()`***
+
+`group_by()` is used to group data based on one or more variables (columns). This function is often used in conjunction with other `tidyverse` functions.
+
+```{r}
+?dplyr::group_by
+```
+
+One function that works perfectly with `group_by()` is `summarise()`.
+
+```{r}
+?dplyr::summarise
+```
+
+We can, for example, know the age mean of all patients. Indeed, `summarise()` can take in account basic functions like `mean()`, `median()`, `max()`...
+
+```{r, echo=F}
+clinical_data %>%
+  summarise(mean_age = mean(age))
+```
+
+```{r, eval=F}
+clinical_data %>%
+  summarise(mean_age = mean(age))
+```
+
+But combined with `group_by()`, we can be more precise and obtain the average `age` by `gender`.
+
+```{r, echo=F}
+clinical_data %>%
+  group_by(gender) %>%
+  summarise(mean_age = mean(age))
+```
+
+<details>
+
+<summary>Answer</summary>
+
+To carry out this operation, we put two functions in a row, always using the `%>%` symbol. The `group_by()` function first groups the variable we're interested in, in this case `gender`. There are only two possibilities for this variable, `Male` or `Female.` Secondly, the `summarise()` function takes into account the `age` variable, calculating the average for each possibility of the `gender` variable. What's more, the `summarise()` function displays the results in the console, rather than entering them directly into the dataframe.
+
+</details>
+
+```{r, eval = F}
+clinical_data %>%
+  group_by(gender) %>%
+  summarise(mean_age = mean(age))
+```
+
+------------------------------------------------------------------------
+
+#### ***What have we learned ?***
+
+::: {style="background-color:AliceBlue;"}
+-   We can use the function `mutate()` to create new columns based on existing ones.
+
+-   We can use the function `relocate()` to move columns as required in the dataset.
+
+-   We can use the function `group_by()` to group data based on one or several columns (variables). This function is combined with other like `summarise()` to display a summary of result based on data.
+:::
+
+## Practice : `TCGA_LUAD`
+
+You will work on extracted data from the TCGA public database, and now you will browse it to understand it better !
+
+1)  What are the samples with at least 70% of purity ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+  filter(Purity >= 0.7)%>%
+  select(sampleID)
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+  filter(Purity >= 0.7) %>%
+  select(sampleID)
+```
+
+2)  What is the total purity median ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+  summarise(median_Purity = median(Purity))
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+  summarise(median_Purity = median(Purity))
+```
+
+3)  What is the mean and standard deviation of purity for each stages ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+  group_by(pathologic_stage) %>%
+  summarize(
+    mean_purity = mean(Purity, na.rm = TRUE),
+    sd_purity = sd(Purity, na.rm = TRUE)
+  )
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+  group_by(pathologic_stage) %>%
+  summarize(
+    mean_purity = mean(Purity, na.rm = TRUE),
+    sd_purity = sd(Purity, na.rm = TRUE)
+  )
+```
+
+4)  Which samples are in the top 20% of MAPK expression ?
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>% 
+    slice_max(order_by = signature_MAPK, prop = 0.2, with_ties = F) %>%
+    select(sampleID, signature_MAPK)
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>% 
+    slice_max(order_by = signature_MAPK, prop = 0.2, with_ties = F) %>%
+    select(sampleID, signature_MAPK)
+```
+
+5)  Extract MAPK expression for each samples with KRAS and present it by descending order.
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>%
+    filter(known.oncogenes == "KRAS") %>%
+    select(sampleID, known.oncogenes, signature_MAPK) %>%
+    arrange(desc(signature_MAPK))
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>%
+    filter(known.oncogenes == "KRAS") %>%
+    select(sampleID, known.oncogenes, signature_MAPK) %>%
+    arrange(desc(signature_MAPK))
+```
+
+BONUS : Considering purity higher than 0.6 is high, lower than 0.4 is low and between 0.4 and 0.6 is medium. Calculate the percentage of individuals in each category by stages. Find help on Google or with chatbot !
+
+<details>
+
+<summary>Answer</summary>
+
+```{r, echo = F}
+TCGA_LUAD %>% 
+    mutate(Purity_perf = case_when(
+    Purity > 0.6 ~ "High",
+    Purity >= 0.4 & Purity <= 0.6 ~ "Medium",
+    Purity < 0.4 ~ "Low"
+    )) %>%
+    group_by(pathologic_stage, Purity_perf) %>%
+    summarise(Count = n()) %>%
+    group_by(pathologic_stage) %>%
+    mutate(Percentage = Count / sum(Count) * 100)
+    
+```
+
+</details>
+
+```{r, eval = F}
+TCGA_LUAD %>% 
+    mutate(Purity_perf = case_when(
+    Purity > 0.6 ~ "High",
+    Purity >= 0.4 & Purity <= 0.6 ~ "Medium",
+    Purity < 0.4 ~ "Low"
+    )) %>%
+    group_by(pathologic_stage, Purity_perf) %>%
+    summarise(Count = n()) %>%
+    group_by(pathologic_stage) %>%
+    mutate(Percentage = Count / sum(Count) * 100)
+    
+```
+
+------------------------------------------------------------------------
+
+[\<\<\< Back to Index](./0.course_index.html)

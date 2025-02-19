@@ -1,0 +1,247 @@
+	sampleID	known.oncogenes	Purity	pathologic_stage	gender	tobacco_smoking_history	signature_MAPK
+TCGA.05.4249.01	TCGA.05.4249.01	KRAS	0.49	Stage IB	MALE	Current reformed smoker for > 15 years	0.929874637
+TCGA.05.4250.01	TCGA.05.4250.01	KRAS	0.5	Stage IIIA	FEMALE	Current reformed smoker for < or = 15 years	0.481140563
+TCGA.05.4384.01	TCGA.05.4384.01	RIT1	0.49	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.567207083
+TCGA.05.4389.01	TCGA.05.4389.01	BRAF_act	0.48	Stage IA	MALE	Current reformed smoker for > 15 years	0.347432582
+TCGA.05.4390.01	TCGA.05.4390.01	KRAS	0.57	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.876361236
+TCGA.05.4395.01	TCGA.05.4395.01	KRAS	0.61	Stage IIIB	MALE	Current reformed smoker for > 15 years	0.55787059
+TCGA.05.4396.01	TCGA.05.4396.01	None	0.82	Stage IIIB	MALE	Current reformed smoker for > 15 years	0.421564029
+TCGA.05.4397.01	TCGA.05.4397.01	None	0.87	Stage IIB	MALE	Current smoker	0.054606634
+TCGA.05.4403.01	TCGA.05.4403.01	KRAS	0.46	Stage IB	MALE	Current reformed smoker for > 15 years	0.631316412
+TCGA.05.4415.01	TCGA.05.4415.01	KRAS	0.67	Stage IIIB	MALE	Current reformed smoker for < or = 15 years	0.769477154
+TCGA.05.4418.01	TCGA.05.4418.01	KRAS	0.55	Stage IIIA	MALE	Current smoker	0.437864617
+TCGA.05.4420.01	TCGA.05.4420.01	None	0.59	Stage IB	MALE	Current smoker	0.780697539
+TCGA.05.4422.01	TCGA.05.4422.01	None	0.62	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.420034196
+TCGA.05.4426.01	TCGA.05.4426.01	ROS1	0.7	Stage IB	MALE	Current reformed smoker for > 15 years	0.691705418
+TCGA.05.4427.01	TCGA.05.4427.01	KRAS	0.47	Stage IIB	FEMALE	Current reformed smoker for < or = 15 years	0.818652986
+TCGA.05.4433.01	TCGA.05.4433.01	KRAS	0.62	Stage IB	MALE	Current reformed smoker for > 15 years	0.688583368
+TCGA.05.4434.01	TCGA.05.4434.01	ERBB2	0.45	Stage IV	FEMALE	Current smoker	0.626400472
+TCGA.05.5423.01	TCGA.05.5423.01	EGFR	0.59	Stage IIB	MALE	Current reformed smoker for > 15 years	0.483439623
+TCGA.05.5428.01	TCGA.05.5428.01	BRAF.non	0.63	Stage IIA	MALE	Current reformed smoker for > 15 years	0.573614125
+TCGA.05.5429.01	TCGA.05.5429.01	None	0.82	Stage IIIA	MALE	Lifelong Non-smoker	0.471932361
+TCGA.05.5715.01	TCGA.05.5715.01	ERBB2	0.73	Stage IB	FEMALE	Lifelong Non-smoker	0.828605663
+TCGA.35.3615.01	TCGA.35.3615.01	KRAS	0.69	Stage IB	MALE	Lifelong Non-smoker	0.610061567
+TCGA.35.5375.01	TCGA.35.5375.01	None	0.58	Stage IIIA	MALE	Current reformed smoker for < or = 15 years	0.035105988
+TCGA.38.4628.01	TCGA.38.4628.01	EGFR	0.5	Stage IIB	FEMALE	Lifelong Non-smoker	0.952007143
+TCGA.38.4630.01	TCGA.38.4630.01	ERBB2	0.79	Stage IB	FEMALE	Lifelong Non-smoker	0
+TCGA.38.4631.01	TCGA.38.4631.01	NF1	0.49	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.316682534
+TCGA.44.2666.01	TCGA.44.2666.01	BRAF_act	0.59	Stage IB	MALE	Current smoker	0.706196045
+TCGA.44.3919.01	TCGA.44.3919.01	ERBB2	0.51	Stage IA	FEMALE	Lifelong Non-smoker	0.716636713
+TCGA.44.4112.01	TCGA.44.4112.01	None	0.55	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.796821903
+TCGA.44.5643.01	TCGA.44.5643.01	None	0.56	Stage IIIA	MALE	Current smoker	0.282579104
+TCGA.44.5644.01	TCGA.44.5644.01	NF1	0.75	Stage IB	FEMALE	Current smoker	0.534926904
+TCGA.44.5645.01	TCGA.44.5645.01	EGFR	0.54	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.642871536
+TCGA.44.6146.01	TCGA.44.6146.01	KRAS	0.7	Stage IIB	MALE	Current reformed smoker for > 15 years	0.558956616
+TCGA.44.6147.01	TCGA.44.6147.01	EGFR	0.47	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.530787119
+TCGA.44.6774.01	TCGA.44.6774.01	BRAF.non	0.45	Stage IIIA	FEMALE	Current smoker	0.470771544
+TCGA.44.6776.01	TCGA.44.6776.01	KRAS	0.65	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.570210909
+TCGA.44.6779.01	TCGA.44.6779.01	RIT1	0.6	Stage IIB	FEMALE	Current reformed smoker for < or = 15 years	0.1263232
+TCGA.44.7659.01	TCGA.44.7659.01	KRAS	0.56	Stage IA	MALE	Current smoker	0.880978864
+TCGA.44.7660.01	TCGA.44.7660.01	None	0.58	Stage IB	MALE	Current smoker	0.193833203
+TCGA.44.7669.01	TCGA.44.7669.01	None	0.5	Stage IIA	MALE	Current smoker	0.064743045
+TCGA.44.7670.01	TCGA.44.7670.01	None	0.5	Stage IIA	FEMALE	Current smoker	0.644902601
+TCGA.44.7671.01	TCGA.44.7671.01	KRAS	0.58	Stage IB	MALE	Current reformed smoker for > 15 years	0.597400982
+TCGA.44.8117.01	TCGA.44.8117.01	None	0.66	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.805034789
+TCGA.44.8119.01	TCGA.44.8119.01	NF1	0.55	Stage IIB	MALE	Current smoker	0.199482991
+TCGA.44.8120.01	TCGA.44.8120.01	None	0.54	Stage IB	MALE	Current Reformed Smoker, Duration Not Specified	0.554850514
+TCGA.44.A47B.01	TCGA.44.A47B.01	ERBB2	0.5	Stage IB	MALE	Current reformed smoker for > 15 years	0.767484838
+TCGA.44.A4SU.01	TCGA.44.A4SU.01	EGFR	0.59	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.673743642
+TCGA.49.4486.01	TCGA.49.4486.01	None	0.73	Stage IA	MALE	Current reformed smoker for > 15 years	0.012665985
+TCGA.49.4488.01	TCGA.49.4488.01	NF1	0.45	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.693606323
+TCGA.49.4494.01	TCGA.49.4494.01	EGFR	0.46	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.775589014
+TCGA.49.4505.01	TCGA.49.4505.01	KRAS	0.45	Stage IIB	FEMALE	Current reformed smoker for < or = 15 years	0.679537579
+TCGA.49.4510.01	TCGA.49.4510.01	KRAS	0.64	Stage IIB	FEMALE	Current smoker	0.665114676
+TCGA.49.6742.01	TCGA.49.6742.01	None	0.49	Stage IIB	MALE	Current reformed smoker for > 15 years	0.436293137
+TCGA.49.AAR9.01	TCGA.49.AAR9.01	None	0.75	Stage IIB	MALE	Current smoker	0.390723184
+TCGA.49.AARQ.01	TCGA.49.AARQ.01	KRAS	0.52	Stage I	FEMALE	Current reformed smoker for < or = 15 years	0.664747209
+TCGA.49.AARR.01	TCGA.49.AARR.01	None	0.97	Stage IA	MALE	Current reformed smoker for > 15 years	0.404802606
+TCGA.4B.A93V.01	TCGA.4B.A93V.01	KRAS	0.62	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.268858347
+TCGA.50.5051.01	TCGA.50.5051.01	KRAS	0.59	Stage IIIA	FEMALE	Current reformed smoker for < or = 15 years	0.879646653
+TCGA.50.5930.01	TCGA.50.5930.01	BRAF.non	0.95	Stage IIIA	MALE		0.014563794
+TCGA.50.5931.01	TCGA.50.5931.01	None	0.86	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.231144448
+TCGA.50.5932.01	TCGA.50.5932.01	KRAS	0.84	Stage IIB	MALE		0.829248544
+TCGA.50.5936.01	TCGA.50.5936.01	KRAS	0.6	Stage IIIA	MALE		0.587249032
+TCGA.50.5942.01	TCGA.50.5942.01	BRAF_act	0.69	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.922410236
+TCGA.50.5944.01	TCGA.50.5944.01	EGFR	0.57	Stage IA	FEMALE		0.850930994
+TCGA.50.5946.01	TCGA.50.5946.01	BRAF_act	0.75	Stage IA	MALE	Current reformed smoker for < or = 15 years	0.812528603
+TCGA.50.6591.01	TCGA.50.6591.01	EGFR	0.9	Stage IV	FEMALE	Lifelong Non-smoker	0.948935686
+TCGA.50.6594.01	TCGA.50.6594.01	BRAF.non	0.6	Stage IIIA	FEMALE	Current reformed smoker for < or = 15 years	0.167132326
+TCGA.50.6597.01	TCGA.50.6597.01	MET	0.48	Stage IB	FEMALE	Lifelong Non-smoker	0.533504167
+TCGA.50.8457.01	TCGA.50.8457.01	KRAS	0.6	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.833062967
+TCGA.53.7624.01	TCGA.53.7624.01	None	0.69	Stage IV	FEMALE	Current smoker	0.015441467
+TCGA.53.A4EZ.01	TCGA.53.A4EZ.01	BRAF.non	0.47	Stage IIA	MALE	Current reformed smoker for > 15 years	0.409398422
+TCGA.55.1592.01	TCGA.55.1592.01	NF1	0.49	Stage IA	MALE	Current reformed smoker for < or = 15 years	0.289260158
+TCGA.55.1594.01	TCGA.55.1594.01	None	0.55	Stage IIIA	MALE	Current smoker	0.677147712
+TCGA.55.1595.01	TCGA.55.1595.01	KRAS	0.52	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.922433866
+TCGA.55.1596.01	TCGA.55.1596.01	RIT1	0.63	Stage IIB	MALE	Current smoker	0.080791934
+TCGA.55.5899.01	TCGA.55.5899.01	None	0.67	Stage IA	MALE	Current smoker	0.450499152
+TCGA.55.6543.01	TCGA.55.6543.01	None	0.65	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.764303288
+TCGA.55.6968.01	TCGA.55.6968.01	BRAF.non	0.65	Stage IV	MALE	Current smoker	0.040334316
+TCGA.55.6970.01	TCGA.55.6970.01	KRAS	0.56	Stage IIIA	FEMALE	Current reformed smoker for < or = 15 years	0.511758394
+TCGA.55.6972.01	TCGA.55.6972.01	None	0.83	Stage IB	MALE	Current smoker	0.202870602
+TCGA.55.6975.01	TCGA.55.6975.01	KRAS	0.46	Stage IIB	MALE	Current reformed smoker for < or = 15 years	0.302600882
+TCGA.55.6984.01	TCGA.55.6984.01	KRAS	0.81	Stage IIB	FEMALE		0.572873323
+TCGA.55.7227.01	TCGA.55.7227.01	MAP2K1	0.53	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.622120292
+TCGA.55.7283.01	TCGA.55.7283.01	KRAS	0.47	Stage IIIA	FEMALE	Current reformed smoker for > 15 years	0.814925727
+TCGA.55.7570.01	TCGA.55.7570.01	None	0.57	Stage IA	MALE	Current smoker	0.862481257
+TCGA.55.7576.01	TCGA.55.7576.01	KRAS	0.47	Stage IB	MALE	Current smoker	0.5139644
+TCGA.55.7725.01	TCGA.55.7725.01	KRAS	0.61	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.79044775
+TCGA.55.7727.01	TCGA.55.7727.01	None	0.56	Stage IIIA	MALE	Current smoker	0.63186372
+TCGA.55.7903.01	TCGA.55.7903.01	BRAF_act	0.64	Stage IA	MALE	Current smoker	0.713841179
+TCGA.55.7910.01	TCGA.55.7910.01	KRAS	0.58	Stage IIA	FEMALE	Current reformed smoker for < or = 15 years	0.462978842
+TCGA.55.7914.01	TCGA.55.7914.01	KRAS	0.56	Stage IIA	FEMALE	Current smoker	0.949537361
+TCGA.55.7994.01	TCGA.55.7994.01	NF1	0.51	Stage IIB	MALE	Current smoker	0.650407061
+TCGA.55.7995.01	TCGA.55.7995.01	NF1	0.49	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0
+TCGA.55.8085.01	TCGA.55.8085.01	None	0.56	Stage IA	MALE	Current smoker	0.216922504
+TCGA.55.8087.01	TCGA.55.8087.01	EGFR	0.82	Stage IB	FEMALE	Lifelong Non-smoker	0.820684799
+TCGA.55.8091.01	TCGA.55.8091.01	None	0.6	Stage IB	MALE	Current reformed smoker for > 15 years	0.563237743
+TCGA.55.8094.01	TCGA.55.8094.01	KRAS	0.79	Stage IV	MALE	Current reformed smoker for < or = 15 years	0.737434745
+TCGA.55.8097.01	TCGA.55.8097.01	KRAS	0.64	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.848332064
+TCGA.55.8206.01	TCGA.55.8206.01	EGFR	0.46	Stage IA	MALE	Lifelong Non-smoker	0.785366707
+TCGA.55.8207.01	TCGA.55.8207.01	KRAS	0.57	Stage IB	MALE	Current reformed smoker for > 15 years	0.961217235
+TCGA.55.8299.01	TCGA.55.8299.01	KRAS	0.49	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.297114623
+TCGA.55.8506.01	TCGA.55.8506.01	EGFR	0.45	Stage IIB	FEMALE	Current smoker	0.531957865
+TCGA.55.8507.01	TCGA.55.8507.01	None	0.64	Stage IA	MALE	Current smoker	0.510428671
+TCGA.55.8513.01	TCGA.55.8513.01	None	0.5	Stage IIB	FEMALE	Lifelong Non-smoker	0.262215143
+TCGA.55.8514.01	TCGA.55.8514.01	KRAS	0.54	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.576986414
+TCGA.55.8615.01	TCGA.55.8615.01	KRAS	0.57	Stage IIIA	MALE	Current smoker	0.495249855
+TCGA.55.8620.01	TCGA.55.8620.01	MET	0.62	Stage IV	MALE	Current reformed smoker for < or = 15 years	0.427657739
+TCGA.55.A492.01	TCGA.55.A492.01	None	0.54	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.476034917
+TCGA.55.A494.01	TCGA.55.A494.01	KRAS	0.81	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.721615094
+TCGA.62.8394.01	TCGA.62.8394.01	EGFR	0.53	Stage IIIB	FEMALE	Lifelong Non-smoker	0.830688674
+TCGA.62.8395.01	TCGA.62.8395.01	None	0.65	Stage IIB	FEMALE	Lifelong Non-smoker	0.536152308
+TCGA.62.8397.01	TCGA.62.8397.01	EGFR	0.69	Stage IIB	FEMALE	Lifelong Non-smoker	0.860674837
+TCGA.62.8399.01	TCGA.62.8399.01	None	0.5	Stage IIIA	MALE	Current reformed smoker for < or = 15 years	0.473757709
+TCGA.62.8402.01	TCGA.62.8402.01	EGFR	0.5	Stage IIIA	FEMALE	Lifelong Non-smoker	0.677286428
+TCGA.62.A46O.01	TCGA.62.A46O.01	None	0.82	Stage IB	FEMALE	Current smoker	0
+TCGA.62.A46P.01	TCGA.62.A46P.01	None	0.7	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.233115945
+TCGA.62.A46S.01	TCGA.62.A46S.01	KRAS	0.45	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.660029482
+TCGA.62.A46V.01	TCGA.62.A46V.01	BRAF_act	0.52	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.719421828
+TCGA.62.A46Y.01	TCGA.62.A46Y.01	ROS1	0.48	Stage IIIA	FEMALE	Lifelong Non-smoker	0.653895097
+TCGA.62.A470.01	TCGA.62.A470.01	None	0.59	Stage IB	MALE	Current reformed smoker for > 15 years	0.334867135
+TCGA.62.A471.01	TCGA.62.A471.01	None	0.46	Stage IIB	MALE	Current reformed smoker for < or = 15 years	0.183324083
+TCGA.64.1676.01	TCGA.64.1676.01	MAP2K1	0.51	Stage IA	MALE	Current smoker	0.531733639
+TCGA.64.1678.01	TCGA.64.1678.01	MAP2K1	0.57	Stage IIA	FEMALE	Current reformed smoker for > 15 years	0.444144625
+TCGA.64.1680.01	TCGA.64.1680.01	ROS1	0.61	Stage IV	MALE	Current reformed smoker for > 15 years	0.959607196
+TCGA.64.5774.01	TCGA.64.5774.01	KRAS	0.76	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.781283538
+TCGA.64.5775.01	TCGA.64.5775.01	KRAS	0.71	Stage IIIA	MALE	Current smoker	0.867562631
+TCGA.64.5778.01	TCGA.64.5778.01	KRAS	0.59	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.785111241
+TCGA.67.3770.01	TCGA.67.3770.01	EGFR	0.65	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.519329431
+TCGA.67.3771.01	TCGA.67.3771.01	None	0.46	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.444561485
+TCGA.67.3772.01	TCGA.67.3772.01	EGFR	0.45	Stage IB	FEMALE	Lifelong Non-smoker	0.760479953
+TCGA.67.3773.01	TCGA.67.3773.01	KRAS	0.7	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.850486601
+TCGA.67.3774.01	TCGA.67.3774.01	KRAS	0.48	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.767527296
+TCGA.67.4679.01	TCGA.67.4679.01	KRAS	0.71	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.764373377
+TCGA.67.6215.01	TCGA.67.6215.01	ALK	0.69	Stage IB	FEMALE	Lifelong Non-smoker	0.792974713
+TCGA.67.6216.01	TCGA.67.6216.01	ALK	0.56	Stage IA	FEMALE	Lifelong Non-smoker	0.749935477
+TCGA.69.7760.01	TCGA.69.7760.01	EGFR	0.65	Stage IIB	MALE	Lifelong Non-smoker	0.958031472
+TCGA.69.7764.01	TCGA.69.7764.01	NF1	0.8	Stage IA	MALE	Current reformed smoker for > 15 years	0.741031454
+TCGA.69.7973.01	TCGA.69.7973.01	KRAS	0.55	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.822733602
+TCGA.69.7979.01	TCGA.69.7979.01	NF1	0.53	Stage IB	FEMALE	Current smoker	0.33375143
+TCGA.69.7980.01	TCGA.69.7980.01	KRAS	0.55	Stage I	FEMALE	Current reformed smoker for < or = 15 years	0.93934141
+TCGA.71.6725.01	TCGA.71.6725.01	EGFR	0.63	Stage IB	FEMALE	Current smoker	0.540666644
+TCGA.73.4662.01	TCGA.73.4662.01	KRAS	0.48	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.899133149
+TCGA.73.4666.01	TCGA.73.4666.01	RIT1	0.45	Stage IV	FEMALE	Current reformed smoker for < or = 15 years	0.448679632
+TCGA.73.4668.01	TCGA.73.4668.01	KRAS	0.53	Stage IIB	FEMALE	Current reformed smoker for < or = 15 years	0.897070795
+TCGA.73.4670.01	TCGA.73.4670.01	None	0.62	Stage IV	FEMALE	Current reformed smoker for < or = 15 years	0.200792341
+TCGA.73.4675.01	TCGA.73.4675.01	RIT1	0.57	Stage IIIA	MALE	Current reformed smoker for < or = 15 years	0.568432378
+TCGA.73.4676.01	TCGA.73.4676.01	NF1	0.77	Stage IIA	MALE	Current reformed smoker for < or = 15 years	0.414752065
+TCGA.73.4677.01	TCGA.73.4677.01	KRAS	0.47	Stage IA	MALE	Current reformed smoker for > 15 years	0.672302453
+TCGA.73.7498.01	TCGA.73.7498.01	KRAS	0.62	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.76048734
+TCGA.73.A9RS.01	TCGA.73.A9RS.01	None	0.61	Stage IIB	MALE	Current smoker	0
+TCGA.75.5146.01	TCGA.75.5146.01	BRAF_act	0.58	Stage IB	MALE	Current reformed smoker for > 15 years	0.708230104
+TCGA.75.6206.01	TCGA.75.6206.01	KRAS	0.7	Stage IB	MALE	Current reformed smoker for > 15 years	0.49726366
+TCGA.75.6207.01	TCGA.75.6207.01	EGFR	0.64	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.435028666
+TCGA.75.6214.01	TCGA.75.6214.01	None	0.64	Stage IIIA	FEMALE	Current smoker	0.405547164
+TCGA.75.7027.01	TCGA.75.7027.01	KRAS	0.62	Stage IB	MALE	Current smoker	0.549484735
+TCGA.75.7030.01	TCGA.75.7030.01	KRAS	0.5	Stage IIB	MALE	Lifelong Non-smoker	0.659234758
+TCGA.75.7031.01	TCGA.75.7031.01	None	0.49	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.055730347
+TCGA.78.7145.01	TCGA.78.7145.01	KRAS	0.63	Stage IV	FEMALE	Current reformed smoker for < or = 15 years	0.846439461
+TCGA.78.7146.01	TCGA.78.7146.01	NF1	0.68	Stage IIIA	FEMALE	Current reformed smoker for < or = 15 years	0.451196097
+TCGA.78.7147.01	TCGA.78.7147.01	EGFR	0.62	Stage IIB	FEMALE	Current smoker	0.819746429
+TCGA.78.7148.01	TCGA.78.7148.01	KRAS	0.6	Stage IIB	MALE	Current smoker	0.516072606
+TCGA.78.7149.01	TCGA.78.7149.01	None	0.6	Stage IIIB	MALE	Current smoker	0.098349127
+TCGA.78.7150.01	TCGA.78.7150.01	None	0.46	Stage IIB	MALE	Current reformed smoker for < or = 15 years	0.246490547
+TCGA.78.7152.01	TCGA.78.7152.01	None	0.55	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.431035889
+TCGA.78.7154.01	TCGA.78.7154.01	MET	0.5	Stage IIIA	MALE	Current reformed smoker for < or = 15 years	0.556052606
+TCGA.78.7155.01	TCGA.78.7155.01	None	0.82	Stage IB	MALE	Current reformed smoker for < or = 15 years	0
+TCGA.78.7156.01	TCGA.78.7156.01	None	0.8	Stage IV	MALE	Current reformed smoker for > 15 years	0.045894417
+TCGA.78.7158.01	TCGA.78.7158.01	None	0.9	Stage IIIB	FEMALE	Current reformed smoker for < or = 15 years	0.957947527
+TCGA.78.7161.01	TCGA.78.7161.01	KRAS	0.75	Stage IIB	FEMALE	Current reformed smoker for < or = 15 years	0.805012641
+TCGA.78.7163.01	TCGA.78.7163.01	ALK	0.68	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.885936835
+TCGA.78.7166.01	TCGA.78.7166.01	KRAS	0.63	Stage IIB	MALE	Current reformed smoker for > 15 years	0.230333565
+TCGA.78.7167.01	TCGA.78.7167.01	KRAS	0.84	Stage IV	MALE	Current smoker	0.812050814
+TCGA.78.7220.01	TCGA.78.7220.01	MET	0.61	Stage IIIA	FEMALE	Current smoker	0.487667062
+TCGA.78.7535.01	TCGA.78.7535.01	NF1	0.6	Stage IB	MALE	Current smoker	0.511403884
+TCGA.78.7536.01	TCGA.78.7536.01	None	0.78	Stage IIIA	MALE	Current reformed smoker for < or = 15 years	0.037276201
+TCGA.78.7537.01	TCGA.78.7537.01	BRAF.non	0.74	Stage IB	MALE	Current reformed smoker for > 15 years	0.414953907
+TCGA.78.7539.01	TCGA.78.7539.01	KRAS	0.52	Stage IIA	FEMALE	Current reformed smoker for > 15 years	0.663069963
+TCGA.78.7540.01	TCGA.78.7540.01	KRAS	0.59	Stage IB	FEMALE	Lifelong Non-smoker	0.399844038
+TCGA.78.7633.01	TCGA.78.7633.01	BRAF.non	0.75	Stage IA	MALE	Current reformed smoker for < or = 15 years	0.678332949
+TCGA.78.8648.01	TCGA.78.8648.01	None	0.64	Stage IIB	FEMALE	Current smoker	0.355468339
+TCGA.78.8655.01	TCGA.78.8655.01	KRAS	0.46	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.724845411
+TCGA.78.8662.01	TCGA.78.8662.01	BRAF.non	0.79	Stage IB	FEMALE	Current smoker	0.669665838
+TCGA.80.5607.01	TCGA.80.5607.01	BRAF_act	0.49	Stage IIB	FEMALE	Current reformed smoker for > 15 years	0.628551156
+TCGA.80.5608.01	TCGA.80.5608.01	KRAS	0.48	Stage IA	FEMALE	Current smoker	0.862619395
+TCGA.80.5611.01	TCGA.80.5611.01	None	0.51	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.284271056
+TCGA.86.6562.01	TCGA.86.6562.01	ERBB2	0.46	Stage IIA	MALE	Lifelong Non-smoker	0.754182151
+TCGA.86.7713.01	TCGA.86.7713.01	KRAS	0.65	Stage IIA	MALE	Lifelong Non-smoker	0.921072128
+TCGA.86.7714.01	TCGA.86.7714.01	BRAF_act	0.67	Stage IIIA	FEMALE	Current smoker	0.700179284
+TCGA.86.7955.01	TCGA.86.7955.01	None	0.73	Stage IB	MALE	Lifelong Non-smoker	0
+TCGA.86.8054.01	TCGA.86.8054.01	KRAS	0.74	Stage IIB	MALE	Current smoker	0.729261353
+TCGA.86.8074.01	TCGA.86.8074.01	EGFR	0.51	Stage IIA	FEMALE	Current smoker	0.718990573
+TCGA.86.8278.01	TCGA.86.8278.01	ROS1	0.56	Stage IIB	FEMALE	Lifelong Non-smoker	0.572980888
+TCGA.86.8279.01	TCGA.86.8279.01	NF1	0.5	Stage IIA	MALE	Lifelong Non-smoker	0.719892511
+TCGA.86.8280.01	TCGA.86.8280.01	EGFR	0.45	Stage IIA	FEMALE	Lifelong Non-smoker	0.586990342
+TCGA.86.8281.01	TCGA.86.8281.01	KRAS	0.54	Stage IA	MALE	Current reformed smoker for > 15 years	0.641707807
+TCGA.86.8358.01	TCGA.86.8358.01	None	0.72	Stage IB	MALE	Current smoker	0
+TCGA.86.8669.01	TCGA.86.8669.01	NF1	0.57	Stage IA	MALE	Current smoker	0.644149731
+TCGA.86.8674.01	TCGA.86.8674.01	KRAS	0.58	Stage IIA	MALE	Current reformed smoker for < or = 15 years	0.392982557
+TCGA.86.A4P7.01	TCGA.86.A4P7.01	EGFR	1	Stage IB	FEMALE	Lifelong Non-smoker	0.650976941
+TCGA.86.A4P8.01	TCGA.86.A4P8.01	ALK	0.79	Stage IIIA	FEMALE	Lifelong Non-smoker	0.715434464
+TCGA.91.6829.01	TCGA.91.6829.01	NF1	0.49	Stage IB	MALE	Current reformed smoker for < or = 15 years	0.591012613
+TCGA.91.6831.01	TCGA.91.6831.01	None	0.5	Stage IB	MALE	Current smoker	0.373064586
+TCGA.91.6836.01	TCGA.91.6836.01	KRAS	0.67	Stage IB	FEMALE	Current smoker	0.94583041
+TCGA.91.6840.01	TCGA.91.6840.01	None	0.62	Stage IA	FEMALE	Current reformed smoker for > 15 years	0
+TCGA.91.6847.01	TCGA.91.6847.01	EGFR	0.85	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.833429933
+TCGA.91.6849.01	TCGA.91.6849.01	KRAS	0.62	Stage IIIA	FEMALE	Current reformed smoker for > 15 years	0.59961171
+TCGA.91.8496.01	TCGA.91.8496.01	EGFR	0.5	Stage IB	FEMALE	Lifelong Non-smoker	0.884235127
+TCGA.91.8497.01	TCGA.91.8497.01	KRAS	0.45	Stage IA	FEMALE	Lifelong Non-smoker	0.638843757
+TCGA.91.8499.01	TCGA.91.8499.01	None	0.77	Stage IA	FEMALE	Current smoker	0.030269005
+TCGA.91.A4BD.01	TCGA.91.A4BD.01	BRAF_act	0.55	Stage IIA	MALE	Current reformed smoker for > 15 years	0.905805276
+TCGA.93.7348.01	TCGA.93.7348.01	MET	0.45	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.674610688
+TCGA.95.7043.01	TCGA.95.7043.01	NF1	0.76	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0
+TCGA.95.7562.01	TCGA.95.7562.01	KRAS	0.55	Stage IIA	MALE	Current reformed smoker for > 15 years	0.465825985
+TCGA.95.7567.01	TCGA.95.7567.01	KRAS	0.53	Stage IIB	MALE	Current reformed smoker for < or = 15 years	0.726144334
+TCGA.95.7947.01	TCGA.95.7947.01	ERBB2	0.66	Stage IA	MALE	Current reformed smoker for < or = 15 years	0.17452436
+TCGA.95.7948.01	TCGA.95.7948.01	None	0.71	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.002232702
+TCGA.95.8039.01	TCGA.95.8039.01	MET	0.47	Stage IA	MALE	Lifelong Non-smoker	0.581581007
+TCGA.95.8494.01	TCGA.95.8494.01	None	0.53	Stage IIA	MALE	Current Reformed Smoker, Duration Not Specified	0.61666206
+TCGA.95.A4VK.01	TCGA.95.A4VK.01	KRAS	0.57	Stage IIIA	FEMALE	Current reformed smoker for > 15 years	0.404050896
+TCGA.97.7546.01	TCGA.97.7546.01	None	0.67	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.748405372
+TCGA.97.7547.01	TCGA.97.7547.01	NF1	0.55	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.612113653
+TCGA.97.7937.01	TCGA.97.7937.01	None	0.59	Stage IB	MALE	Current reformed smoker for > 15 years	0.708377987
+TCGA.97.7938.01	TCGA.97.7938.01	KRAS	0.61	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.732551227
+TCGA.97.8171.01	TCGA.97.8171.01	EGFR	0.82	Stage IV	MALE	Current smoker	0.625716425
+TCGA.97.8176.01	TCGA.97.8176.01	KRAS	0.53	Stage IIIA	MALE	Current reformed smoker for < or = 15 years	0.359936407
+TCGA.97.8179.01	TCGA.97.8179.01	None	0.48	Stage IA	MALE	Current reformed smoker for > 15 years	0.370955681
+TCGA.97.8547.01	TCGA.97.8547.01	EGFR	0.48	Stage IIIA	FEMALE	Lifelong Non-smoker	0.764793046
+TCGA.97.A4M0.01	TCGA.97.A4M0.01	KRAS	0.55	Stage IB	FEMALE	Current reformed smoker for < or = 15 years	0.656762009
+TCGA.97.A4M3.01	TCGA.97.A4M3.01	None	0.69	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.492088162
+TCGA.99.AA5R.01	TCGA.99.AA5R.01	None	0.96	Stage IA	FEMALE	Current smoker	0.735766866
+TCGA.J2.A4AD.01	TCGA.J2.A4AD.01	None	0.57	Stage IA	FEMALE	Current smoker	0.528194954
+TCGA.J2.A4AE.01	TCGA.J2.A4AE.01	MET	0.52	Stage IA	FEMALE	Lifelong Non-smoker	0.710630632
+TCGA.L4.A4E5.01	TCGA.L4.A4E5.01	NF1	0.66	Stage I	FEMALE	Current reformed smoker for < or = 15 years	0.743769818
+TCGA.L9.A443.01	TCGA.L9.A443.01	KRAS	0.48	Stage IA	FEMALE	Current reformed smoker for < or = 15 years	0.828718403
+TCGA.L9.A50W.01	TCGA.L9.A50W.01	EGFR	0.76	Stage IIA	MALE	Current reformed smoker for > 15 years	0.886594023
+TCGA.L9.A5IP.01	TCGA.L9.A5IP.01	NF1	0.53	Stage IV	FEMALE	Current reformed smoker for < or = 15 years	0.013218537
+TCGA.L9.A7SV.01	TCGA.L9.A7SV.01	None	0.83	Stage IIA	MALE	Current reformed smoker for > 15 years	0.204829662
+TCGA.MN.A4N1.01	TCGA.MN.A4N1.01	BRAF_act	0.48	Stage IIA	MALE	Current smoker	0.402941584
+TCGA.MP.A4SW.01	TCGA.MP.A4SW.01	EGFR	0.46	Stage IIB	MALE	Current reformed smoker for > 15 years	0.657270657
+TCGA.MP.A4T6.01	TCGA.MP.A4T6.01	EGFR	0.59	Stage IIIA	FEMALE	Current reformed smoker for > 15 years	0.61056467
+TCGA.MP.A4T8.01	TCGA.MP.A4T8.01	KRAS	0.59	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.291723437
+TCGA.MP.A4TC.01	TCGA.MP.A4TC.01	None	0.45	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.353021888
+TCGA.MP.A5C7.01	TCGA.MP.A5C7.01	None	0.87	Stage IB	FEMALE	Current reformed smoker for > 15 years	0.249142121
+TCGA.NJ.A4YF.01	TCGA.NJ.A4YF.01	None	0.55	Stage IA	FEMALE	Current reformed smoker for > 15 years	0.294993095
+TCGA.NJ.A4YI.01	TCGA.NJ.A4YI.01	KRAS	0.58	Stage IIIA	FEMALE	Current reformed smoker for > 15 years	0.762819927
+TCGA.NJ.A7XG.01	TCGA.NJ.A7XG.01	ROS1	0.62	Stage IIIA	MALE	Current reformed smoker for > 15 years	0.755373496
