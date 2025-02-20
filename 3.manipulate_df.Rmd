@@ -42,10 +42,10 @@ But before diving into complex data exploration. We need to define a workspace w
 A working directory contains all the data that will be useful to us (tables, images, graphics, etc.).
 
 * Create a new folder that you can called `intro_R`
-* In the "Session" menu, select "Set Working Directory" -> Choose Directory"...
+* In the "Session" menu, select *"Set Working Directory" -> Choose Directory"...*
 * Navigate to your `intro_R` folder
 * Double-click it to open
-* Click Choose
+* Click *Choose*
 * Observe the console and save the command in your script
 
 ![](./img/choose_directory.svg)
@@ -142,7 +142,7 @@ The `head()` function doesn't just have one argument, it also has one that sets 
 tail(TCGA_LUAD)
 ```
 
-It is also possible to view the last lines of our data set, using the tail function. 
+It is also possible to view the last lines of our data set, using the `tail()` function. 
 Like the `head()` function, `tail()` has several arguments.
 
 ---
@@ -239,10 +239,13 @@ R's strength lies in its ability to enable the user to modulate and extract cert
 This requires a knowledge of how a data frame is organized on R. The syntax for manipulating data frames uses square brackets “[ ]”.
 
 ```{r structure}
+dataframe[row_name, column_name]
 dataframe[row_index, column_index]
 ```
 
 ---
+
+![](./img/dimensions.png)
 
 * Select columns or rows by names
 
@@ -446,5 +449,24 @@ All values of the columns 1 and 2, inversely, with every rows. Display the 6 fir
 </details>
 
 ---
+
+**BONUS** : What is the last value of the first row ?
+
+<details>
+  <summary>Solution</summary>
+
+```{r, last value of the first row}
+TCGA_LUAD[1,ncol(TCGA_LUAD)]
+```
+
+```{r, echo=F, eval=T}
+TCGA_LUAD[1,ncol(TCGA_LUAD)]
+```
+
+We can use `ncol()` or `nrow()`, to have the last column or the last row of the dataframe.
+
+</details>
+
+
 
 [<<< Back to Index](./0.course_index.html)
