@@ -467,6 +467,15 @@ We can use `ncol()` or `nrow()`, to have the last column or the last row of the 
 
 </details>
 
+# Save the data in R
+
+You can save your work, whether it's code, a dataframe or a plot.
+However, unlike importing a file into R, there is no tab for exporting an object such as a dataframe from R to your computer.
+Fortunately, you can always use the code !
+
+```{r save data}
+write.table(TCGA_LUAD, file = "TCGA_LUAD")
+```
 
 
 [<<< Back to Index](./0.course_index.html)
