@@ -40,9 +40,9 @@ In many cases, the information you want to exploit is not contained in a single,
 
 ## The *`merge()`* function
 
-This function is a standard feature of R and does not require you to download anything else.
+This function is a standard feature of R and does not require you to download anything else. If you type merge in your console, you'll see a small window appear with the function name and a section enclosed in square brackets. This section corresponds to the element to which the function belongs in R. This element is called a package, and we'll come back to this later in the course.
 
-Identify the arguments of the function `merge()` enabling to merge two `data.frame` **by** the name of a column.
+Now, we will identify the arguments of the function `merge()` enabling to merge two `data.frame` **by** the name of a column.
 
 <details>
 

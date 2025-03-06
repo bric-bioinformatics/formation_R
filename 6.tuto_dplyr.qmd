@@ -190,7 +190,7 @@ Here is a table summarizing the most common operators:
 
 What does these codes do ?
 
-1.  `clinical_data %>%   filter(gender == "FEMALE" | heart_rate >= 70)`
+1.  `clinical_data %>%   filter(gender == "Female" | heart_rate >= 70)`
 
 <details>
 
@@ -200,7 +200,7 @@ Using this command line, you are reading the object `clinical_data` with the fir
 
 The expression (the code within the brackets) contains two comparisons.
 
-The first one compares all the elements in the column `gender` to the string "FEMALE", this comparison returns `TRUE` when the column `gender` contains "FEMALE".
+The first one compares all the elements in the column `gender` to the string "Female", this comparison returns `TRUE` when the column `gender` contains "Female".
 
 The second one compares all the elements in the column `heart_rate` to the numeric value `70`, this comparison returns `TRUE` when the column `heart_rate` contains values greater or equal to 70.
 
@@ -208,7 +208,21 @@ The two comparisons are separated by the **logical OR** `|` , this means that ei
 
 </details>
 
-2.  `clinical_data %>% filter(gender == "FEMALE") %>% filter(heart_rate >= 70)`
+2.  `clinical_data %>% filter(gender == "MALE") %>% filter(height >= 170)`
+
+<details>
+
+<summary>Answer</summary>
+
+There seems to be a problem. The result is blank.
+There's a problem with the way *"MALE"* is written: only the "M" should be capitalized. Don't forget that case is very important!
+You may also notice that R returns no error, only an empty element.
+
+By the way, if you stored the result in a variable, you'd immediately see that the variable would be empty.
+
+</details>
+
+3.  `clinical_data %>% filter(gender == "Female") %>% filter(heart_rate >= 70)`
 
 <details>
 
@@ -230,11 +244,11 @@ In other words the two comparisons must be `TRUE` and the selected samples come 
 
 You can combine the comparisons in one expression wanting that both of them are `TRUE`, this is possible using the **logical AND** `&`.
 
-`clinical_data %>%   filter(gender == "FEMALE" & heart_rate >= 70)`
+`clinical_data %>%   filter(gender == "Female" & heart_rate >= 70)`
 
 </details>
 
-3.  `clinical_data %>%   filter(gender == "FEMALE") %>% filter(heart_rate >= 70) %>% select(patient_id:gender)`
+4.  `clinical_data %>%   filter(gender == "Female") %>% filter(heart_rate >= 70) %>% select(patient_id:gender)`
 
 <details>
 
@@ -246,7 +260,7 @@ The `:` operator creates vector from a value (left element, `patient_id`) to ano
 
 </details>
 
-4.  Can you interpret this error ?
+5.  Can you interpret this error ?
 
 I want display the patient ID of the samples treated with either drug A or drug B with heart rate less than 80.
 
@@ -428,9 +442,9 @@ i\) Define how to obtain a Boolean vector (`TRUE`/`FALSE`) depending on the `dia
 
 <summary>Answer</summary>
 
-You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"``No Disease``"` however needs to be surrounded by quotes.
+You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value ``` "``No Disease``" ``` however needs to be surrounded by quotes.
 
-`diagnosis ==``"No Disease"`
+``` diagnosis ==``"No Disease" ```
 
 </details>
 

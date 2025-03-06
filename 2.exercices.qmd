@@ -32,7 +32,6 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 
 [\<\<\< Back to Index](./0.course_index.html)
 
-![RStudio Interface](./img/structure_rstudio.svg){width="20cm"}
 
 # Discovering the R console
 
@@ -163,10 +162,10 @@ Same as the previous line, here we generate a sequence of number with negative a
 
 <summary>Solution</summary>
 
-``` {style="background-color:LemonChiffon;line-height:0.6;"}
+``` {style="background-color:LemonChiffon;"}
 Erreur : ',' inattendu(e) dans "1,"
 
-Oops, it seems we have a problem here. The interpreter obviously can't read the comma correctly...
+Oops, it seems we have a problem here. The interpreter obviously cannot read the comma correctly...
 ```
 
 </details>
@@ -205,6 +204,8 @@ R is demanding when it comes to the use of certain symbols, particularly decimal
 
 You can write entire lines of text. To do this, simply use the "\#" symbol at the beginning of the line. This code line is called a comment, and it is used to indicate that the different lines of code we write do.
 
+**It's a simple yet very important element when we write a script. As code becomes more and more substantial, and hours of work accumulate on it, it's easy to get lost. That's why it's essential to comment on the lines you write, so that you can find your way around even years later.**
+
 </details>
 
 # Work with variables
@@ -216,6 +217,8 @@ Sounds great, but what's it really for? It's probably the question you've been a
 You probably noticed when doing the previous exercise in the console, that what you entered was interpreted and returned as a result. However, it's impossible to retrieve this result unless you retype the instruction line.
 
 Here's what we're going to use the variables for. We can store simple structures like numbers or characters string, but we can also store more complex structures such as arrays or matrices. This is called the type of a variable.
+
+![](./img/variables.svg)
 
 It's an important notion in programming, and even more in R, as the language is sometimes rather capricious with variable typing as we will see during the course.
 
@@ -277,7 +280,7 @@ There are certain rules to follow when choosing a name :
 
 <summary>Solution</summary>
 
-::: {style="background-color:LemonChiffon;line-height:0.6;"}
+::: {style="background-color:LemonChiffon;"}
 Erreur : entrée inattendue dans "240\_"
 
 First rule broken ! R does not support variables whose name begins with a digit.
@@ -296,7 +299,7 @@ patients@samples <- 30
 
 <summary>Solution</summary>
 
-::: {style="background-color:LemonChiffon;line-height:0.6;"}
+::: {style="background-color:LemonChiffon;"}
 Erreur : objet 'patients' introuvable
 
 It seems that R does not understand this syntax either. The "\@" symbol is not accepted in the name.
@@ -316,7 +319,7 @@ Sample
 
 <summary>Solution</summary>
 
-::: {style="background-color:LemonChiffon;line-height:0.6;"}
+::: {style="background-color:LemonChiffon;"}
 Erreur : objet 'Sample' introuvable
 
 Here the definition of the variable is correct. The problem is the case, our variable is called "sample" not "Sample".
@@ -365,6 +368,8 @@ pi
 # Discovering of functions
 
 A function is a set of instructions that you can re-use. A function is composed with a name and arguments. So, it is possible to build your own functions to do whatever you want.
+
+![](./img/function_structure.png)
 
 But before build functions on your own, you can use built-in functions in R. Those functions are ready-to-use. Some of them are directly in the base of R, however, for the majority, you will have to download packages (we will see later how to download and install packages).
 
