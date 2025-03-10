@@ -32,7 +32,6 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 
 [\<\<\< Back to Index](./0.course_index.html)
 
-
 # Discovering the R console
 
 R is an interpreted language. If you write a code line in the console and validate it, you will instant see the result of your code. This is the simpliest case in computer programming : I give an instruction, this instruction is interpreted and the result is displayed.
@@ -225,7 +224,7 @@ It's an important notion in programming, and even more in R, as the language is 
 Here is a reminder of some existing types :
 
 | Type               | Description                                         | Examples                                | Notes                                                    |
-|------------------|------------------|------------------|------------------|
+|--------------------|-----------------------------------------------------|-----------------------------------------|----------------------------------------------------------|
 | Numeric / Integer  | float, integer, complex                             | 8, 1.8                                  | The point is used for decimal                            |
 | Character / String | character, character string                         | "char1",'char2'                         | Character strings are defined by simple or double quotes |
 | Logic / Boolean    | logical used for comparison (==, !=, \>, %in%, ...) | TRUE, FALSE                             | Predefined variables                                     |

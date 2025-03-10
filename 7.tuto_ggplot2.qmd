@@ -82,7 +82,7 @@ library(ggplot2)
 
 Before unfolding the code and answers boxes, try to find the solution from what we have seen in the lecture or by **searching on the web**, it should become an automatism, no one knows everything !
 
-This is what our plot will look like. Now that you have an idea of what your plot will look like, let's break down each layer and build the plot.
+This is what our plot will look like. Now, let's break it down layer by layer and build it.
 
 ```{r, echo = F}
 # We use the function c(), to name the elements of a vector you use the name you want
@@ -211,13 +211,9 @@ ggplot(data = clinical, mapping = aes(x=diagnosis, y=glucose)) +
 
 By default the colors are not very contrasted ... you can customize them by :
 
--   
+i)  Defining your own palette optionally by **attributing a color to each category** ;
 
-    i)  Defining your own palette optionally by **attributing a color to each category** ;
-
--   
-
-    ii) Find a predefined palette to help you to define the colors. To do this task, you will need to add a new layer by using a function that help in **scaling the colors manually**.
+ii) Find a predefined palette to help you to define the colors. To do this task, you will need to add a new layer by using a function that help in **scaling the colors manually**.
 
 i\) You can search for how colors are named in R if you want to try your favorite colors. Many palettes are available through dedicated packages. (My favorite function to call for colors is `colours()` systematically installed and loaded with R, you can try some of my preferred ones: `colours()[124]`, `colours()[613]`, `colours()[53]`, `colours()[144]`).
 
@@ -529,8 +525,7 @@ The answer to this question comes quickly. "We could plot the **proportion** of 
 
 ***Option 1 (not recommended)***
 
-You can plot independently the four barplots. It's a possibility, after all we only have 4 factors to compare.
-But this method becomes more time-consuming and laborious when several dozen factors are involved.
+You can plot independently the four barplots. It's a possibility, after all we only have 4 factors to compare. But this method becomes more time-consuming and laborious when several dozen factors are involved.
 
 ```{r, eval=F}
 ggplot(data = clinical, aes(x=treatment_response)) +
@@ -1178,8 +1173,10 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    cluster_cols = TRUE
-    cluster_rows = TRUE
+```         
+cluster_cols = TRUE
+cluster_rows = TRUE
+```
 
 </details>
 
@@ -1189,8 +1186,10 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    clustering_distance_rows = "euclidean"
-    clustering_distance_cols = "euclidean"
+```         
+clustering_distance_rows = "euclidean"
+clustering_distance_cols = "euclidean"
+```
 
 </details>
 
@@ -1200,7 +1199,9 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    clustering_method = "complete"
+```         
+clustering_method = "complete"
+```
 
 </details>
 
@@ -1218,7 +1219,9 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    show_colnames = T # default
+```         
+show_colnames = T # default
+```
 
 </details>
 
@@ -1228,7 +1231,9 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    fontsize = 10 # default
+```         
+fontsize = 10 # default
+```
 
 </details>
 
@@ -1252,7 +1257,9 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100) # Default
+```         
+color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100) # Default
+```
 
 </details>
 
@@ -1262,7 +1269,9 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-    breaks = NA # default
+```         
+breaks = NA # default
+```
 
 </details>
 
@@ -1345,8 +1354,10 @@ By looking at the help of the function (`?pheatmap`) or online, identify the par
 
 <summary>Answer</summary>
 
-     cutree_rows = NA # Default
-     cutree_cols = NA # Default
+```         
+ cutree_rows = NA # Default
+ cutree_cols = NA # Default
+```
 
 </details>
 
