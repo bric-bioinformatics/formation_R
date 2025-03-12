@@ -100,7 +100,7 @@ We can select specific portions of data, such as rows, columns, or both, from a 
 
 #### ***Select columns with the `select()` function***
 
-Use the select() function to display the columns `r colnames(clinical_data)[6]` and `r colnames(clinical_data)[7]`.
+Use the select() function to display the columns `r colnames(clinical_data)[7]` and `r colnames(clinical_data)[8]`.
 
 <details>
 
@@ -120,8 +120,9 @@ Or use the help provided by the package dplyr.
 
 ```{r, eval=FALSE}
 # We refer to the columns by their name, the name is here evaluated as a variable (no quote)
-clinical_data %>% 
+test_select <- clinical_data %>% 
   select(blood_pressure_systolic, blood_pressure_diastolic)
+head(test_select)
 ```
 
 This function is particularly interesting because it can be combined with other functions to either be more precise, or to search for something more vague. Try to find the function that enable to select columns starting with, ending with or containing a particular character or string.
@@ -440,9 +441,9 @@ i\) Define how to obtain a Boolean vector (`TRUE`/`FALSE`) depending on the `dia
 
 <summary>Answer</summary>
 
-You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value ``` "``No Disease``" ``` however needs to be surrounded by quotes.
+You need to use the comparison operator `==` between the name of the column (`diagnosis`) and the value `None`. In dplyr functions, the names of the column are called as variable (no quote), the string value `"No Disease"` however needs to be surrounded by quotes.
 
-``` diagnosis ==``"No Disease" ```
+`diagnosis =="No Disease"`
 
 </details>
 
