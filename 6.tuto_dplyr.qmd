@@ -141,7 +141,7 @@ select columns start with dplyr R
 <summary>Answer</summary>
 
 | Functions to combine with *select* | Description                             | Examples                                             |
-|------------------------|------------------------|------------------------|
+|--------------------|-----------------------|-----------------------------|
 | *starts_with()*                    | Starts with a specific character/string | `clinical_data %>% select(starts_with("treatment"))` |
 | *ends_with()*                      | Ends with a specific character/string   | `clinical_data %>% select(ends_with("lic"))`         |
 | *contains()*                       | Contains a specific character/string    | `clinical_data %>% select(contains("blood"))`        |
@@ -178,7 +178,7 @@ To be able to filter based on values contained in columns, we need to know how t
 Here is a table summarizing the most common operators:
 
 | Operator    | Description                   | Example                             |
-|-------------------|--------------------------|----------------------------|
+|----------------|-------------------------|------------------------------|
 | `==`        | Equal to                      | `x == "yes"` , `x == 6`             |
 | `!=`        | Not equal to                  | `x != "no"` , `x != 5`              |
 | `>` , `<`   | Greater than, Less than       | `x > 5` , `x < 5`                   |
@@ -214,9 +214,7 @@ The two comparisons are separated by the **logical OR** `|` , this means that ei
 
 <summary>Answer</summary>
 
-There seems to be a problem. The result is blank.
-There's a problem with the way *"MALE"* is written: only the "M" should be capitalized. Don't forget that case is very important!
-You may also notice that R returns no error, only an empty element.
+There seems to be a problem. The result is blank. There's a problem with the way *"MALE"* is written: only the "M" should be capitalized. Don't forget that case is very important! You may also notice that R returns no error, only an empty element.
 
 By the way, if you stored the result in a variable, you'd immediately see that the variable would be empty.
 
@@ -350,7 +348,7 @@ clinical_data %>%
   select(patient_id, heart_rate)
 ```
 
-ii\) Which diagnosis are mainly harbored by the patients with the 20% lowest heart rates (`tr`).
+ii\) Which diagnosis are mainly harbored by the patients with the 20% lowest heart rates (`hr`).
 
 ```{r, echo=F}
 lowest_hr <- clinical_data %>% 
@@ -369,7 +367,7 @@ lowest_hr <- clinical_data %>%
   select(diagnosis)
 ```
 
-Then, use the basic function `table()` which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column `known.oncogenes`.
+Then, use the basic function `table()` which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column `diagnosis`.
 
 ```{r, eval=F}
 table(lowest_hr)

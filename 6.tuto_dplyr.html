@@ -253,9 +253,9 @@ Answer
 </summary>
 <table class="table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 27%">
+<col style="width: 31%">
+<col style="width: 40%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -308,9 +308,9 @@ Answers
 <p>Here is a table summarizing the most common operators:</p>
 <table class="table">
 <colgroup>
-<col style="width: 26%">
+<col style="width: 22%">
 <col style="width: 35%">
-<col style="width: 38%">
+<col style="width: 42%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -526,7 +526,7 @@ Answer
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, heart_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>ii) Which diagnosis are mainly harbored by the patients with the 20% lowest heart rates (<code>tr</code>).</p>
+<p>ii) Which diagnosis are mainly harbored by the patients with the 20% lowest heart rates (<code>hr</code>).</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>diagnosis
@@ -544,7 +544,7 @@ Answer
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(diagnosis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Then, use the basic function <code>table()</code> which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column <code>known.oncogenes</code>.</p>
+<p>Then, use the basic function <code>table()</code> which is an easy and very useful function to display all categories with the number of elements per category. This function takes as an argument a vector of categorical values, for instance the values of the column <code>diagnosis</code>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
