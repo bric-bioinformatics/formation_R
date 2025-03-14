@@ -597,7 +597,7 @@ We can change the layout of a dataset. It means, for example, transform columns 
 
 In R, this often involves transforming data between long and wide format. In a ***wide format***, each row represent a single observation, and columns represent variables (like in `qual.features`). In a ***long format*****,** each row is a single measurement, with a separate column for the variables and the values. This structure is particularly useful for certain graphical representations.
 
-To switch from one shape to another, there are two functions called `pivot_longer()` and `pivot_wider()`. ``` pivot_longer``() ``` function enables to convert multiple columns into key-value pairs, where column names become variable names, and their corresponding values are stacked. `pivot_wider()` function allows to spread key-value pairs across multiple columns. We say that ``` pivot_longer``() ``` reshapes wide format to long format and `pivot_wider()` do the invert.
+To switch from one shape to another, there are two functions called `pivot_longer()` and `pivot_wider()`. `pivot_longer()` function enables to convert multiple columns into key-value pairs, where column names become variable names, and their corresponding values are stacked. `pivot_wider()` function allows to spread key-value pairs across multiple columns. We say that `pivot_longer()` reshapes wide format to long format and `pivot_wider()` do the invert.
 
 ![Schematic view of wide and long formats](./img/pivot_tidyr_1.png)
 
